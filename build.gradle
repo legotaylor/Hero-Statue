@@ -101,14 +101,6 @@ tasks.register('runQuickPlaySingleplayer') {
 	dependsOn('runClient')
 }
 
-tasks.named('runClient') {
-	doFirst {
-		if (project.hasProperty("runQuickPlaySingleplayer")) {
-			args = ['--quickPlaySingleplayer', project.findProperty("quickPlaySingleplayer") ?: "Test World"]
-		}
-	}
-}
-
 tasks.register('runQuickPlayMultiplayer') {
 	group = 'fabric'
 	description = 'Executes runClient and loads into the Multiplayer Test World.'
@@ -120,7 +112,9 @@ tasks.register('runQuickPlayMultiplayer') {
 
 tasks.named('runClient') {
 	doFirst {
-		if (project.hasProperty("runQuickPlayMultiplayer")) {
+		if (project.hasProperty("runQuickPlaySingleplayer")) {
+			args = ['--quickPlaySingleplayer', project.findProperty("quickPlaySingleplayer") ?: "Test World"]
+		} else if (project.hasProperty("runQuickPlayMultiplayer")) {
 			args = ['--quickPlayMultiplayer', project.findProperty("quickPlayMultiplayer") ?: "localhost"]
 		}
 	}

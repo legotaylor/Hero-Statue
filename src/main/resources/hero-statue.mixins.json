@@ -1,11 +1,12 @@
 {
 	"required": true,
 	"minVersion": "0.8",
-	"package": "io.github.username.modid.mixin",
+	"package": "dev.dannytaylor.hero_statue.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 	],
 	"client": [
+		"ExampleMixin"
 	],
 	"server": [
 	],
