@@ -7,5 +7,6 @@ import net.minecraft.client.render.BlockRenderLayer;
 public class BlockRegistryClient {
 	public static void bootstrap() {
 		BlockRenderLayerMap.putBlock(BlockRegistry.heroStatue, BlockRenderLayer.TRANSLUCENT);
+		BlockEntityRendererRegistry.bootstrap();
 	}
 }

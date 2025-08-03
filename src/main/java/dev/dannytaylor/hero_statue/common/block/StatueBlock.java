@@ -2,23 +2,19 @@ package dev.dannytaylor.hero_statue.common.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -42,28 +38,30 @@ public class StatueBlock extends BlockWithEntity {
 	}
 
 	@Override
-	protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		// TODO: Creative and Adventure Mode Checks; Area Lib compatibility?
+	protected void onBlockBreakStart(BlockState state, World world, BlockPos pos, PlayerEntity player) {
 		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
-			if (!statueBlockEntity.hasMaterial()) {
-				if (stack.getItem() instanceof BlockItem blockItem) {
-					stack.decrement(1);
-					// TODO: Check if full compatible block.
-					try {
-						statueBlockEntity.setMaterial(Identifier.of(Registries.BLOCK.getEntry(blockItem.getBlock()).getIdAsString()));
-					} catch (Exception e) {}
-					player.sendMessage(Text.literal("You've set the block material to " + statueBlockEntity.getMaterial() + "."), true);
-				}
-			} else {
-				if (stack.isOf(Items.SHEARS)) {
-					Identifier material = statueBlockEntity.getMaterial();
-					statueBlockEntity.clearMaterial();
-					world.spawnEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Registries.BLOCK.get(material).asItem())));
-					player.sendMessage(Text.literal("You've reset the block material."), true);
-					if (stack.isDamageable()) stack.damage(1, player);
+			if (statueBlockEntity.hasStack()) {
+				if (player.getStackInHand(Hand.MAIN_HAND).isEmpty()) {
+					ItemStack stack1 = statueBlockEntity.getStack();
+					statueBlockEntity.clearStack();
+					ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), stack1);
 				}
 			}
-			return ActionResult.SUCCESS;
+		}
+		super.onBlockBreakStart(state, world, pos, player);
+	}
+
+	@Override
+	protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		// TODO: Adventure Mode Checks; Area Lib compatibility?
+		// TODO: Check if full compatible block.
+		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
+			if (!statueBlockEntity.hasStack() && !stack.isEmpty()) {
+				ItemStack stack1 = stack.copyWithCount(1);
+				stack.decrementUnlessCreative(1, player);
+				statueBlockEntity.setStack(stack1);
+				return ActionResult.SUCCESS;
+			}
 		}
 		return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
 	}
@@ -136,6 +134,11 @@ public class StatueBlock extends BlockWithEntity {
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		return this.getDefaultState().with(pose, 0);
+	}
+
+	@Override
+	protected BlockRenderType getRenderType(BlockState state) {
+		return BlockRenderType.MODEL;
 	}
 
 	static {

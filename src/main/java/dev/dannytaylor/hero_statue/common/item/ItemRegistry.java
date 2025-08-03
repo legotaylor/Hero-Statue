@@ -1,7 +1,7 @@
 package dev.dannytaylor.hero_statue.common.item;
 
 import dev.dannytaylor.hero_statue.common.block.BlockRegistry;
-import dev.dannytaylor.hero_statue.common.data.HeroStatueData;
+import dev.dannytaylor.hero_statue.common.data.CommonData;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -18,7 +18,7 @@ import java.util.function.UnaryOperator;
 public class ItemRegistry {
 	public static final Item heroStatue;
 	private static RegistryKey<Item> keyOf(String id) {
-		return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(HeroStatueData.id, id));
+		return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(CommonData.id, id));
 	}
 
 	private static RegistryKey<Item> keyOf(RegistryKey<Block> blockKey) {

@@ -1,0 +1,21 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"bonus_rolls": 0.0,
+			"conditions": [
+				{
+					"condition": "minecraft:survives_explosion"
+				}
+			],
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "hero-statue:hero_statue"
+				}
+			],
+			"rolls": 1.0
+		}
+	],
+	"random_sequence": "hero-statue:blocks/hero_statue"
+}
