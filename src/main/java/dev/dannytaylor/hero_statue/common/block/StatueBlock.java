@@ -43,6 +43,7 @@ public class StatueBlock extends BlockWithEntity {
 
 	@Override
 	protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		// TODO: Creative and Adventure Mode Checks; Area Lib compatibility?
 		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
 			if (!statueBlockEntity.hasMaterial()) {
 				if (stack.getItem() instanceof BlockItem blockItem) {
