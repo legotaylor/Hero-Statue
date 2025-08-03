@@ -1,0 +1,49 @@
+{
+  "variants": {
+	  "pose=0": {
+		  "model": "hero-statue:block/hero_statue_pose_0"
+	  },
+	  "pose=1": {
+		  "model": "hero-statue:block/hero_statue_pose_1"
+	  },
+	  "pose=2": {
+		  "model": "hero-statue:block/hero_statue_pose_2"
+	  },
+	  "pose=3": {
+		  "model": "hero-statue:block/hero_statue_pose_3"
+	  },
+	  "pose=4": {
+		  "model": "hero-statue:block/hero_statue_pose_4"
+	  },
+	  "pose=5": {
+		  "model": "hero-statue:block/hero_statue_pose_5"
+	  },
+	  "pose=6": {
+		  "model": "hero-statue:block/hero_statue_pose_6"
+	  },
+	  "pose=7": {
+		  "model": "hero-statue:block/hero_statue_pose_7"
+	  },
+	  "pose=8": {
+		  "model": "hero-statue:block/hero_statue_pose_8"
+	  },
+	  "pose=9": {
+		  "model": "hero-statue:block/hero_statue_pose_9"
+	  },
+	  "pose=10": {
+		  "model": "hero-statue:block/hero_statue_pose_10"
+	  },
+	  "pose=11": {
+		  "model": "hero-statue:block/hero_statue_pose_11"
+	  },
+	  "pose=12": {
+		  "model": "hero-statue:block/hero_statue_pose_12"
+	  },
+	  "pose=13": {
+		  "model": "hero-statue:block/hero_statue_pose_13"
+	  },
+	  "pose=14": {
+		  "model": "hero-statue:block/hero_statue_pose_14"
+	  }
+  }
+}
