@@ -1,3 +1,4 @@
 {
-	"block.hero-statue.hero_statue": "Hero Statue"
+	"block.hero-statue.hero_statue": "Hero Statue",
+	"sound.hero-statue.hero_statue_update_pose": "Statue moves"
 }

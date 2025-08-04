@@ -1,6 +1,7 @@
 package dev.dannytaylor.hero_statue.common.block;
 
 import com.mojang.serialization.MapCodec;
+import dev.dannytaylor.hero_statue.common.sound.SoundRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -11,15 +12,13 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -124,18 +123,27 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 		}
 	}
 
-	public void update(BlockState state, ServerWorld world, BlockPos pos) {
+	public void update(BlockState state, World world, BlockPos pos) {
 		int powerLevel = world.getReceivedRedstonePower(pos);
-		if (shouldSetPose(state, powerLevel)) world.setBlockState(pos, state.with(pose, getPose(powerLevel)), 3);
+		if (shouldSetPose(state, powerLevel)) {
+			world.setBlockState(pos, state.with(pose, getPose(powerLevel)), 3);
+			world.playSound(null, pos, SoundRegistry.heroStatueUpdatePose, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.25F + 0.6F);
+		}
 		if (!world.getBlockTickScheduler().isQueued(pos, this)) world.scheduleBlockTick(pos, this, 2);
 	}
 
 	public boolean shouldSetPose(BlockState state, int powerLevel) {
-		return powerLevel > 0 && powerLevel != getPose(state.get(pose));
+		boolean hasPower = powerLevel > 0;
+		boolean diffPower = powerLevel != getPower(state.get(pose));
+		return hasPower && diffPower;
 	}
 
 	public int getPose(int powerLevel) {
 		return powerLevel - 1;
+	}
+
+	public int getPower(int pose) {
+		return pose + 1;
 	}
 
 	@Override

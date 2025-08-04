@@ -1,0 +1,8 @@
+{
+	"block.hero_statue.update_pose": {
+		"subtitle": "sound.hero-statue.hero_statue_update_pose",
+		"sounds": [
+			"hero-statue:hero_statue_update_pose"
+		]
+	}
+}
