@@ -3,9 +3,9 @@ package dev.dannytaylor.hero_statue.client.network;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.block.StatueData;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
-import dev.dannytaylor.hero_statue.common.network.payloads.C2SStatueChunkPayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.S2CStatueChunkPayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.S2CStatuePayload;
+import dev.dannytaylor.hero_statue.common.network.payloads.C2SUpdateChunkStatuesPayload;
+import dev.dannytaylor.hero_statue.common.network.payloads.S2CUpdateChunkStatuesPayload;
+import dev.dannytaylor.hero_statue.common.network.payloads.S2CUpdateStatuePayload;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.util.math.ChunkPos;
@@ -14,14 +14,14 @@ import net.minecraft.world.World;
 public class ClientNetwork {
 	public static void bootstrap() {
 		try {
-			ClientPlayNetworking.registerGlobalReceiver(S2CStatuePayload.id, (payload, context) -> context.client().execute(() -> {
+			ClientPlayNetworking.registerGlobalReceiver(S2CUpdateStatuePayload.id, (payload, context) -> context.client().execute(() -> {
 				World world = context.client().world;
 				if (world != null) {
 					if (world.getBlockEntity(payload.statueData().blockPos()) instanceof StatueBlockEntity statueBlockEntity) statueBlockEntity.setStack(payload.statueData().stack());
 				}
 			}));
 
-			ClientPlayNetworking.registerGlobalReceiver(S2CStatueChunkPayload.id, (payload, context) -> context.client().execute(() -> {
+			ClientPlayNetworking.registerGlobalReceiver(S2CUpdateChunkStatuesPayload.id, (payload, context) -> context.client().execute(() -> {
 				World world = context.client().world;
 				if (world != null) {
 					for (StatueData data : payload.statueData()) {
@@ -39,6 +39,6 @@ public class ClientNetwork {
 	}
 
 	public static void sendC2SStatueChunk(ChunkPos chunkPos, boolean updateAll) {
-		ClientPlayNetworking.send(new C2SStatueChunkPayload(chunkPos, updateAll));
+		ClientPlayNetworking.send(new C2SUpdateChunkStatuesPayload(chunkPos, updateAll));
 	}
 }

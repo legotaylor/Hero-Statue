@@ -3,9 +3,10 @@ package dev.dannytaylor.hero_statue.common.network;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.block.StatueData;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
-import dev.dannytaylor.hero_statue.common.network.payloads.C2SStatueChunkPayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.S2CStatueChunkPayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.S2CStatuePayload;
+import dev.dannytaylor.hero_statue.common.network.payloads.C2SUpdateChunkStatuesPayload;
+import dev.dannytaylor.hero_statue.common.network.payloads.C2SUpdateStatuePayload;
+import dev.dannytaylor.hero_statue.common.network.payloads.S2CUpdateChunkStatuesPayload;
+import dev.dannytaylor.hero_statue.common.network.payloads.S2CUpdateStatuePayload;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -20,17 +21,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommonNetwork {
+	public static final Identifier c2sStatue;
 	public static final Identifier c2sStatueChunk;
 	public static final Identifier s2cStatue;
 	public static final Identifier s2cStatueChunk;
 
 	public static void bootstrap() {
 		try {
-			PayloadTypeRegistry.playC2S().register(C2SStatueChunkPayload.id, C2SStatueChunkPayload.packetCodec);
-			PayloadTypeRegistry.playS2C().register(S2CStatuePayload.id, S2CStatuePayload.packetCodec);
-			PayloadTypeRegistry.playS2C().register(S2CStatueChunkPayload.id, S2CStatueChunkPayload.packetCodec);
+			PayloadTypeRegistry.playC2S().register(C2SUpdateChunkStatuesPayload.id, C2SUpdateChunkStatuesPayload.packetCodec);
+			PayloadTypeRegistry.playC2S().register(C2SUpdateStatuePayload.id, C2SUpdateStatuePayload.packetCodec);
+			PayloadTypeRegistry.playS2C().register(S2CUpdateStatuePayload.id, S2CUpdateStatuePayload.packetCodec);
+			PayloadTypeRegistry.playS2C().register(S2CUpdateChunkStatuesPayload.id, S2CUpdateChunkStatuesPayload.packetCodec);
 
-			ServerPlayNetworking.registerGlobalReceiver(C2SStatueChunkPayload.id, (payload, context) -> context.server().execute(() -> {
+			ServerPlayNetworking.registerGlobalReceiver(C2SUpdateStatuePayload.id, (payload, context) -> context.server().execute(() -> {
+				ServerWorld world = context.player().getWorld();
+				BlockPos blockPos = payload.blockPos();
+				if (payload.updateAll()) {
+					for (ServerPlayerEntity player : PlayerLookup.tracking(world, blockPos)) {
+						sendS2CStatue(player, world, blockPos);
+					}
+				} else sendS2CStatue(context.player(), world, blockPos);
+			}));
+
+			ServerPlayNetworking.registerGlobalReceiver(C2SUpdateChunkStatuesPayload.id, (payload, context) -> context.server().execute(() -> {
 				ServerWorld world = context.player().getWorld();
 				ChunkPos chunkPos = payload.chunkPos();
 				if (payload.updateAll()) {
@@ -49,7 +62,7 @@ public class CommonNetwork {
 		if (blockEntity != null) {
 			if (blockEntity instanceof StatueBlockEntity statueBlockEntity) {
 				StatueData statueData = new StatueData(blockPos, statueBlockEntity.getStack());
-				ServerPlayNetworking.send(player, new S2CStatuePayload(statueData));
+				ServerPlayNetworking.send(player, new S2CUpdateStatuePayload(statueData));
 			} else {
 				CommonData.logger.error("Mismatched block entity, expected StatueBlockEntity found {}, client may experience de-sync!", blockEntity.getNameForReport());
 			}
@@ -63,7 +76,7 @@ public class CommonNetwork {
 				statueData.add(new StatueData(blockPos, statueBlockEntity.getStack()));
 			}
 		});
-		ServerPlayNetworking.send(player, new S2CStatueChunkPayload(statueData));
+		ServerPlayNetworking.send(player, new S2CUpdateChunkStatuesPayload(statueData));
 	}
 
 	public static Identifier idOf(String path) {
@@ -71,8 +84,9 @@ public class CommonNetwork {
 	}
 
 	static {
-		c2sStatueChunk = idOf("c2s_statue_chunk");
-		s2cStatue = idOf("s2c_statue");
-		s2cStatueChunk = idOf("s2c_statue_chunk");
+		c2sStatue = idOf("c2s_update_statue");
+		c2sStatueChunk = idOf("c2s_update_chunk_statues");
+		s2cStatue = idOf("s2c_update_statue");
+		s2cStatueChunk = idOf("s2c_update_chunk_statues");
 	}
 }
