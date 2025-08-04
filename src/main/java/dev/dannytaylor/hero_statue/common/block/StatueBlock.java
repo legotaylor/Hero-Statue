@@ -130,7 +130,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 		int powerLevel = world.getReceivedRedstonePower(pos);
 		if (shouldSetPose(state, powerLevel)) {
 			if (world instanceof ServerWorld serverWorld) serverWorld.setBlockState(pos, state.with(pose, getPose(powerLevel)), 3);
-			world.playSound(null, pos, SoundRegistry.heroStatueUpdatePose, SoundCategory.BLOCKS, 1.0F, world.random.nextFloat() * 0.25F + 0.6F);
+			world.playSound(null, pos, SoundRegistry.heroStatueUpdatePose, SoundCategory.BLOCKS);
 		}
 		if (world instanceof ServerWorld serverWorld && !serverWorld.getBlockTickScheduler().isQueued(pos, this)) serverWorld.scheduleBlockTick(pos, this, 2);
 	}
