@@ -1,31 +1,35 @@
 package dev.dannytaylor.hero_statue.common.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
+import net.minecraft.world.tick.ScheduledTickView;
 import org.jetbrains.annotations.Nullable;
 
-public class StatueBlock extends BlockWithEntity {
+public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	public static final MapCodec<StatueBlock> codec = createCodec(StatueBlock::new);
 	public static final IntProperty pose;
+	public static final BooleanProperty waterlogged;
 
 	@Override
 	public MapCodec<? extends StatueBlock> getCodec() {
@@ -34,33 +38,40 @@ public class StatueBlock extends BlockWithEntity {
 
 	public StatueBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(pose, 0));
+		this.setDefaultState(this.stateManager.getDefaultState().with(pose, 0).with(waterlogged, false));
 	}
 
 	@Override
 	protected void onBlockBreakStart(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
-			if (statueBlockEntity.hasStack()) {
-				if (player.getStackInHand(Hand.MAIN_HAND).isEmpty()) {
-					ItemStack stack1 = statueBlockEntity.getStack();
-					statueBlockEntity.clearStack();
-					ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), stack1);
-				}
-			}
+		if (player.getAbilities().allowModifyWorld) {
+			dropStack(world, pos);
 		}
 		super.onBlockBreakStart(state, world, pos, player);
 	}
 
 	@Override
+	public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
+		// Just in case it wasn't dropped already
+		dropStack(world, pos);
+		super.onBroken(world, pos, state);
+	}
+
+	@Override
 	protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		// TODO: Adventure Mode Checks; Area Lib compatibility?
-		// TODO: Check if full compatible block.
-		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
-			if (!statueBlockEntity.hasStack() && !stack.isEmpty()) {
-				ItemStack stack1 = stack.copyWithCount(1);
-				stack.decrementUnlessCreative(1, player);
-				statueBlockEntity.setStack(stack1);
-				return ActionResult.SUCCESS;
+		// TODO: Area Lib compatibility?
+		// https://github.com/Tomate0613/area-lib/wiki
+
+		// If player IS NOT in adventure mode OR IS in modifiable area
+		//AreaLib.getSavedData(world);
+
+		if (player.getAbilities().allowModifyWorld) {
+			if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
+				if (!statueBlockEntity.hasStack() && !stack.isEmpty()) {
+					ItemStack stack1 = stack.copyWithCount(1);
+					stack.decrementUnlessCreative(1, player);
+					statueBlockEntity.setStack(stack1);
+					return ActionResult.SUCCESS;
+				}
 			}
 		}
 		return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
@@ -128,12 +139,13 @@ public class StatueBlock extends BlockWithEntity {
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(pose);
+		builder.add(pose, waterlogged);
 	}
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(pose, 0);
+		FluidState fluidState = context.getWorld().getFluidState(context.getBlockPos());
+		return this.getDefaultState().with(pose, 0).with(waterlogged, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	@Override
@@ -141,7 +153,30 @@ public class StatueBlock extends BlockWithEntity {
 		return BlockRenderType.MODEL;
 	}
 
+	@Override
+	protected BlockState getStateForNeighborUpdate(BlockState state, WorldView world, ScheduledTickView tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
+		if (state.get(waterlogged)) {
+			tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
+		return state;
+	}
+
+	@Override
+	protected FluidState getFluidState(BlockState state) {
+		return state.get(waterlogged) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+	}
+
+	public void dropStack(WorldAccess world, BlockPos pos) {
+		// TODO: Check multiplayer sync.
+		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
+			if (statueBlockEntity.hasStack()) {
+				statueBlockEntity.dropStack();
+			}
+		}
+	}
+
 	static {
 		pose = PropertyRegistry.pose;
+		waterlogged = Properties.WATERLOGGED;
 	}
 }

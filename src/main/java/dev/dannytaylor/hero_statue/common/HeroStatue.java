@@ -2,6 +2,7 @@ package dev.dannytaylor.hero_statue.common;
 
 import dev.dannytaylor.hero_statue.common.block.BlockRegistry;
 import dev.dannytaylor.hero_statue.common.item.ItemRegistry;
+import dev.dannytaylor.hero_statue.common.network.CommonNetwork;
 import net.fabricmc.api.ModInitializer;
 
 public class HeroStatue implements ModInitializer {
@@ -9,5 +10,6 @@ public class HeroStatue implements ModInitializer {
 	public void onInitialize() {
 		BlockRegistry.bootstrap();
 		ItemRegistry.bootstrap();
+		CommonNetwork.bootstrap();
 	}
 }

@@ -29,7 +29,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			matrices.push();
 			matrices.translate(0.5F, 1.0F, 0.5F);
 			matrices.scale(0.5F, 0.5F, 0.5F);
-			matrices.multiply(RotationAxis.POSITIVE_Y.rotation(27.0F));
+			matrices.multiply(RotationAxis.POSITIVE_Y.rotation(0.0F));
 			itemRenderer.renderItem(stack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, getLight(entity.getWorld(), entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
 			matrices.pop();
 		}

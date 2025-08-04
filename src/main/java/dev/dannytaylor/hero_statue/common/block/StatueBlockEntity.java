@@ -1,16 +1,22 @@
 package dev.dannytaylor.hero_statue.common.block;
 
+import dev.dannytaylor.hero_statue.common.network.CommonNetwork;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.inventory.SingleStackInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 
 import java.util.Optional;
 
-public class StatueBlockEntity extends BlockEntity {
+public class StatueBlockEntity extends BlockEntity implements SingleStackInventory.SingleStackBlockEntityInventory {
 	private ItemStack stack;
 
 	public StatueBlockEntity(BlockPos pos, BlockState state) {
@@ -56,5 +62,33 @@ public class StatueBlockEntity extends BlockEntity {
 	public void onBlockReplaced(BlockPos pos, BlockState oldState) {
 		super.onBlockReplaced(pos, oldState);
 		if (this.world != null) ItemScatterer.spawn(this.world, pos.getX(), pos.getY(), pos.getZ(), getStack());
+	}
+
+	@Override
+	public void markDirty() {
+		super.markDirty();
+		if (this.world != null) {
+			if (this.world instanceof ServerWorld serverWorld) {
+				BlockPos blockPos = this.getPos();
+				ChunkPos chunkPos = this.world.getChunk(blockPos).getPos();
+				for (ServerPlayerEntity player : PlayerLookup.tracking(serverWorld, chunkPos)) CommonNetwork.sendS2CStatue(player, serverWorld, blockPos);
+			}
+			this.world.updateListeners(pos, getCachedState(), getCachedState(), 3);
+		}
+	}
+
+	@Override
+	public BlockEntity asBlockEntity() {
+		return this;
+	}
+
+	public void dropStack() {
+		if (this.world != null) {
+			if (this.hasStack()) {
+				ItemStack stack = this.getStack();
+				this.clearStack();
+				ItemScatterer.spawn(this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), stack);
+			}
+		}
 	}
 }

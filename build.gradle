@@ -30,6 +30,7 @@ dependencies {
 
 	modImplementation libs.fl
 	modImplementation libs.fapi
+	modImplementation libs.arealib
 	modImplementation libs.modmenu
 	modImplementation libs.sodium
 }
