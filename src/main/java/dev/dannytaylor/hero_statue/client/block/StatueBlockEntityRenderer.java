@@ -30,7 +30,53 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			// TODO: Adjust where itemstack is based on pose. // Requires models.
 			matrices.translate(0.5F, 1.5F, 0.5F);
 			matrices.scale(0.5F, 0.5F, 0.5F);
-			matrices.multiply(RotationAxis.POSITIVE_Y.rotation(360.0F / (entity.getCachedState().get(StatueBlock.pose) + 1)));
+			switch (entity.getCachedState().get(StatueBlock.pose)) {
+				case 0 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(5.0F));
+				}
+				case 1 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(350.0F));
+				}
+				case 2 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(325.0F));
+				}
+				case 3 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(300.0F));
+				}
+				case 4 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(275.0F));
+				}
+				case 5 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(250.0F));
+				}
+				case 6 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(225.0F));
+				}
+				case 7 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(200.0F));
+				}
+				case 8 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(175.0F));
+				}
+				case 9 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(150.0F));
+				}
+				case 10 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(125.0F));
+				}
+				case 11 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(100.0F));
+				}
+				case 12 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(75.0F));
+				}
+				case 13 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(50.0F));
+				}
+				case 14 -> {
+					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(25.0F));
+				}
+			}
 			itemRenderer.renderItem(stack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, getLight(entity.getWorld(), entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
 			matrices.pop();
 		}
