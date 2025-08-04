@@ -1,6 +1,7 @@
 package dev.dannytaylor.hero_statue.client.block;
 
 import dev.dannytaylor.hero_statue.client.data.ClientData;
+import dev.dannytaylor.hero_statue.common.block.StatueBlock;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -22,14 +23,14 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 	@Override
 	public void render(StatueBlockEntity entity, float tickProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
-		// TODO: Fix sync
 		if (entity != null && entity.getWorld() != null) {
 			ItemRenderer itemRenderer = ClientData.minecraft.getItemRenderer();
 			ItemStack stack = entity.getStack();
 			matrices.push();
-			matrices.translate(0.5F, 1.0F, 0.5F);
+			// TODO: Adjust where itemstack is based on pose. // Requires models.
+			matrices.translate(0.5F, 1.5F, 0.5F);
 			matrices.scale(0.5F, 0.5F, 0.5F);
-			matrices.multiply(RotationAxis.POSITIVE_Y.rotation(0.0F));
+			matrices.multiply(RotationAxis.POSITIVE_Y.rotation(360.0F / (entity.getCachedState().get(StatueBlock.pose) + 1)));
 			itemRenderer.renderItem(stack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, getLight(entity.getWorld(), entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
 			matrices.pop();
 		}

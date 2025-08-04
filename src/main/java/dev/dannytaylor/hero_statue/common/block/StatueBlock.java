@@ -13,9 +13,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -26,12 +29,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.ScheduledTickView;
-import org.jetbrains.annotations.Nullable;
 
 public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	public static final MapCodec<StatueBlock> codec = createCodec(StatueBlock::new);
 	public static final IntProperty pose;
 	public static final BooleanProperty waterlogged;
+	public static final EnumProperty<Direction> facing;
 
 	@Override
 	public MapCodec<? extends StatueBlock> getCodec() {
@@ -40,7 +43,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	public StatueBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(pose, 0).with(waterlogged, false));
+		this.setDefaultState(this.stateManager.getDefaultState().with(pose, 0).with(waterlogged, false).with(facing, Direction.NORTH));
 	}
 
 	@Override
@@ -142,13 +145,13 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(pose, waterlogged);
+		builder.add(pose, waterlogged, facing);
 	}
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		FluidState fluidState = context.getWorld().getFluidState(context.getBlockPos());
-		return this.getDefaultState().with(pose, 0).with(waterlogged, fluidState.getFluid() == Fluids.WATER);
+		return this.getDefaultState().with(pose, 0).with(waterlogged, fluidState.getFluid() == Fluids.WATER).with(facing, context.getHorizontalPlayerFacing().getOpposite());
 	}
 
 	@Override
@@ -182,8 +185,19 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 		}
 	}
 
+	@Override
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		return state.with(facing, rotation.rotate(state.get(facing)));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		return state.rotate(mirror.getRotation(state.get(facing)));
+	}
+
 	static {
 		pose = PropertyRegistry.pose;
 		waterlogged = Properties.WATERLOGGED;
+		facing = HorizontalFacingBlock.FACING;
 	}
 }
