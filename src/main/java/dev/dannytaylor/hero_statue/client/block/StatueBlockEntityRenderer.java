@@ -30,7 +30,8 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			// TODO: Adjust where itemstack is based on pose. // Requires models.
 			matrices.translate(0.5F, 1.5F, 0.5F);
 			matrices.scale(0.5F, 0.5F, 0.5F);
-			switch (entity.getCachedState().get(StatueBlock.pose)) {
+			int pose = entity.getCachedState().get(StatueBlock.pose);
+			switch (pose) {
 				case 0 -> {
 					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(5.0F));
 				}
@@ -77,7 +78,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 					matrices.multiply(RotationAxis.POSITIVE_Y.rotation(25.0F));
 				}
 			}
-			itemRenderer.renderItem(stack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, getLight(entity.getWorld(), entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
+			itemRenderer.renderItem(stack, pose % 2 == 0 ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, getLight(entity.getWorld(), entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
 			matrices.pop();
 		}
 	}

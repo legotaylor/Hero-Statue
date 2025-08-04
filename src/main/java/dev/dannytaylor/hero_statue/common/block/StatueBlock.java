@@ -6,6 +6,8 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -29,6 +31,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.ScheduledTickView;
+
+import java.util.Map;
 
 public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	public static final MapCodec<StatueBlock> codec = createCodec(StatueBlock::new);
@@ -63,6 +67,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+		// TODO: Add gamerule: hero-statue$allowPlayerChangeStatuePose
 		if (player.getAbilities().allowModifyWorld) {
 			if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
 				if (statueBlockEntity.hasStack() || (!player.hasStackEquipped(EquipmentSlot.MAINHAND) && !player.hasStackEquipped(EquipmentSlot.OFFHAND))) {
@@ -148,6 +153,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	}
 
 	public boolean shouldSetPose(BlockState state, int powerLevel) {
+		// TODO: Add gamerule: hero-statue$allowRedstoneChangeStatuePose
 		boolean hasPower = powerLevel > 0;
 		boolean diffPower = powerLevel != getPower(state.get(pose));
 		return hasPower && diffPower;
@@ -216,6 +222,13 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	@Override
 	public BlockState mirror(BlockState state, BlockMirror mirror) {
 		return state.rotate(mirror.getRotation(state.get(facing)));
+	}
+
+	@Override
+	protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+		ItemStack stack = new ItemStack(this);
+		stack.set(DataComponentTypes.BLOCK_STATE, new BlockStateComponent(Map.of(pose.getName(), state.get(pose).toString())));
+		return stack;
 	}
 
 	static {
