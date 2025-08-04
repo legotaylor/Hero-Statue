@@ -13,11 +13,13 @@ import net.minecraft.storage.WriteView;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 
 import java.util.Optional;
 
 public class StatueBlockEntity extends BlockEntity implements SingleStackInventory.SingleStackBlockEntityInventory {
 	private ItemStack stack;
+	private boolean needsSync;
 
 	public StatueBlockEntity(BlockPos pos, BlockState state) {
 		super(BlockEntityRegistry.heroStatue, pos, state);
@@ -56,6 +58,14 @@ public class StatueBlockEntity extends BlockEntity implements SingleStackInvento
 	protected void readData(ReadView nbt) {
 		super.readData(nbt);
 		this.stack = nbt.read("item", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+		this.needsSync = true;
+	}
+
+	public static void tick(World world, BlockPos blockPos, BlockState blockState, StatueBlockEntity entity) {
+		if (entity.needsSync) {
+			entity.updateListeners();
+			entity.needsSync = false;
+		}
 	}
 
 	@Override
@@ -67,14 +77,7 @@ public class StatueBlockEntity extends BlockEntity implements SingleStackInvento
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		if (this.world != null) {
-			if (this.world instanceof ServerWorld serverWorld) {
-				BlockPos blockPos = this.getPos();
-				ChunkPos chunkPos = this.world.getChunk(blockPos).getPos();
-				for (ServerPlayerEntity player : PlayerLookup.tracking(serverWorld, chunkPos)) CommonNetwork.sendS2CStatue(player, serverWorld, blockPos);
-			}
-			this.world.updateListeners(pos, getCachedState(), getCachedState(), 3);
-		}
+		this.needsSync = true;
 	}
 
 	@Override
@@ -89,6 +92,21 @@ public class StatueBlockEntity extends BlockEntity implements SingleStackInvento
 				this.clearStack();
 				ItemScatterer.spawn(this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), stack);
 			}
+		}
+	}
+
+	public void updateListeners() {
+		if (this.world != null) {
+			updateStack();
+			this.world.updateListeners(pos, getCachedState(), getCachedState(), 3);
+		}
+	}
+
+	public void updateStack() {
+		if (this.world instanceof ServerWorld serverWorld) {
+			BlockPos blockPos = this.getPos();
+			ChunkPos chunkPos = this.world.getChunk(blockPos).getPos();
+			for (ServerPlayerEntity player : PlayerLookup.tracking(serverWorld, chunkPos)) CommonNetwork.sendS2CStatue(player, serverWorld, blockPos);
 		}
 	}
 }

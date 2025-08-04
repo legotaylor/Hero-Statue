@@ -3,6 +3,8 @@ package dev.dannytaylor.hero_statue.common.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -77,7 +79,6 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 		return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new StatueBlockEntity(pos, state);
@@ -112,8 +113,10 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	@Override
 	protected void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		if (!state.isOf(oldState.getBlock())) {
-			if (world instanceof ServerWorld serverWorld && !world.getBlockTickScheduler().isQueued(pos, this)) {
-				this.update(state, serverWorld, pos);
+			if (world instanceof ServerWorld serverWorld) {
+				if (!world.getBlockTickScheduler().isQueued(pos, this)) {
+					this.update(state, serverWorld, pos);
+				}
 			}
 		}
 	}
@@ -149,6 +152,11 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	}
 
 	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return validateTicker(type, BlockEntityRegistry.heroStatue, StatueBlockEntity::tick);
+	}
+
+	@Override
 	protected BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
@@ -167,7 +175,6 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	}
 
 	public void dropStack(WorldAccess world, BlockPos pos) {
-		// TODO: Check multiplayer sync.
 		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
 			if (statueBlockEntity.hasStack()) {
 				statueBlockEntity.dropStack();

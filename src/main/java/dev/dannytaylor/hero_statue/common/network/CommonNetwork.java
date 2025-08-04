@@ -39,8 +39,6 @@ public class CommonNetwork {
 					}
 				} else sendS2CStatueChunk(context.player(), world, chunkPos);
 			}));
-
-			// On player join, check their tracking and send them data.
 		} catch (Exception error) {
 			CommonData.logger.warn("Failed to init common network: {}", error.getLocalizedMessage());
 		}
