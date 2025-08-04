@@ -61,12 +61,15 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	}
 
 	@Override
+	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+		// TODO: Should the player be able to update the pose by right clicking - with empty hand or when already contains item.
+		return super.onUse(state, world, pos, player, hit);
+	}
+
+	@Override
 	protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		// TODO: Area Lib compatibility?
 		// https://github.com/Tomate0613/area-lib/wiki
-
-		// If player IS NOT in adventure mode OR IS in modifiable area
-		//AreaLib.getSavedData(world);
 
 		if (player.getAbilities().allowModifyWorld) {
 			if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
@@ -126,10 +129,10 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	public void update(BlockState state, World world, BlockPos pos) {
 		int powerLevel = world.getReceivedRedstonePower(pos);
 		if (shouldSetPose(state, powerLevel)) {
-			world.setBlockState(pos, state.with(pose, getPose(powerLevel)), 3);
-			world.playSound(null, pos, SoundRegistry.heroStatueUpdatePose, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.25F + 0.6F);
+			if (world instanceof ServerWorld serverWorld) serverWorld.setBlockState(pos, state.with(pose, getPose(powerLevel)), 3);
+			world.playSound(null, pos, SoundRegistry.heroStatueUpdatePose, SoundCategory.BLOCKS, 1.0F, world.random.nextFloat() * 0.25F + 0.6F);
 		}
-		if (!world.getBlockTickScheduler().isQueued(pos, this)) world.scheduleBlockTick(pos, this, 2);
+		if (world instanceof ServerWorld serverWorld && !serverWorld.getBlockTickScheduler().isQueued(pos, this)) serverWorld.scheduleBlockTick(pos, this, 2);
 	}
 
 	public boolean shouldSetPose(BlockState state, int powerLevel) {

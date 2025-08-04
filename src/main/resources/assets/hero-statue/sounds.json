@@ -2,7 +2,10 @@
 	"block.hero_statue.update_pose": {
 		"subtitle": "sound.hero-statue.hero_statue_update_pose",
 		"sounds": [
-			"hero-statue:hero_statue_update_pose"
+			"hero-statue:hero_statue_update_pose_0",
+			"hero-statue:hero_statue_update_pose_1",
+			"hero-statue:hero_statue_update_pose_2",
+			"hero-statue:hero_statue_update_pose_3"
 		]
 	}
 }
