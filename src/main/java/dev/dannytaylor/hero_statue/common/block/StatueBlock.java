@@ -6,6 +6,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -62,7 +63,14 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-		// TODO: Should the player be able to update the pose by right clicking - with empty hand or when already contains item.
+		if (player.getAbilities().allowModifyWorld) {
+			if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
+				if (statueBlockEntity.hasStack() || (!player.hasStackEquipped(EquipmentSlot.MAINHAND) && !player.hasStackEquipped(EquipmentSlot.OFFHAND))) {
+					setPose(state, world, pos, (state.get(pose) + 1) % 15);
+					return ActionResult.SUCCESS;
+				}
+			}
+		}
 		return super.onUse(state, world, pos, player, hit);
 	}
 
@@ -129,10 +137,14 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	public void update(BlockState state, World world, BlockPos pos) {
 		int powerLevel = world.getReceivedRedstonePower(pos);
 		if (shouldSetPose(state, powerLevel)) {
-			if (world instanceof ServerWorld serverWorld) serverWorld.setBlockState(pos, state.with(pose, getPose(powerLevel)), 3);
-			world.playSound(null, pos, SoundRegistry.heroStatueUpdatePose, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.25F + 0.6F);
+			setPose(state, world, pos, getPose(powerLevel));
 		}
-		if (world instanceof ServerWorld serverWorld && !serverWorld.getBlockTickScheduler().isQueued(pos, this)) serverWorld.scheduleBlockTick(pos, this, 2);
+		if (!world.getBlockTickScheduler().isQueued(pos, this)) world.scheduleBlockTick(pos, this, 2);
+	}
+
+	public void setPose(BlockState state, World world, BlockPos pos, int value) {
+		world.setBlockState(pos, state.with(pose, value), 3);
+		world.playSound(null, pos, SoundRegistry.heroStatueUpdatePose, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.25F + 0.6F);
 	}
 
 	public boolean shouldSetPose(BlockState state, int powerLevel) {
