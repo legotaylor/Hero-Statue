@@ -1,6 +1,7 @@
 package dev.dannytaylor.hero_statue.common.block;
 
 import com.mojang.serialization.MapCodec;
+import dev.dannytaylor.hero_statue.common.gamerule.GameruleRegistry;
 import dev.dannytaylor.hero_statue.common.sound.SoundRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -67,12 +68,15 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-		// TODO: Add gamerule: hero-statue$allowPlayerChangeStatuePose
-		if (player.getAbilities().allowModifyWorld) {
-			if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
-				if (statueBlockEntity.hasStack() || (!player.hasStackEquipped(EquipmentSlot.MAINHAND) && !player.hasStackEquipped(EquipmentSlot.OFFHAND))) {
-					setPose(state, world, pos, (state.get(pose) + 1) % 15);
-					return ActionResult.SUCCESS;
+		if (world instanceof ServerWorld serverWorld) {
+			if (serverWorld.getGameRules().getBoolean(GameruleRegistry.allowPlayerChangeStatuePose)) {
+				if (player.getAbilities().allowModifyWorld) {
+					if (serverWorld.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
+						if (statueBlockEntity.hasStack() || (!player.hasStackEquipped(EquipmentSlot.MAINHAND) && !player.hasStackEquipped(EquipmentSlot.OFFHAND))) {
+							setPose(state, serverWorld, pos, (state.get(pose) + 1) % 15);
+							return ActionResult.SUCCESS;
+						}
+					}
 				}
 			}
 		}
@@ -81,9 +85,6 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		// TODO: Area Lib compatibility?
-		// https://github.com/Tomate0613/area-lib/wiki
-
 		if (player.getAbilities().allowModifyWorld) {
 			if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
 				if (!statueBlockEntity.hasStack() && !stack.isEmpty()) {
@@ -139,10 +140,12 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 		}
 	}
 
-	public void update(BlockState state, World world, BlockPos pos) {
-		int powerLevel = world.getReceivedRedstonePower(pos);
-		if (shouldSetPose(state, powerLevel)) {
-			setPose(state, world, pos, getPose(powerLevel));
+	public void update(BlockState state, ServerWorld world, BlockPos pos) {
+		if (world.getGameRules().getBoolean(GameruleRegistry.allowRedstoneChangeStatuePose)) {
+			int powerLevel = world.getReceivedRedstonePower(pos);
+			if (shouldSetPose(state, powerLevel)) {
+				setPose(state, world, pos, getPose(powerLevel));
+			}
 		}
 		if (!world.getBlockTickScheduler().isQueued(pos, this)) world.scheduleBlockTick(pos, this, 2);
 	}
@@ -153,7 +156,6 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	}
 
 	public boolean shouldSetPose(BlockState state, int powerLevel) {
-		// TODO: Add gamerule: hero-statue$allowRedstoneChangeStatuePose
 		boolean hasPower = powerLevel > 0;
 		boolean diffPower = powerLevel != getPower(state.get(pose));
 		return hasPower && diffPower;
@@ -227,7 +229,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	@Override
 	protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
 		ItemStack stack = new ItemStack(this);
-		stack.set(DataComponentTypes.BLOCK_STATE, new BlockStateComponent(Map.of(pose.getName(), state.get(pose).toString())));
+		if (includeData) stack.set(DataComponentTypes.BLOCK_STATE, new BlockStateComponent(Map.of(pose.getName(), state.get(pose).toString())));
 		return stack;
 	}
 
