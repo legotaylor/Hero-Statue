@@ -202,7 +202,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.MODEL;
+		return BlockRenderType.INVISIBLE;
 	}
 
 	@Override

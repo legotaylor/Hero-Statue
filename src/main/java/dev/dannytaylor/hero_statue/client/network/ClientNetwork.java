@@ -16,7 +16,6 @@ import dev.dannytaylor.hero_statue.common.network.CommonNetwork;
 import dev.dannytaylor.hero_statue.common.network.payloads.*;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -25,6 +24,7 @@ public class ClientNetwork {
 	private static void registerEvents() {
 		try {
 			ClientEvents.Network.updateStatue.register(CommonNetwork.s2cStatue, (payload, context) -> {
+				CommonData.logger.info("Updated Statue!");
 				World world = context.client().world;
 				if (world != null) {
 					if (world.getBlockEntity(payload.statueData().blockPos()) instanceof StatueBlockEntity statueBlockEntity) statueBlockEntity.setStack(payload.statueData().stack());
@@ -69,11 +69,6 @@ public class ClientNetwork {
 
 	private static void registerSenders() {
 		try {
-			// Client to Server
-			PayloadTypeRegistry.playC2S().register(C2SUpdateChunkStatuesPayload.id, C2SUpdateChunkStatuesPayload.packetCodec);
-			PayloadTypeRegistry.playC2S().register(C2SUpdateStatuePayload.id, C2SUpdateStatuePayload.packetCodec);
-
-			// Events
 			ClientChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 				sendC2SStatueChunk(chunk.getPos(), false);
 			});

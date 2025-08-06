@@ -15,10 +15,7 @@ import dev.dannytaylor.hero_statue.common.gamerule.GameruleCache;
 import dev.dannytaylor.hero_statue.common.gamerule.GameruleRegistry;
 import dev.dannytaylor.hero_statue.common.network.payloads.*;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -41,7 +38,7 @@ public class CommonNetwork {
 	public static final Identifier request_gameRules;
 	public static final Identifier gamerule_allowPlayerChangeStatuePose;
 
-	public static void registerEvents() {
+	private static void registerEvents() {
 		try {
 			CommonEvents.Network.updateStatue.register(s2cStatue, (payload, context) -> {
 				ServerWorld world = context.player().getWorld();
@@ -69,7 +66,7 @@ public class CommonNetwork {
 		}
 	}
 
-	public static void registerReceivers() {
+	private static void registerReceivers() {
 		try {
 			ServerPlayNetworking.registerGlobalReceiver(C2SUpdateStatuePayload.id, (payload, context) -> context.server().execute(() -> {
 				CommonEvents.Network.updateStatue.registry.forEach((identifier, handler) -> handler.receive(payload, context));
@@ -88,8 +85,12 @@ public class CommonNetwork {
 		}
 	}
 
-	public static void registerSenders() {
+	private static void registerChannels() {
 		try {
+			// Client to Server
+			PayloadTypeRegistry.playC2S().register(C2SUpdateChunkStatuesPayload.id, C2SUpdateChunkStatuesPayload.packetCodec);
+			PayloadTypeRegistry.playC2S().register(C2SUpdateStatuePayload.id, C2SUpdateStatuePayload.packetCodec);
+
 			// Server to Client
 			PayloadTypeRegistry.playS2C().register(S2CUpdateStatuePayload.id, S2CUpdateStatuePayload.packetCodec);
 			PayloadTypeRegistry.playS2C().register(S2CUpdateChunkStatuesPayload.id, S2CUpdateChunkStatuesPayload.packetCodec);
@@ -99,8 +100,13 @@ public class CommonNetwork {
 			PayloadTypeRegistry.playS2C().register(IdBooleanPayload.id, IdBooleanPayload.packetCodec);
 			PayloadTypeRegistry.playC2S().register(RequestPayload.id, RequestPayload.packetCodec);
 			PayloadTypeRegistry.playS2C().register(RequestPayload.id, RequestPayload.packetCodec);
+		} catch (Exception error) {
+			CommonData.logger.warn("Failed to register network channels: {}", error.getLocalizedMessage());
+		}
+	}
 
-			// Events
+	private static void registerSenders() {
+		try {
 			ServerPlayConnectionEvents.JOIN.register((networkHandler, packetSender, server) -> {
 				sendGameRules(networkHandler.player, server);
 			});
@@ -117,6 +123,7 @@ public class CommonNetwork {
 	}
 
 	public static void bootstrap() {
+		registerChannels();
 		registerEvents();
 		registerSenders();
 		registerReceivers();

@@ -1,6 +1,0 @@
-{
-	"parent": "hero-statue:block/hero_statue",
-	"textures": {
-		"0": "hero-statue:block/hero_statue_powered"
-	}
-}

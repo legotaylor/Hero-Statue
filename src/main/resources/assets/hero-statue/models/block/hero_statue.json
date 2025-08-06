@@ -1,10 +1,10 @@
 {
 	"format_version": "1.21.6",
-	"credit": "Phantazap",
+	"credit": "Modeled by Phantazap, Textured by dannytaylor.",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "hero-statue:block/hero_statue",
-		"particle": "block/stone"
+		"0": "hero-statue:block/hero_statue/hero_statue",
+		"particle": "minecraft:block/stone"
 	},
 	"elements": [
 		{
