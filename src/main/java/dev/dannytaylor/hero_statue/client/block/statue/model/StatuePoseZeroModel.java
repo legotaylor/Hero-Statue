@@ -24,7 +24,7 @@ public class StatuePoseZeroModel extends StatuePoseModel {
 
 		ModelPartData left_hand = left_arm.addChild("left_hand", ModelPartBuilder.create(), ModelTransform.of(0.25F, 12.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
-		ModelPartData left_hand_r1 = left_hand.addChild("left_hand_r1", ModelPartBuilder.create().uv(90, 4).cuboid(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, -1.0F, -1.5708F, 0.0F, 0.0F));
+		ModelPartData left_hand_r1 = left_hand.addChild("left_hand_r1", ModelPartBuilder.create().uv(90, 4).cuboid(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, -0.7854F, 0.0F, 0.0F));
 
 		ModelPartData right_arm = body.addChild("right_arm", ModelPartBuilder.create().uv(48, 65).cuboid(-2.25F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F))
 				.uv(68, 53).cuboid(2.0F, -1.0F, -3.0F, 0.0F, 4.0F, 6.0F, new Dilation(0.0F))
@@ -35,7 +35,7 @@ public class StatuePoseZeroModel extends StatuePoseModel {
 
 		ModelPartData right_hand = right_arm.addChild("right_hand", ModelPartBuilder.create(), ModelTransform.of(-0.25F, 12.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
-		ModelPartData right_hand_r1 = right_hand.addChild("right_hand_r1", ModelPartBuilder.create().uv(86, 8).cuboid(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, -1.0F, -1.5708F, 0.0F, 0.0F));
+		ModelPartData right_hand_r1 = right_hand.addChild("right_hand_r1", ModelPartBuilder.create().uv(86, 8).cuboid(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, -0.7854F, 0.0F, 0.0F));
 
 		ModelPartData head = body.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-6.5F, -10.5F, -5.5F, 13.0F, 11.0F, 11.0F, new Dilation(0.0F))
 				.uv(0, 32).cuboid(-7.5F, 1.5F, -2.5F, 15.0F, 0.0F, 10.0F, new Dilation(0.0F))
@@ -45,7 +45,7 @@ public class StatuePoseZeroModel extends StatuePoseModel {
 				.uv(0, 22).cuboid(-7.5F, -11.5F, -2.5F, 15.0F, 0.0F, 10.0F, new Dilation(0.0F))
 				.uv(50, 29).cuboid(-3.5F, -11.5F, 7.5F, 7.0F, 5.0F, 3.0F, new Dilation(0.0F))
 				.uv(78, 5).cuboid(-6.5F, 0.5F, -5.5F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F))
-				.uv(78, 9).cuboid(4.5F, 0.5F, -5.5F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -12.5F, -0.5F, 0.3968F, -0.2148F, -0.0385F));
+				.uv(78, 9).cuboid(4.5F, 0.5F, -5.5F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -12.5F, -0.5F, 0.5052F, -0.3751F, -0.1107F));
 
 		ModelPartData cape = body.addChild("cape", ModelPartBuilder.create(), ModelTransform.of(-1.0F, -14.0F, 2.0F, 0.0F, 0.0F, 0.0F));
 

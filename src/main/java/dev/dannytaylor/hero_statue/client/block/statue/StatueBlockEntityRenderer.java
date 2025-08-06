@@ -68,15 +68,18 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 			matrices.push();
 			model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityCutout(CommonData.idOf("textures/block/hero_statue/hero_statue.png"))), light, overlay, -1);
+
 			matrices.push();
 			matrices.scale(1.001F, 1.001F, 1.001F);
 			model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEyes(CommonData.idOf("textures/block/hero_statue/hero_statue_eyes" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
+			matrices.pop();
+
 			matrices.push();
-			matrices.scale(1.001F, 1.001F, 1.001F);
+			matrices.scale(1.002F, 1.002F, 1.002F);
 			// Render pride variant
 			//model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEyes(CommonData.idOf("textures/block/hero_statue/hero_statue_eyes" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
 			matrices.pop();
-			matrices.pop();
+
 			matrices.pop();
 
 			ItemStack stack = entity.getStack();
@@ -88,6 +91,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 				(isRightHanded ? model.rightArm : model.leftArm).applyTransform(matrices);
 				(isRightHanded ? model.rightHand : model.leftHand).applyTransform(matrices);
 				matrices.translate(0.0F, 0.0F, -0.05F);
+				matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-135));
 				ClientData.minecraft.getItemRenderer().renderItem(entity.getStack(), isRightHanded ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, getLight(entity.getWorld(), entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
 				matrices.pop();
 			}
