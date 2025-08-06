@@ -22,7 +22,9 @@ public class StatuePoseZeroModel extends StatuePoseModel {
 				.uv(70, 29).cuboid(-2.0F, -1.0F, -3.0F, 5.0F, 4.0F, 0.0F, new Dilation(0.0F))
 				.uv(64, 65).cuboid(-2.0F, -1.0F, -3.0F, 5.0F, 0.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(6.0F, -12.0F, 0.0F, -0.618F, -0.2847F, -0.1174F));
 
-		ModelPartData left_hand = left_arm.addChild("left_hand", ModelPartBuilder.create().uv(82, 0).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(6.25F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F));
+		ModelPartData left_hand = left_arm.addChild("left_hand", ModelPartBuilder.create(), ModelTransform.of(0.25F, 12.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+
+		ModelPartData left_hand_r1 = left_hand.addChild("left_hand_r1", ModelPartBuilder.create().uv(90, 4).cuboid(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, -1.0F, -1.5708F, 0.0F, 0.0F));
 
 		ModelPartData right_arm = body.addChild("right_arm", ModelPartBuilder.create().uv(48, 65).cuboid(-2.25F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F))
 				.uv(68, 53).cuboid(2.0F, -1.0F, -3.0F, 0.0F, 4.0F, 6.0F, new Dilation(0.0F))
@@ -31,7 +33,9 @@ public class StatuePoseZeroModel extends StatuePoseModel {
 				.uv(74, 23).cuboid(-3.0F, -1.0F, -3.0F, 5.0F, 4.0F, 0.0F, new Dilation(0.0F))
 				.uv(68, 37).cuboid(-3.0F, -1.0F, -3.0F, 5.0F, 0.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(-6.0F, -12.0F, 0.0F, -0.1745F, 0.0F, 0.0F));
 
-		ModelPartData right_hand = right_arm.addChild("right_hand", ModelPartBuilder.create().uv(82, 4).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(-6.25F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F));
+		ModelPartData right_hand = right_arm.addChild("right_hand", ModelPartBuilder.create(), ModelTransform.of(-0.25F, 12.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+
+		ModelPartData right_hand_r1 = right_hand.addChild("right_hand_r1", ModelPartBuilder.create().uv(86, 8).cuboid(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, -1.0F, -1.5708F, 0.0F, 0.0F));
 
 		ModelPartData head = body.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-6.5F, -10.5F, -5.5F, 13.0F, 11.0F, 11.0F, new Dilation(0.0F))
 				.uv(0, 32).cuboid(-7.5F, 1.5F, -2.5F, 15.0F, 0.0F, 10.0F, new Dilation(0.0F))

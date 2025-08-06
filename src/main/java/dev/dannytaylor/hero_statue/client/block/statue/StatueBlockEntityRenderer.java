@@ -14,7 +14,6 @@ import dev.dannytaylor.hero_statue.client.entity.EntityModelRegistry;
 import dev.dannytaylor.hero_statue.common.block.StatueBlock;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
-import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -63,20 +62,36 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			matrices.scale(0.5F, 0.5F, 0.5F);
 			matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
 			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(getYawFromDirection(entity.getCachedState().get(StatueBlock.facing))));
+
 			int pose = entity.getCachedState().get(StatueBlock.pose);
 			StatuePoseModel model = this.models.get(pose);
+
+			matrices.push();
 			model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityCutout(CommonData.idOf("textures/block/hero_statue/hero_statue.png"))), light, overlay, -1);
+			matrices.push();
+			matrices.scale(1.001F, 1.001F, 1.001F);
+			model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEyes(CommonData.idOf("textures/block/hero_statue/hero_statue_eyes" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
+			matrices.push();
+			matrices.scale(1.001F, 1.001F, 1.001F);
+			// Render pride variant
+			//model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEyes(CommonData.idOf("textures/block/hero_statue/hero_statue_eyes" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
+			matrices.pop();
+			matrices.pop();
 			matrices.pop();
 
 			ItemStack stack = entity.getStack();
 			if (!stack.isEmpty()) {
 				matrices.push();
 				boolean isRightHanded = pose % 2 == 0;
-				ModelPart hand = (isRightHanded ? model.rightHand : model.leftHand);
-				hand.applyTransform(matrices);
+				model.base.applyTransform(matrices);
+				model.body.applyTransform(matrices);
+				(isRightHanded ? model.rightArm : model.leftArm).applyTransform(matrices);
+				(isRightHanded ? model.rightHand : model.leftHand).applyTransform(matrices);
+				matrices.translate(0.0F, 0.0F, -0.05F);
 				ClientData.minecraft.getItemRenderer().renderItem(entity.getStack(), isRightHanded ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, getLight(entity.getWorld(), entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
 				matrices.pop();
 			}
+			matrices.pop();
 		}
 	}
 

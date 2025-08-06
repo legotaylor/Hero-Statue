@@ -1,7 +1,7 @@
 {
   "variants": {
 	  "": {
-		  "model": "minecraft:block/hero_statue"
+		  "model": "hero-statue:block/hero_statue"
 	  }
   }
 }

@@ -38,6 +38,26 @@ public class CommonNetwork {
 	public static final Identifier request_gameRules;
 	public static final Identifier gamerule_allowPlayerChangeStatuePose;
 
+	private static void registerChannels() {
+		try {
+			// Client to Server
+			PayloadTypeRegistry.playC2S().register(C2SUpdateChunkStatuesPayload.id, C2SUpdateChunkStatuesPayload.packetCodec);
+			PayloadTypeRegistry.playC2S().register(C2SUpdateStatuePayload.id, C2SUpdateStatuePayload.packetCodec);
+
+			// Server to Client
+			PayloadTypeRegistry.playS2C().register(S2CUpdateStatuePayload.id, S2CUpdateStatuePayload.packetCodec);
+			PayloadTypeRegistry.playS2C().register(S2CUpdateChunkStatuesPayload.id, S2CUpdateChunkStatuesPayload.packetCodec);
+
+			// Bi-directional
+			PayloadTypeRegistry.playC2S().register(IdBooleanPayload.id, IdBooleanPayload.packetCodec);
+			PayloadTypeRegistry.playS2C().register(IdBooleanPayload.id, IdBooleanPayload.packetCodec);
+			PayloadTypeRegistry.playC2S().register(RequestPayload.id, RequestPayload.packetCodec);
+			PayloadTypeRegistry.playS2C().register(RequestPayload.id, RequestPayload.packetCodec);
+		} catch (Exception error) {
+			CommonData.logger.warn("Failed to register network channels: {}", error.getLocalizedMessage());
+		}
+	}
+
 	private static void registerEvents() {
 		try {
 			CommonEvents.Network.updateStatue.register(s2cStatue, (payload, context) -> {
@@ -66,6 +86,23 @@ public class CommonNetwork {
 		}
 	}
 
+	private static void registerSenders() {
+		try {
+			ServerPlayConnectionEvents.JOIN.register((networkHandler, packetSender, server) -> {
+				sendGameRules(networkHandler.player, server);
+			});
+			ServerTickEvents.START_WORLD_TICK.register(world -> {
+				boolean allowPlayerChangeStatuePose = world.getGameRules().getBoolean(GameruleRegistry.allowPlayerChangeStatuePose);
+				if (GameruleCache.allowPlayerChangeStatuePose != allowPlayerChangeStatuePose) {
+					GameruleCache.allowPlayerChangeStatuePose = allowPlayerChangeStatuePose;
+					for (ServerPlayerEntity player : world.getServer().getPlayerManager().getPlayerList()) sendGameRules(player, world.getServer());
+				}
+			});
+		} catch (Exception error) {
+			CommonData.logger.warn("Failed to register common network senders: {}", error.getLocalizedMessage());
+		}
+	}
+
 	private static void registerReceivers() {
 		try {
 			ServerPlayNetworking.registerGlobalReceiver(C2SUpdateStatuePayload.id, (payload, context) -> context.server().execute(() -> {
@@ -82,43 +119,6 @@ public class CommonNetwork {
 			}));
 		} catch (Exception error) {
 			CommonData.logger.warn("Failed to register common network receivers: {}", error.getLocalizedMessage());
-		}
-	}
-
-	private static void registerChannels() {
-		try {
-			// Client to Server
-			PayloadTypeRegistry.playC2S().register(C2SUpdateChunkStatuesPayload.id, C2SUpdateChunkStatuesPayload.packetCodec);
-			PayloadTypeRegistry.playC2S().register(C2SUpdateStatuePayload.id, C2SUpdateStatuePayload.packetCodec);
-
-			// Server to Client
-			PayloadTypeRegistry.playS2C().register(S2CUpdateStatuePayload.id, S2CUpdateStatuePayload.packetCodec);
-			PayloadTypeRegistry.playS2C().register(S2CUpdateChunkStatuesPayload.id, S2CUpdateChunkStatuesPayload.packetCodec);
-
-			// Bi-directional
-			PayloadTypeRegistry.playC2S().register(IdBooleanPayload.id, IdBooleanPayload.packetCodec);
-			PayloadTypeRegistry.playS2C().register(IdBooleanPayload.id, IdBooleanPayload.packetCodec);
-			PayloadTypeRegistry.playC2S().register(RequestPayload.id, RequestPayload.packetCodec);
-			PayloadTypeRegistry.playS2C().register(RequestPayload.id, RequestPayload.packetCodec);
-		} catch (Exception error) {
-			CommonData.logger.warn("Failed to register network channels: {}", error.getLocalizedMessage());
-		}
-	}
-
-	private static void registerSenders() {
-		try {
-			ServerPlayConnectionEvents.JOIN.register((networkHandler, packetSender, server) -> {
-				sendGameRules(networkHandler.player, server);
-			});
-			ServerTickEvents.START_WORLD_TICK.register(world -> {
-				boolean allowPlayerChangeStatuePose = world.getGameRules().getBoolean(GameruleRegistry.allowPlayerChangeStatuePose);
-				if (GameruleCache.allowPlayerChangeStatuePose != allowPlayerChangeStatuePose) {
-					GameruleCache.allowPlayerChangeStatuePose = allowPlayerChangeStatuePose;
-					for (ServerPlayerEntity player : world.getServer().getPlayerManager().getPlayerList()) sendGameRules(player, world.getServer());
-				}
-			});
-		} catch (Exception error) {
-			CommonData.logger.warn("Failed to register common network senders: {}", error.getLocalizedMessage());
 		}
 	}
 

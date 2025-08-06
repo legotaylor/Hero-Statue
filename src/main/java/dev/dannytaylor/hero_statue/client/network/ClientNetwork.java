@@ -24,7 +24,6 @@ public class ClientNetwork {
 	private static void registerEvents() {
 		try {
 			ClientEvents.Network.updateStatue.register(CommonNetwork.s2cStatue, (payload, context) -> {
-				CommonData.logger.info("Updated Statue!");
 				World world = context.client().world;
 				if (world != null) {
 					if (world.getBlockEntity(payload.statueData().blockPos()) instanceof StatueBlockEntity statueBlockEntity) statueBlockEntity.setStack(payload.statueData().stack());
@@ -48,6 +47,16 @@ public class ClientNetwork {
 		}
 	}
 
+	private static void registerSenders() {
+		try {
+			ClientChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
+				sendC2SStatueChunk(chunk.getPos(), false);
+			});
+		} catch (Exception error) {
+			CommonData.logger.warn("Failed to register client network senders: {}", error.getLocalizedMessage());
+		}
+	}
+
 	private static void registerReceivers() {
 		try {
 			ClientPlayNetworking.registerGlobalReceiver(S2CUpdateStatuePayload.id, (payload, context) -> context.client().execute(() -> {
@@ -64,16 +73,6 @@ public class ClientNetwork {
 			}));
 		} catch (Exception error) {
 			CommonData.logger.warn("Failed to register client network receivers: {}", error.getLocalizedMessage());
-		}
-	}
-
-	private static void registerSenders() {
-		try {
-			ClientChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
-				sendC2SStatueChunk(chunk.getPos(), false);
-			});
-		} catch (Exception error) {
-			CommonData.logger.warn("Failed to register client network senders: {}", error.getLocalizedMessage());
 		}
 	}
 
