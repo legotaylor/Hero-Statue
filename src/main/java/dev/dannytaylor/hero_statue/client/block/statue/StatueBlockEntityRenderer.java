@@ -8,12 +8,16 @@
 package dev.dannytaylor.hero_statue.client.block.statue;
 
 import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseModel;
+import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseOneModel;
 import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseZeroModel;
+import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
 import dev.dannytaylor.hero_statue.client.data.ClientData;
 import dev.dannytaylor.hero_statue.client.entity.EntityModelRegistry;
 import dev.dannytaylor.hero_statue.common.block.StatueBlock;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
+import net.fabricmc.loader.api.FabricLoader;
+import net.irisshaders.iris.api.v0.IrisApi;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -37,19 +41,19 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 	public StatueBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 		this.models = List.of(
 			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseZero)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseOne)),
+			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseOne)),
 			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTwo)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThree)),
+			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThree)),
 			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFour)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFive)),
+			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFive)),
 			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseSix)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseSeven)),
+			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseSeven)),
 			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEight)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseNine)),
+			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseNine)),
 			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTen)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEleven)),
+			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEleven)),
 			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTwelve)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
+			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
 			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFourteen))
 		);
 	}
@@ -67,18 +71,21 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			StatuePoseModel model = this.models.get(pose);
 
 			matrices.push();
-			model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityCutout(CommonData.idOf("textures/block/hero_statue/hero_statue.png"))), light, overlay, -1);
+			model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityCutout(CommonData.idOf("textures/block/hero_statue/hero_statue" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
 
 			matrices.push();
-			matrices.scale(1.001F, 1.001F, 1.001F);
+
+			// Shaders effect how this looks, so we have specific compatibility with Iris.
+			float offset = HeroStatueClientConfig.instance.irisEyeZFightingFix.value() && FabricLoader.getInstance().isModLoaded("iris") && IrisApi.getInstance().isShaderPackInUse() ? getOffsetFromCameraPos(HeroStatueClientConfig.instance.irisEyeZFightingFix_MinDist.value(), HeroStatueClientConfig.instance.irisEyeZFightingFix_MaxDist.value(), HeroStatueClientConfig.instance.irisEyeZFightingFix_MinOffset.value(), HeroStatueClientConfig.instance.irisEyeZFightingFix_MaxOffset.value(), entity.getPos().toCenterPos(), cameraPos) : HeroStatueClientConfig.instance.offset.value();
+			matrices.translate(0.0F, 0.0F, -offset);
 			model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEyes(CommonData.idOf("textures/block/hero_statue/hero_statue_eyes" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
 			matrices.pop();
 
-			matrices.push();
-			matrices.scale(1.002F, 1.002F, 1.002F);
-			// Render pride variant
-			//model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEyes(CommonData.idOf("textures/block/hero_statue/hero_statue_eyes" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
-			matrices.pop();
+//			matrices.push();
+//			matrices.translate(0.0F, 0.0F, -(getOffsetFromCameraPos(0.001F, 16.0F, 0.001F, 0.05F, entity.getPos().toCenterPos(), cameraPos) + 0.001F));
+//			// Render pride variant
+//			//model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEyes(CommonData.idOf("textures/block/hero_statue/hero_statue_eyes" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
+//			matrices.pop();
 
 			matrices.pop();
 
@@ -112,5 +119,11 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			case EAST -> -90.0F;
 			default -> 0.0F;
 		};
+	}
+
+	private static float getOffsetFromCameraPos(float minDist, float maxDist, float minOffset, float maxOffset, Vec3d start, Vec3d end) {
+		float distFact = Math.min(1.0F, Math.max(0.0F, ((float) Math.sqrt(start.squaredDistanceTo(end)) - minDist) / (maxDist - minDist)));
+		distFact = (float) Math.sin(distFact * (Math.PI / 2));
+		return minOffset + (maxOffset - minOffset) * distFact;
 	}
 }

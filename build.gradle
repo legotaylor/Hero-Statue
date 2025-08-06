@@ -22,6 +22,7 @@ repositories {
 			includeGroup "maven.modrinth"
 		}
 	}
+	maven { url 'https://repo.sleeping.town/' }
 }
 
 dependencies {
@@ -33,6 +34,9 @@ dependencies {
 	modImplementation libs.arealib
 	modImplementation libs.modmenu
 	modImplementation libs.sodium
+	modImplementation libs.kaleido
+	include libs.kaleido
+	modCompileOnly libs.iris
 }
 
 processResources {

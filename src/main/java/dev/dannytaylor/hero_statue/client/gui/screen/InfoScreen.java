@@ -10,7 +10,6 @@ package dev.dannytaylor.hero_statue.client.gui.screen;
 import dev.dannytaylor.hero_statue.client.data.ClientData;
 import dev.dannytaylor.hero_statue.client.gui.widget.InfoWidget;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ThreePartsLayoutWidget;
@@ -57,15 +56,6 @@ public class InfoScreen extends Screen {
 
 	public void close() {
 		ClientData.minecraft.setScreen(this.parent);
-	}
-
-	public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
-		super.render(context, mouseX, mouseY, deltaTicks);
-	}
-
-	@Override
-	public void renderBackground(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
-		super.renderBackground(context, mouseX, mouseY, deltaTicks);
 	}
 
 	protected void refreshWidgetPositions() {

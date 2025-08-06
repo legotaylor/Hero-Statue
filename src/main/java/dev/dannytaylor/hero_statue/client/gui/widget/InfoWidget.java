@@ -25,6 +25,7 @@ import net.minecraft.util.StringIdentifiable;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Objects;
 
 public class InfoWidget extends EntryListWidget<InfoWidget.InfoEntry> {
 	private final TextRenderer textRenderer;
@@ -38,6 +39,11 @@ public class InfoWidget extends EntryListWidget<InfoWidget.InfoEntry> {
 		this.textRenderer = client.textRenderer;
 		for (OrderedText row : this.textRenderer.wrapLines(load(Identifier.of(CommonData.id, "texts/info.json"), InfoWidget::read), this.getRowWidth())) addEntry(new InfoEntry(row));
 		setScrollY(scrollY);
+	}
+
+	protected void renderEntry(DrawContext context, int mouseX, int mouseY, float delta, int index, int x, int y, int entryWidth, int entryHeight) {
+		InfoEntry entry = this.getEntry(index);
+		entry.render(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, Objects.equals(this.getHoveredEntry(), entry), delta);
 	}
 
 	public int getRowWidth() {

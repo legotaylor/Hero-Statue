@@ -8,6 +8,7 @@
 package dev.dannytaylor.hero_statue.client;
 
 import dev.dannytaylor.hero_statue.client.block.BlockRegistryClient;
+import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
 import dev.dannytaylor.hero_statue.client.entity.EntityModelRegistry;
 import dev.dannytaylor.hero_statue.client.event.ClientEvents;
 import dev.dannytaylor.hero_statue.client.item_group.ItemGroupRegistry;
@@ -16,6 +17,7 @@ import net.fabricmc.api.ClientModInitializer;
 
 public class HeroStatueClient implements ClientModInitializer {
 	public void onInitializeClient() {
+		HeroStatueClientConfig.bootstrap();
 		ClientEvents.bootstrap();
 		EntityModelRegistry.bootstrap();
 		BlockRegistryClient.bootstrap();
