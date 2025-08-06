@@ -46,6 +46,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	public static final IntProperty pose;
 	public static final BooleanProperty waterlogged;
 	public static final EnumProperty<Direction> facing;
+	public static final BooleanProperty powered;
 
 	@Override
 	public MapCodec<? extends StatueBlock> getCodec() {
@@ -54,7 +55,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	public StatueBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(pose, 0).with(waterlogged, false).with(facing, Direction.NORTH));
+		this.setDefaultState(this.stateManager.getDefaultState().with(pose, 0).with(waterlogged, false).with(facing, Direction.NORTH).with(powered, false));
 	}
 
 	@Override
@@ -141,8 +142,10 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	}
 
 	public void update(BlockState state, ServerWorld world, BlockPos pos) {
+		int powerLevel = world.getReceivedRedstonePower(pos);
+		if (state.get(powered) && powerLevel == 0) world.setBlockState(pos, state.with(powered, false));
+		else if (!state.get(powered) && powerLevel > 0) world.setBlockState(pos, state.with(powered, true));
 		if (world.getGameRules().getBoolean(GameruleRegistry.allowRedstoneChangeStatuePose)) {
-			int powerLevel = world.getReceivedRedstonePower(pos);
 			if (shouldSetPose(state, powerLevel)) {
 				setPose(state, world, pos, getPose(powerLevel));
 			}
@@ -176,13 +179,13 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(pose, waterlogged, facing);
+		builder.add(pose, waterlogged, facing, powered);
 	}
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		FluidState fluidState = context.getWorld().getFluidState(context.getBlockPos());
-		return this.getDefaultState().with(pose, 0).with(waterlogged, fluidState.getFluid() == Fluids.WATER).with(facing, context.getHorizontalPlayerFacing().getOpposite());
+		return this.getDefaultState().with(pose, 0).with(waterlogged, fluidState.getFluid() == Fluids.WATER).with(facing, context.getHorizontalPlayerFacing().getOpposite()).with(powered, context.getWorld().getReceivedRedstonePower(context.getBlockPos()) > 0);
 	}
 
 	@Override
@@ -257,5 +260,6 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 		pose = PropertyRegistry.pose;
 		waterlogged = Properties.WATERLOGGED;
 		facing = HorizontalFacingBlock.FACING;
+		powered = Properties.POWERED;
 	}
 }

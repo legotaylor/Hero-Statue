@@ -28,6 +28,6 @@ public class BlockRegistry {
 		BlockEntityRegistry.bootstrap();
 	}
 	static {
-		heroStatue = register("hero_statue", StatueBlock::new, AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(2.0F, 6.0F).pistonBehavior(PistonBehavior.BLOCK));
+		heroStatue = register("hero_statue", StatueBlock::new, AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(2.0F, 6.0F).pistonBehavior(PistonBehavior.DESTROY));
 	}
 }

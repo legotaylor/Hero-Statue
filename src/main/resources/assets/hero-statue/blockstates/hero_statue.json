@@ -1,228 +1,453 @@
 {
 	"variants": {
-		"facing=east,pose=0": {
+		"facing=east,pose=0,powered=false,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_0",
 			"y": 90
 		},
-		"facing=east,pose=1": {
+		"facing=east,pose=1,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_1",
 			"y": 90
 		},
-		"facing=east,pose=2": {
+		"facing=east,pose=2,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_2",
 			"y": 90
 		},
-		"facing=east,pose=3": {
+		"facing=east,pose=3,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_3",
 			"y": 90
 		},
-		"facing=east,pose=4": {
+		"facing=east,pose=4,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_4",
 			"y": 90
 		},
-		"facing=east,pose=5": {
+		"facing=east,pose=5,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_5",
 			"y": 90
 		},
-		"facing=east,pose=6": {
+		"facing=east,pose=6,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_6",
 			"y": 90
 		},
-		"facing=east,pose=7": {
+		"facing=east,pose=7,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_7",
 			"y": 90
 		},
-		"facing=east,pose=8": {
+		"facing=east,pose=8,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_8",
 			"y": 90
 		},
-		"facing=east,pose=9": {
+		"facing=east,pose=9,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_9",
 			"y": 90
 		},
-		"facing=east,pose=10": {
+		"facing=east,pose=10,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_10",
 			"y": 90
 		},
-		"facing=east,pose=11": {
+		"facing=east,pose=11,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_11",
 			"y": 90
 		},
-		"facing=east,pose=12": {
+		"facing=east,pose=12,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_12",
 			"y": 90
 		},
-		"facing=east,pose=13": {
+		"facing=east,pose=13,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_13",
 			"y": 90
 		},
-		"facing=east,pose=14": {
+		"facing=east,pose=14,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_14",
 			"y": 90
 		},
-		"facing=north,pose=0": {
+		"facing=north,pose=0,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_0"
 		},
-		"facing=north,pose=1": {
+		"facing=north,pose=1,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_1"
 		},
-		"facing=north,pose=2": {
+		"facing=north,pose=2,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_2"
 		},
-		"facing=north,pose=3": {
+		"facing=north,pose=3,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_3"
 		},
-		"facing=north,pose=4": {
+		"facing=north,pose=4,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_4"
 		},
-		"facing=north,pose=5": {
+		"facing=north,pose=5,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_5"
 		},
-		"facing=north,pose=6": {
+		"facing=north,pose=6,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_6"
 		},
-		"facing=north,pose=7": {
+		"facing=north,pose=7,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_7"
 		},
-		"facing=north,pose=8": {
+		"facing=north,pose=8,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_8"
 		},
-		"facing=north,pose=9": {
+		"facing=north,pose=9,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_9"
 		},
-		"facing=north,pose=10": {
+		"facing=north,pose=10,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_10"
 		},
-		"facing=north,pose=11": {
+		"facing=north,pose=11,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_11"
 		},
-		"facing=north,pose=12": {
+		"facing=north,pose=12,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_12"
 		},
-		"facing=north,pose=13": {
+		"facing=north,pose=13,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_13"
 		},
-		"facing=north,pose=14": {
+		"facing=north,pose=14,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_14"
 		},
-		"facing=south,pose=0": {
+		"facing=south,pose=0,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_0",
 			"y": 180
 		},
-		"facing=south,pose=1": {
+		"facing=south,pose=1,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_1",
 			"y": 180
 		},
-		"facing=south,pose=2": {
+		"facing=south,pose=2,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_2",
 			"y": 180
 		},
-		"facing=south,pose=3": {
+		"facing=south,pose=3,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_3",
 			"y": 180
 		},
-		"facing=south,pose=4": {
+		"facing=south,pose=4,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_4",
 			"y": 180
 		},
-		"facing=south,pose=5": {
+		"facing=south,pose=5,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_5",
 			"y": 180
 		},
-		"facing=south,pose=6": {
+		"facing=south,pose=6,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_6",
 			"y": 180
 		},
-		"facing=south,pose=7": {
+		"facing=south,pose=7,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_7",
 			"y": 180
 		},
-		"facing=south,pose=8": {
+		"facing=south,pose=8,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_8",
 			"y": 180
 		},
-		"facing=south,pose=9": {
+		"facing=south,pose=9,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_9",
 			"y": 180
 		},
-		"facing=south,pose=10": {
+		"facing=south,pose=10,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_10",
 			"y": 180
 		},
-		"facing=south,pose=11": {
+		"facing=south,pose=11,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_11",
 			"y": 180
 		},
-		"facing=south,pose=12": {
+		"facing=south,pose=12,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_12",
 			"y": 180
 		},
-		"facing=south,pose=13": {
+		"facing=south,pose=13,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_13",
 			"y": 180
 		},
-		"facing=south,pose=14": {
+		"facing=south,pose=14,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_14",
 			"y": 180
 		},
-		"facing=west,pose=0": {
+		"facing=west,pose=0,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_0",
 			"y": 270
 		},
-		"facing=west,pose=1": {
+		"facing=west,pose=1,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_1",
 			"y": 270
 		},
-		"facing=west,pose=2": {
+		"facing=west,pose=2,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_2",
 			"y": 270
 		},
-		"facing=west,pose=3": {
+		"facing=west,pose=3,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_3",
 			"y": 270
 		},
-		"facing=west,pose=4": {
+		"facing=west,pose=4,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_4",
 			"y": 270
 		},
-		"facing=west,pose=5": {
+		"facing=west,pose=5,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_5",
 			"y": 270
 		},
-		"facing=west,pose=6": {
+		"facing=west,pose=6,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_6",
 			"y": 270
 		},
-		"facing=west,pose=7": {
+		"facing=west,pose=7,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_7",
 			"y": 270
 		},
-		"facing=west,pose=8": {
+		"facing=west,pose=8,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_8",
 			"y": 270
 		},
-		"facing=west,pose=9": {
+		"facing=west,pose=9,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_9",
 			"y": 270
 		},
-		"facing=west,pose=10": {
+		"facing=west,pose=10,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_10",
 			"y": 270
 		},
-		"facing=west,pose=11": {
+		"facing=west,pose=11,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_11",
 			"y": 270
 		},
-		"facing=west,pose=12": {
+		"facing=west,pose=12,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_12",
 			"y": 270
 		},
-		"facing=west,pose=13": {
+		"facing=west,pose=13,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_13",
 			"y": 270
 		},
-		"facing=west,pose=14": {
+		"facing=west,pose=14,powered=false": {
 			"model": "hero-statue:block/hero_statue_pose_14",
+			"y": 270
+		},
+		"facing=east,pose=0,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_0_powered",
+			"y": 90
+		},
+		"facing=east,pose=1,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_1_powered",
+			"y": 90
+		},
+		"facing=east,pose=2,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_2_powered",
+			"y": 90
+		},
+		"facing=east,pose=3,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_3_powered",
+			"y": 90
+		},
+		"facing=east,pose=4,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_4_powered",
+			"y": 90
+		},
+		"facing=east,pose=5,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_5_powered",
+			"y": 90
+		},
+		"facing=east,pose=6,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_6_powered",
+			"y": 90
+		},
+		"facing=east,pose=7,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_7_powered",
+			"y": 90
+		},
+		"facing=east,pose=8,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_8_powered",
+			"y": 90
+		},
+		"facing=east,pose=9,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_9_powered",
+			"y": 90
+		},
+		"facing=east,pose=10,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_10_powered",
+			"y": 90
+		},
+		"facing=east,pose=11,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_11_powered",
+			"y": 90
+		},
+		"facing=east,pose=12,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_12_powered",
+			"y": 90
+		},
+		"facing=east,pose=13,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_13_powered",
+			"y": 90
+		},
+		"facing=east,pose=14,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_14_powered",
+			"y": 90
+		},
+		"facing=north,pose=0,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_0_powered"
+		},
+		"facing=north,pose=1,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_1_powered"
+		},
+		"facing=north,pose=2,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_2_powered"
+		},
+		"facing=north,pose=3,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_3_powered"
+		},
+		"facing=north,pose=4,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_4_powered"
+		},
+		"facing=north,pose=5,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_5_powered"
+		},
+		"facing=north,pose=6,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_6_powered"
+		},
+		"facing=north,pose=7,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_7_powered"
+		},
+		"facing=north,pose=8,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_8_powered"
+		},
+		"facing=north,pose=9,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_9_powered"
+		},
+		"facing=north,pose=10,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_10_powered"
+		},
+		"facing=north,pose=11,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_11_powered"
+		},
+		"facing=north,pose=12,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_12_powered"
+		},
+		"facing=north,pose=13,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_13_powered"
+		},
+		"facing=north,pose=14,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_14_powered"
+		},
+		"facing=south,pose=0,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_0_powered",
+			"y": 180
+		},
+		"facing=south,pose=1,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_1_powered",
+			"y": 180
+		},
+		"facing=south,pose=2,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_2_powered",
+			"y": 180
+		},
+		"facing=south,pose=3,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_3_powered",
+			"y": 180
+		},
+		"facing=south,pose=4,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_4_powered",
+			"y": 180
+		},
+		"facing=south,pose=5,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_5_powered",
+			"y": 180
+		},
+		"facing=south,pose=6,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_6_powered",
+			"y": 180
+		},
+		"facing=south,pose=7,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_7_powered",
+			"y": 180
+		},
+		"facing=south,pose=8,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_8_powered",
+			"y": 180
+		},
+		"facing=south,pose=9,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_9_powered",
+			"y": 180
+		},
+		"facing=south,pose=10,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_10_powered",
+			"y": 180
+		},
+		"facing=south,pose=11,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_11_powered",
+			"y": 180
+		},
+		"facing=south,pose=12,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_12_powered",
+			"y": 180
+		},
+		"facing=south,pose=13,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_13_powered",
+			"y": 180
+		},
+		"facing=south,pose=14,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_14_powered",
+			"y": 180
+		},
+		"facing=west,pose=0,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_0_powered",
+			"y": 270
+		},
+		"facing=west,pose=1,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_1_powered",
+			"y": 270
+		},
+		"facing=west,pose=2,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_2_powered",
+			"y": 270
+		},
+		"facing=west,pose=3,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_3_powered",
+			"y": 270
+		},
+		"facing=west,pose=4,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_4_powered",
+			"y": 270
+		},
+		"facing=west,pose=5,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_5_powered",
+			"y": 270
+		},
+		"facing=west,pose=6,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_6_powered",
+			"y": 270
+		},
+		"facing=west,pose=7,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_7_powered",
+			"y": 270
+		},
+		"facing=west,pose=8,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_8_powered",
+			"y": 270
+		},
+		"facing=west,pose=9,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_9_powered",
+			"y": 270
+		},
+		"facing=west,pose=10,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_10_powered",
+			"y": 270
+		},
+		"facing=west,pose=11,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_11_powered",
+			"y": 270
+		},
+		"facing=west,pose=12,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_12_powered",
+			"y": 270
+		},
+		"facing=west,pose=13,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_13_powered",
+			"y": 270
+		},
+		"facing=west,pose=14,powered=true": {
+			"model": "hero-statue:block/hero_statue_pose_14_powered",
 			"y": 270
 		}
 	}
