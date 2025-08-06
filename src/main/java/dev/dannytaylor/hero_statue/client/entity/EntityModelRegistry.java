@@ -1,7 +1,8 @@
 package dev.dannytaylor.hero_statue.client.entity;
 
-import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseZeroModel;
+import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseTwoModel;
 import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseOneModel;
+import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseZeroModel;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
@@ -25,19 +26,19 @@ public class EntityModelRegistry {
 	public static void bootstrap() {
 		EntityModelLayerRegistry.registerModelLayer(statuePoseZero, StatuePoseZeroModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseOne, StatuePoseOneModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseTwo, StatuePoseZeroModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseTwo, StatuePoseTwoModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseThree, StatuePoseOneModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseFour, StatuePoseZeroModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseFour, StatuePoseTwoModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseFive, StatuePoseOneModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseSix, StatuePoseZeroModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseSix, StatuePoseTwoModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseSeven, StatuePoseOneModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseEight, StatuePoseZeroModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseEight, StatuePoseTwoModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseNine, StatuePoseOneModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseTen, StatuePoseZeroModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseTen, StatuePoseTwoModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseEleven, StatuePoseOneModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseTwelve, StatuePoseZeroModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseTwelve, StatuePoseTwoModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseThirteen, StatuePoseOneModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseFourteen, StatuePoseZeroModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseFourteen, StatuePoseTwoModel::getTexturedModelData);
 	}
 	static {
 		statuePoseZero = new EntityModelLayer(CommonData.idOf("hero_statue"), "pose_0");

@@ -3,7 +3,6 @@ package dev.dannytaylor.hero_statue.client.gui.screen;
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
 import dev.dannytaylor.hero_statue.client.data.ClientData;
 import dev.dannytaylor.hero_statue.client.gui.widget.ConfigWidget;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -26,7 +25,13 @@ public class ConfigScreen extends Screen {
 	}
 
 	public ConfigScreen(Screen parent, double scrollY) {
-		this(Text.translatable("hero-statue.title"), parent, scrollY);
+		super(Text.translatable("hero-statue.title"));
+		this.parent = parent;
+		this.scrollY = scrollY;
+	}
+
+	public ConfigScreen(Text title, Screen parent) {
+		this(title, parent, 0);
 	}
 
 	public ConfigScreen(Text title, Screen parent, double scrollY) {
@@ -56,7 +61,7 @@ public class ConfigScreen extends Screen {
 	public List<ClickableWidget> getWidgets() {
 		List<ClickableWidget> options = new ArrayList<>();
 		options.add(ButtonWidget.builder(Text.translatable("hero-statue.about").append(Text.translatable("hero-statue.config.more")), (button) -> ClientData.minecraft.setScreen(new InfoScreen(getRefreshScreen()))).build());
-		options.add(ButtonWidget.builder(Text.translatable("hero-statue.offsets").append(Text.translatable("hero-statue.config.more")), (button) -> ClientData.minecraft.setScreen(new OffsetsScreen(getRefreshScreen()))).build());
+		options.add(ButtonWidget.builder(Text.translatable("hero-statue.overlays").append(Text.translatable("hero-statue.config.more")), (button) -> ClientData.minecraft.setScreen(new OverlaysScreen(getRefreshScreen()))).build());
 		return options;
 	}
 
