@@ -1,7 +1,16 @@
 {
 	"item.hero-statue.hero_statue_vanity": "Hero Statue",
+
 	"block.hero-statue.hero_statue": "Hero Statue",
+
 	"sound.hero-statue.hero_statue_update_pose": "Statue moves",
+
 	"gamerule.hero-statue$allowPlayerChangeStatuePose": "Allow Players to change Hero Statue pose by interacting",
-	"gamerule.hero-statue$allowRedstoneChangeStatuePose": "Allow Redstone to change Hero Statue pose"
+	"gamerule.hero-statue$allowRedstoneChangeStatuePose": "Allow Redstone to change Hero Statue pose",
+
+	"hero-statue.title": "Hero Statue",
+	"hero-statue.info.description": "",
+	"hero-statue.info.toybox": "Made for ModFest: Toybox",
+
+	"hero-statue.donate": "Donate (Ko-Fi/legotaylor)"
 }

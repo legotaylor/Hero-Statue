@@ -1,0 +1,12 @@
+[
+	{
+		"type": "translatable",
+		"value": "hero-statue.info.description"
+	},
+	{},
+	{},
+	{
+		"type": "translatable",
+		"value": "hero-statue.info.toybox"
+	}
+]

@@ -33,6 +33,16 @@
 		],
 		"client": [
 			"dev.dannytaylor.hero_statue.client.HeroStatueClient"
+		],
+		"modmenu": [
+			"dev.dannytaylor.hero_statue.modmenu.HeroStatueModMenu"
 		]
+	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"hero-statue.donate": "https://dannytaylor.dev/donate"
+			}
+		}
 	}
 }

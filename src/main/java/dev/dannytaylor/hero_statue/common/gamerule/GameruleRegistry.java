@@ -14,7 +14,7 @@ public class GameruleRegistry {
 		return CommonData.id + "$" + name;
 	}
 	static {
-		allowPlayerChangeStatuePose = GameRuleRegistry.register(idOf("allowPlayerChangeStatuePose"), GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true));
+		allowPlayerChangeStatuePose = GameRuleRegistry.register(idOf("allowPlayerChangeStatuePose"), GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(false));
 		allowRedstoneChangeStatuePose = GameRuleRegistry.register(idOf("allowRedstoneChangeStatuePose"), GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true));
 	}
 }

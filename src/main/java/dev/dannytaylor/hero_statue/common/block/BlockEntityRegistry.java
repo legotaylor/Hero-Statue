@@ -1,6 +1,5 @@
 package dev.dannytaylor.hero_statue.common.block;
 
-import dev.dannytaylor.hero_statue.client.block.BlockEntityRendererRegistry;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;

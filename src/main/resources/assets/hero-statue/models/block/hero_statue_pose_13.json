@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "minecraft:block/diorite"
-  }
+	"parent": "hero-statue:block/hero_statue"
 }

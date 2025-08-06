@@ -1,13 +1,14 @@
 package dev.dannytaylor.hero_statue.client.network;
 
+import dev.dannytaylor.hero_statue.client.gamerule.GameruleCache;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.block.StatueData;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
-import dev.dannytaylor.hero_statue.common.network.payloads.C2SUpdateChunkStatuesPayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.S2CUpdateChunkStatuesPayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.S2CUpdateStatuePayload;
+import dev.dannytaylor.hero_statue.common.network.CommonNetwork;
+import dev.dannytaylor.hero_statue.common.network.payloads.*;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
@@ -30,6 +31,15 @@ public class ClientNetwork {
 				}
 			}));
 
+			ClientPlayNetworking.registerGlobalReceiver(IdBooleanPayload.id, (payload, context) -> context.client().execute(() -> {
+				if (payload.identifier().equals(CommonNetwork.gamerule_allowPlayerChangeStatuePose)) {
+					GameruleCache.allowPlayerChangeStatuePose = payload.value();
+				}
+			}));
+
+			ClientPlayNetworking.registerGlobalReceiver(RequestPayload.id, (payload, context) -> context.client().execute(() -> {
+			}));
+
 			ClientChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 				sendC2SStatueChunk(chunk.getPos(), false);
 			});
@@ -40,5 +50,13 @@ public class ClientNetwork {
 
 	public static void sendC2SStatueChunk(ChunkPos chunkPos, boolean updateAll) {
 		ClientPlayNetworking.send(new C2SUpdateChunkStatuesPayload(chunkPos, updateAll));
+	}
+
+	public static void sendIdBoolean(Identifier identifier, Boolean value) {
+		ClientPlayNetworking.send(new IdBooleanPayload(identifier, value));
+	}
+
+	public static void sendRequest(Identifier identifier) {
+		ClientPlayNetworking.send(new RequestPayload(identifier));
 	}
 }

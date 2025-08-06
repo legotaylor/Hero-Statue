@@ -3,14 +3,15 @@ package dev.dannytaylor.hero_statue.common.network;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.block.StatueData;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
-import dev.dannytaylor.hero_statue.common.network.payloads.C2SUpdateChunkStatuesPayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.C2SUpdateStatuePayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.S2CUpdateChunkStatuesPayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.S2CUpdateStatuePayload;
+import dev.dannytaylor.hero_statue.common.gamerule.GameruleRegistry;
+import dev.dannytaylor.hero_statue.common.network.payloads.*;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -25,13 +26,25 @@ public class CommonNetwork {
 	public static final Identifier c2sStatueChunk;
 	public static final Identifier s2cStatue;
 	public static final Identifier s2cStatueChunk;
+	public static final Identifier bidIdBoolean;
+	public static final Identifier bidRequest;
+
+	public static final Identifier request_gameRules;
+	public static final Identifier gamerule_allowPlayerChangeStatuePose;
 
 	public static void bootstrap() {
 		try {
+			// C->S
 			PayloadTypeRegistry.playC2S().register(C2SUpdateChunkStatuesPayload.id, C2SUpdateChunkStatuesPayload.packetCodec);
 			PayloadTypeRegistry.playC2S().register(C2SUpdateStatuePayload.id, C2SUpdateStatuePayload.packetCodec);
+			// C<-S
 			PayloadTypeRegistry.playS2C().register(S2CUpdateStatuePayload.id, S2CUpdateStatuePayload.packetCodec);
 			PayloadTypeRegistry.playS2C().register(S2CUpdateChunkStatuesPayload.id, S2CUpdateChunkStatuesPayload.packetCodec);
+			// C<->S
+			PayloadTypeRegistry.playC2S().register(IdBooleanPayload.id, IdBooleanPayload.packetCodec);
+			PayloadTypeRegistry.playS2C().register(IdBooleanPayload.id, IdBooleanPayload.packetCodec);
+			PayloadTypeRegistry.playC2S().register(RequestPayload.id, RequestPayload.packetCodec);
+			PayloadTypeRegistry.playS2C().register(RequestPayload.id, RequestPayload.packetCodec);
 
 			ServerPlayNetworking.registerGlobalReceiver(C2SUpdateStatuePayload.id, (payload, context) -> context.server().execute(() -> {
 				ServerWorld world = context.player().getWorld();
@@ -52,6 +65,22 @@ public class CommonNetwork {
 					}
 				} else sendS2CStatueChunk(context.player(), world, chunkPos);
 			}));
+
+			ServerPlayNetworking.registerGlobalReceiver(IdBooleanPayload.id, (payload, context) -> context.server().execute(() -> {
+				// We don't currently expect the client to send anything, but if we ever do, this would be where it would go.
+			}));
+
+			ServerPlayNetworking.registerGlobalReceiver(RequestPayload.id, (payload, context) -> context.server().execute(() -> {
+				if (payload.identifier().equals(request_gameRules)) sendGameRules(context.player(), context.server());
+			}));
+
+			ServerPlayConnectionEvents.JOIN.register((networkHandler, packetSender, server) -> {
+				sendGameRules(networkHandler.player, server);
+			});
+
+			ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> {
+				for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) sendGameRules(player, server);
+			});
 		} catch (Exception error) {
 			CommonData.logger.warn("Failed to init common network: {}", error.getLocalizedMessage());
 		}
@@ -79,6 +108,18 @@ public class CommonNetwork {
 		ServerPlayNetworking.send(player, new S2CUpdateChunkStatuesPayload(statueData));
 	}
 
+	public static void sendRequest(ServerPlayerEntity player, Identifier identifier) {
+		ServerPlayNetworking.send(player, new RequestPayload(identifier));
+	}
+
+	public static void sendIdBoolean(ServerPlayerEntity player, Identifier identifier, Boolean value) {
+		ServerPlayNetworking.send(player, new IdBooleanPayload(identifier, value));
+	}
+
+	public static void sendGameRules(ServerPlayerEntity player, MinecraftServer server) {
+		sendIdBoolean(player, gamerule_allowPlayerChangeStatuePose, server.getGameRules().getBoolean(GameruleRegistry.allowPlayerChangeStatuePose));
+	}
+
 	public static Identifier idOf(String path) {
 		return Identifier.of(CommonData.id, path);
 	}
@@ -88,5 +129,10 @@ public class CommonNetwork {
 		c2sStatueChunk = idOf("c2s_update_chunk_statues");
 		s2cStatue = idOf("s2c_update_statue");
 		s2cStatueChunk = idOf("s2c_update_chunk_statues");
+		bidIdBoolean = idOf("bid_id_boolean");
+		bidRequest = idOf("bid_request");
+
+		request_gameRules = idOf("request/gamerules");
+		gamerule_allowPlayerChangeStatuePose = idOf("gamerule/allow_player_change_statue_pose");
 	}
 }

@@ -1,6 +1,7 @@
 package dev.dannytaylor.hero_statue.common.block;
 
 import com.mojang.serialization.MapCodec;
+import dev.dannytaylor.hero_statue.client.gamerule.GameruleCache;
 import dev.dannytaylor.hero_statue.common.gamerule.GameruleRegistry;
 import dev.dannytaylor.hero_statue.common.sound.SoundRegistry;
 import net.minecraft.block.*;
@@ -9,7 +10,6 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -22,16 +22,22 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import net.minecraft.world.block.WireOrientation;
 import net.minecraft.world.tick.ScheduledTickView;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -68,16 +74,10 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-		if (world instanceof ServerWorld serverWorld) {
-			if (serverWorld.getGameRules().getBoolean(GameruleRegistry.allowPlayerChangeStatuePose)) {
-				if (player.getAbilities().allowModifyWorld) {
-					if (serverWorld.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
-						if (statueBlockEntity.hasStack() || (!player.hasStackEquipped(EquipmentSlot.MAINHAND) && !player.hasStackEquipped(EquipmentSlot.OFFHAND))) {
-							setPose(state, serverWorld, pos, (state.get(pose) + 1) % 15);
-							return ActionResult.SUCCESS;
-						}
-					}
-				}
+		if (GameruleCache.allowPlayerChangeStatuePose || (world instanceof ServerWorld serverWorld && serverWorld.getGameRules().getBoolean(GameruleRegistry.allowPlayerChangeStatuePose))) {
+			if (player.getAbilities().allowModifyWorld) {
+				setPose(state, world, pos, (state.get(pose) + 1) % 15);
+				return ActionResult.SUCCESS;
 			}
 		}
 		return super.onUse(state, world, pos, player, hit);
@@ -204,6 +204,16 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	}
 
 	@Override
+	protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
+		if (!canPlaceAt(state, world, pos)) {
+			dropStacks(state, world, pos);
+			dropStack(world, pos);
+			world.removeBlock(pos, false);
+		}
+		super.neighborUpdate(state, world, pos, sourceBlock, wireOrientation, notify);
+	}
+
+	@Override
 	protected FluidState getFluidState(BlockState state) {
 		return state.get(waterlogged) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
 	}
@@ -231,6 +241,16 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 		ItemStack stack = new ItemStack(this);
 		if (includeData) stack.set(DataComponentTypes.BLOCK_STATE, new BlockStateComponent(Map.of(pose.getName(), state.get(pose).toString())));
 		return stack;
+	}
+
+	@Override
+	protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return Block.createCuboidShape(3.0F, 0.0F, 3.0F, 13.0F, 16.0F, 13.0F);
+	}
+
+	@Override
+	protected boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+		return super.canPlaceAt(state, world, pos) && world.getBlockState(pos.down()).isSideSolid(world, pos, Direction.UP, SideShapeType.CENTER);
 	}
 
 	static {
