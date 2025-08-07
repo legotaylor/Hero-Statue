@@ -31,7 +31,6 @@ dependencies {
 
 	modImplementation libs.fl
 	modImplementation libs.fapi
-	modImplementation libs.arealib
 	modImplementation libs.modmenu
 	modImplementation libs.sodium
 	modImplementation libs.kaleido
@@ -94,6 +93,8 @@ modrinth {
 	syncBodyFrom = "<!--DO NOT EDIT MANUALLY: synced from gh readme-->\n" + rootProject.file("README.md").text
 	dependencies {
 		required.version "fabric-api", libs.versions.fapi.get()
+		optional.version "iris", libs.versions.iris.get()
+		optional.version "modmenu", libs.versions.modmenu.get()
 	}
 }
 
