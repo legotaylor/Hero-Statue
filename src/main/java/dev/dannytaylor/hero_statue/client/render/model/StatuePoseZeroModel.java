@@ -1,9 +1,9 @@
-package dev.dannytaylor.hero_statue.client.block.statue.model;
+package dev.dannytaylor.hero_statue.client.render.model;
 
 import net.minecraft.client.model.*;
 
-public class StatuePoseTwoModel extends StatuePoseModel {
-	public StatuePoseTwoModel(ModelPart root) {
+public class StatuePoseZeroModel extends StatuePoseModel {
+	public StatuePoseZeroModel(ModelPart root) {
 		super(root);
 	}
 	public static TexturedModelData getTexturedModelData() {

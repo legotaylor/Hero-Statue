@@ -1,11 +1,13 @@
-# Hero Statue
+# Hero Statue  
 
+## Technical  
+### Networking  
+### Rendering  
+We render the block using a block entity renderer as that gives us more control on how we can render the block.  
 
-## Known Bugs
-- You may notice visual bugs when used with shaders.
-  - Specifically, to prevent flickering (z-fighting) when using shaders, we offset the eyes ever more depending on the distance to the camera.
-  - When not using shaders, this offset is static as it does not cause flickering.
-  - If you use this mod alongside a shader mod that isn't Iris, you may notice flickering.
-  - You can turn off this fix, or even the overlay in our client config.
+The `_eyes` texture is rendered using a custom pipeline. You can find the corrosponding core shaders at `hero-statue:shaders/core/statue_eyes.vsh` and `hero-statue:shaders/core/statue_eyes.fsh`.  
 
-[![Made for ModFest: Toybox](https://raw.githubusercontent.com/ModFest/art/refs/heads/v2/badge/svg/toybox/cozy.svg)](https://modfest.net/toybox)  
+When rendering with Iris Shaders, we copy the `ENTITY_EYES` pipeline.  
+Iris Compatibility isn't at the top of our list, but we do want it to be at least functional for those who choose to use it.  
+
+## [![Made for ModFest: Toybox](https://raw.githubusercontent.com/ModFest/art/refs/heads/v2/badge/svg/toybox/cozy.svg)](https://modfest.net/toybox)  

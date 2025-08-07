@@ -1,4 +1,4 @@
-package dev.dannytaylor.hero_statue.client.block.statue.model;
+package dev.dannytaylor.hero_statue.client.render.model;
 
 import net.minecraft.client.model.*;
 

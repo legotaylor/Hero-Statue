@@ -16,13 +16,7 @@ import java.nio.file.Paths;
 public class HeroStatueClientConfig extends ReflectiveConfig {
 	public static final HeroStatueClientConfig instance = HeroStatueClientConfig.createToml(Paths.get("config"), CommonData.id, "client", HeroStatueClientConfig.class);
 
-	public final TrackedValue<Boolean> renderLayers = this.value(true);
-	public final TrackedValue<Float> offsets = this.value(0.001F);
-	public final TrackedValue<Boolean> irisEyeZFightingFix = this.value(true);
-	public final TrackedValue<Float> irisEyeZFightingFix_MinDist = this.value(0.0F);
-	public final TrackedValue<Float> irisEyeZFightingFix_MaxDist = this.value(32.0F);
-	public final TrackedValue<Float> irisEyeZFightingFix_MinOffset = this.value(0.001F);
-	public final TrackedValue<Float> irisEyeZFightingFix_MaxOffset = this.value(0.075F);
+	public final TrackedValue<Boolean> renderEyes = this.value(true);
 
 	public static void bootstrap() {
 	}

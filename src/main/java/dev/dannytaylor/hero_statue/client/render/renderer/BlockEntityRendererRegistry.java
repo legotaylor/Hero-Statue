@@ -5,9 +5,8 @@
     Licence: GNU LGPLv3
 */
 
-package dev.dannytaylor.hero_statue.client.block;
+package dev.dannytaylor.hero_statue.client.render.renderer;
 
-import dev.dannytaylor.hero_statue.client.block.statue.StatueBlockEntityRenderer;
 import dev.dannytaylor.hero_statue.common.block.BlockEntityRegistry;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 

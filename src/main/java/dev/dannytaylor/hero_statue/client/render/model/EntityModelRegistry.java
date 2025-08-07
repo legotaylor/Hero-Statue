@@ -1,8 +1,5 @@
-package dev.dannytaylor.hero_statue.client.entity;
+package dev.dannytaylor.hero_statue.client.render.model;
 
-import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseTwoModel;
-import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseOneModel;
-import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseZeroModel;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.render.entity.model.EntityModelLayer;

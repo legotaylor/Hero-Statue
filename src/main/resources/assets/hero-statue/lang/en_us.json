@@ -18,9 +18,9 @@
 	"hero-statue.info.toybox": "Made for ModFest: Toybox",
 
 	"hero-statue.overlays": "Overlay Settings",
-	"hero-statue.overlays.enabled": "Enabled: %s",
-	"hero-statue.overlays.offset": "Z Offset: %s",
+	"hero-statue.overlays.eyes.enabled": "Render Eye Overlay: %s",
 	"hero-statue.overlays.iris_z-fighting": "Iris Z-Fighting Fix",
+	"hero-statue.overlays.iris_z-fighting.offset": "Default Z Offset: %s",
 	"hero-statue.overlays.iris_z-fighting.enabled": "Enabled: %s",
 	"hero-statue.overlays.iris_z-fighting.min_dist": "Near Distance: %s Blocks",
 	"hero-statue.overlays.iris_z-fighting.max_dist": "Far Distance: %s Blocks",

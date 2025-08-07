@@ -5,20 +5,15 @@
     Licence: GNU LGPLv3
 */
 
-package dev.dannytaylor.hero_statue.client.block.statue;
+package dev.dannytaylor.hero_statue.client.render.renderer;
 
-import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseModel;
-import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseOneModel;
-import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseTwoModel;
-import dev.dannytaylor.hero_statue.client.block.statue.model.StatuePoseZeroModel;
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
 import dev.dannytaylor.hero_statue.client.data.ClientData;
-import dev.dannytaylor.hero_statue.client.entity.EntityModelRegistry;
+import dev.dannytaylor.hero_statue.client.render.model.*;
+import dev.dannytaylor.hero_statue.client.render.pipeline.RenderLayerRegistry;
 import dev.dannytaylor.hero_statue.common.block.StatueBlock;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
-import net.fabricmc.loader.api.FabricLoader;
-import net.irisshaders.iris.api.v0.IrisApi;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -28,6 +23,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
@@ -75,14 +71,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityCutout(CommonData.idOf("textures/block/hero_statue/hero_statue" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
 			matrices.pop();
 
-			if (HeroStatueClientConfig.instance.renderLayers.value()) {
-				matrices.push();
-				// Shaders effect how this looks, so we have specific compatibility with Iris.
-				float offset = HeroStatueClientConfig.instance.irisEyeZFightingFix.value() && FabricLoader.getInstance().isModLoaded("iris") && IrisApi.getInstance().isShaderPackInUse() ? getOffsetFromCameraPos(HeroStatueClientConfig.instance.irisEyeZFightingFix_MinDist.value(), HeroStatueClientConfig.instance.irisEyeZFightingFix_MaxDist.value(), HeroStatueClientConfig.instance.irisEyeZFightingFix_MinOffset.value(), HeroStatueClientConfig.instance.irisEyeZFightingFix_MaxOffset.value(), entity.getPos().toCenterPos(), cameraPos) : HeroStatueClientConfig.instance.offsets.value();
-				matrices.translate(0.0F, 0.0F, -offset);
-				model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEyes(CommonData.idOf("textures/block/hero_statue/hero_statue_eyes" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
-				matrices.pop();
-			}
+			renderEyes(entity, model, matrices, vertexConsumers, light, overlay, cameraPos);
 
 			ItemStack stack = entity.getStack();
 			if (!stack.isEmpty()) {
@@ -116,9 +105,20 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		};
 	}
 
-	private static float getOffsetFromCameraPos(float minDist, float maxDist, float minOffset, float maxOffset, Vec3d start, Vec3d end) {
-		float distFact = Math.min(1.0F, Math.max(0.0F, ((float) Math.sqrt(start.squaredDistanceTo(end)) - minDist) / (maxDist - minDist)));
-		distFact = (float) Math.sin(distFact * (Math.PI / 2));
-		return minOffset + (maxOffset - minOffset) * distFact;
+	private void renderEyes(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
+		if (HeroStatueClientConfig.instance.renderEyes.value()) {
+			matrices.push();
+			model.render(matrices, vertexConsumers.getBuffer(getEyeLayer(entity)), light, overlay, -1);
+			matrices.pop();
+		}
+	}
+
+	private RenderLayer getEyeLayer(StatueBlockEntity entity) {
+		Identifier texture = getTexture(entity, "_eyes");
+		return RenderLayerRegistry.getStatueEyes(texture);
+	}
+
+	private Identifier getTexture(StatueBlockEntity entity, String type) {
+		return CommonData.idOf("textures/block/hero_statue/hero_statue" + type + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png");
 	}
 }
