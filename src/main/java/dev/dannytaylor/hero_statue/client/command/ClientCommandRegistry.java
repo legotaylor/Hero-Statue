@@ -13,7 +13,7 @@ public class ClientCommandRegistry {
 		register((dispatcher, registryAccess) -> {
 			dispatcher.register(literal(CommonData.idOf("rainbow_mode").toString())
 				.executes(context -> {
-					HeroStatueClientConfig.instance.rainbowMode.setValue(!HeroStatueClientConfig.instance.rainbowMode.value());
+					HeroStatueClientConfig.instance.rainbowMode.setValue(!HeroStatueClientConfig.instance.rainbowMode.value(), true);
 					if (ClientData.minecraft.player != null) ClientData.minecraft.player.sendMessage(Text.translatable("hero-statue.overlays.eyes.rainbow_mode.message", HeroStatueClientConfig.instance.rainbowMode.value()), false);
 					return 1;
 				}));

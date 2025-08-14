@@ -69,9 +69,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			int pose = entity.getCachedState().get(StatueBlock.pose);
 			StatuePoseModel model = this.models.get(pose);
 
-			matrices.push();
-			model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityCutout(CommonData.idOf("textures/block/hero_statue/hero_statue" + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png"))), light, overlay, -1);
-			matrices.pop();
+			renderModel(entity, model, matrices, vertexConsumers, light, overlay, cameraPos);
 
 			renderEyes(entity, model, matrices, vertexConsumers, light, overlay, cameraPos);
 
@@ -107,6 +105,18 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		};
 	}
 
+	private void renderModel(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
+		matrices.push();
+		model.render(matrices, vertexConsumers.getBuffer(getModelLayer(entity)), light, overlay, -1);
+		matrices.pop();
+	}
+
+	private RenderLayer getModelLayer(StatueBlockEntity entity) {
+		Identifier texture = getTexture(entity, "");
+		BlockState state = entity.getCachedState();
+		return RenderLayerRegistry.getStatue(texture, getRenderState(entity));
+	}
+
 	private void renderEyes(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
 		if (HeroStatueClientConfig.instance.renderEyes.value()) {
 			matrices.push();
@@ -117,11 +127,15 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 	private RenderLayer getEyeLayer(StatueBlockEntity entity) {
 		Identifier texture = getTexture(entity, "_eyes");
-		BlockState state = entity.getCachedState();
-		return RenderLayerRegistry.getStatueEyes(texture, new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), entity.getWorld() != null ? entity.getWorld().getReceivedRedstonePower(entity.getPos()) : 0, state.get(StatueBlock.waterlogged), HeroStatueClientConfig.instance.rainbowMode.value()));
+		return RenderLayerRegistry.getStatueEyes(texture, getRenderState(entity));
 	}
 
 	private Identifier getTexture(StatueBlockEntity entity, String type) {
 		return CommonData.idOf("textures/block/hero_statue/hero_statue" + type + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png");
+	}
+
+	public static StatueRenderState getRenderState(StatueBlockEntity entity) {
+		BlockState state = entity.getCachedState();
+		return new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), entity.getWorld() != null ? entity.getWorld().getReceivedRedstonePower(entity.getPos()) : 0, state.get(StatueBlock.waterlogged), HeroStatueClientConfig.instance.rainbowMode.value());
 	}
 }

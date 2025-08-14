@@ -25,12 +25,45 @@ import java.util.*;
 
 public class RenderPipelineRegistry {
 	private static List<StatueRenderState> statueRenderStates;
+
+	private static final Map<StatueRenderState, RenderPipeline> statue;
+	public static final RenderPipeline statueFallback;
+
 	private static final Map<StatueRenderState, RenderPipeline> statueEyes;
 	public static final RenderPipeline statueEyesFallback;
 
 	public static void bootstrap() {
 		RenderLayerRegistry.bootstrap();
 		HeroStatueIris.registerPipelines();
+	}
+
+	public static RenderPipeline getStatue(StatueRenderState renderState) {
+		return Optional.of(statue.get(renderState)).orElse(statueFallback);
+	}
+
+	public static List<RenderPipeline> getStatue() {
+		return statue.values().stream().toList();
+	}
+
+	private static Map<StatueRenderState, RenderPipeline> registerStatue() {
+		Map<StatueRenderState, RenderPipeline> pipelines = new HashMap<>();
+		for (StatueRenderState state : getKnownStatueRenderStates()) pipelines.put(state, getStatueBuilder(state.pose(), state.facing(), state.powered(), state.waterlogged(), state.rainbowMode()).build());
+		return pipelines;
+	}
+
+	private static RenderPipeline.Builder getStatueBuilder() {
+		return getStatueBuilder("");
+	}
+
+	private static RenderPipeline.Builder getStatueBuilder(int pose, Direction facing, int powered, boolean waterlogged, boolean rainbowMode) {
+		RenderPipeline.Builder builder = getStatueBuilder(pose + "_" + facing + "_" + powered + "_" + waterlogged).withShaderDefine("POSE", Math.clamp(pose, 0, 14)).withShaderDefine("YAW", StatueBlockEntityRenderer.getYawFromDirection(facing)).withShaderDefine("POWERED", Math.clamp(powered, 0, 15));
+		if (waterlogged) builder.withShaderDefine("WATERLOGGED");
+		if (rainbowMode) builder.withShaderDefine("RAINBOW_MODE");
+		return builder;
+	}
+
+	private static RenderPipeline.Builder getStatueBuilder(String location) {
+		return RenderPipeline.builder(RenderPipelines.ENTITY_SNIPPET).withLocation(CommonData.idOf("pipeline/statue" + (location.isEmpty() ? "" : "/" + location))).withVertexShader(CommonData.idOf("core/statue")).withFragmentShader(CommonData.idOf("core/statue")).withSampler("Sampler0").withSampler("Sampler1").withSampler("Sampler2").withVertexFormat(VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS);
 	}
 
 	public static RenderPipeline getStatueEyes(StatueRenderState renderState) {
@@ -43,7 +76,7 @@ public class RenderPipelineRegistry {
 
 	private static Map<StatueRenderState, RenderPipeline> registerStatueEyes() {
 		Map<StatueRenderState, RenderPipeline> pipelines = new HashMap<>();
-		for (StatueRenderState state : getKnownRenderStates()) pipelines.put(state, getStatueEyeBuilder(state.pose(), state.facing(), state.powered(), state.waterlogged(), state.rainbowMode()).build());
+		for (StatueRenderState state : getKnownStatueRenderStates()) pipelines.put(state, getStatueEyeBuilder(state.pose(), state.facing(), state.powered(), state.waterlogged(), state.rainbowMode()).build());
 		return pipelines;
 	}
 
@@ -62,7 +95,7 @@ public class RenderPipelineRegistry {
 		return RenderPipeline.builder(RenderPipelines.TRANSFORMS_PROJECTION_FOG_SNIPPET).withLocation(CommonData.idOf("pipeline/statue_eyes" + (location.isEmpty() ? "" : "/" + location))).withVertexShader(CommonData.idOf("core/statue_eyes")).withFragmentShader(CommonData.idOf("core/statue_eyes")).withSampler("Sampler0").withBlend(new BlendFunction(SourceFactor.ONE, DestFactor.ONE_MINUS_SRC_COLOR)).withDepthWrite(false).withVertexFormat(VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS).withDepthBias(-1.0F, -5.0F);
 	}
 
-	private static List<StatueRenderState> getKnownRenderStates() {
+	private static List<StatueRenderState> getKnownStatueRenderStates() {
 		if (statueRenderStates == null) {
 			statueRenderStates = new ArrayList<>();
 			StatueBlock.facing.getValues().forEach((direction) -> {
@@ -80,6 +113,9 @@ public class RenderPipelineRegistry {
 	}
 
 	static {
+		statue = registerStatue();
+		statueFallback = getStatueBuilder().build();
+
 		statueEyes = registerStatueEyes();
 		statueEyesFallback = getStatueEyeBuilder().build();
 	}

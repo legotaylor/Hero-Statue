@@ -16,13 +16,21 @@ import net.minecraft.util.Util;
 import java.util.function.BiFunction;
 
 public class RenderLayerRegistry {
+	private static final BiFunction<Identifier, StatueRenderState, RenderLayer> statue;
 	private static final BiFunction<Identifier, StatueRenderState, RenderLayer> statueEyes;
 	public static void bootstrap() {
+	}
+	public static RenderLayer getStatue(Identifier texture, StatueRenderState renderState) {
+		return statue.apply(texture, renderState);
 	}
 	public static RenderLayer getStatueEyes(Identifier texture, StatueRenderState renderState) {
 		return statueEyes.apply(texture, renderState);
 	}
 	static {
+		statue = Util.memoize((texture, renderState) -> {
+			RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder().texture(new RenderPhase.Texture(texture, false)).lightmap(RenderLayer.ENABLE_LIGHTMAP).overlay(RenderLayer.ENABLE_OVERLAY_COLOR).build(true);
+			return RenderLayer.of("hero_statue", 1536, true, false, RenderPipelineRegistry.getStatue(renderState), multiPhaseParameters);
+		});
 		statueEyes = Util.memoize((texture, renderState) -> {
 			RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder().texture(new RenderPhase.Texture(texture, false)).build(false);
 			return RenderLayer.of("hero_statue_eyes", 1536, true, true, RenderPipelineRegistry.getStatueEyes(renderState), multiPhaseParameters);
