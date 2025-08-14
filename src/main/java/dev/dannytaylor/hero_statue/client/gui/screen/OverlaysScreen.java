@@ -31,10 +31,6 @@ public class OverlaysScreen extends ConfigScreen {
 			HeroStatueClientConfig.instance.renderEyes.setValue(!HeroStatueClientConfig.instance.renderEyes.value());
 			button.setMessage(Text.translatable("hero-statue.overlays.eyes.enabled", HeroStatueClientConfig.instance.renderEyes.value()));
 		}).build());
-		options.add(ButtonWidget.builder(Text.translatable("hero-statue.overlays.eyes.rainbow_mode", HeroStatueClientConfig.instance.rainbowMode.value()), (button) -> {
-			HeroStatueClientConfig.instance.rainbowMode.setValue(!HeroStatueClientConfig.instance.rainbowMode.value());
-			button.setMessage(Text.translatable("hero-statue.overlays.eyes.rainbow_mode", HeroStatueClientConfig.instance.rainbowMode.value()));
-		}).build());
 		return options;
 	}
 

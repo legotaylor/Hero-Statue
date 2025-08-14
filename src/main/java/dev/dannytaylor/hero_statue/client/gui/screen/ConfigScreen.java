@@ -62,6 +62,10 @@ public class ConfigScreen extends Screen {
 		List<ClickableWidget> options = new ArrayList<>();
 		options.add(ButtonWidget.builder(Text.translatable("hero-statue.about").append(Text.translatable("hero-statue.config.more")), (button) -> ClientData.minecraft.setScreen(new InfoScreen(getRefreshScreen()))).build());
 		options.add(ButtonWidget.builder(Text.translatable("hero-statue.overlays").append(Text.translatable("hero-statue.config.more")), (button) -> ClientData.minecraft.setScreen(new OverlaysScreen(getRefreshScreen()))).build());
+		options.add(ButtonWidget.builder(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.rainbow_mode"), HeroStatueClientConfig.instance.rainbowMode.value()), (button) -> {
+			HeroStatueClientConfig.instance.rainbowMode.setValue(!HeroStatueClientConfig.instance.rainbowMode.value());
+			button.setMessage(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.rainbow_mode"), HeroStatueClientConfig.instance.rainbowMode.value()));
+		}).build());
 		return options;
 	}
 

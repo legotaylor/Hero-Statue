@@ -83,7 +83,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 				(isRightHanded ? model.rightHand : model.leftHand).applyTransform(matrices);
 				matrices.translate(0.0F, 0.0F, -0.05F);
 				matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-135));
-				ClientData.minecraft.getItemRenderer().renderItem(entity.getStack(), isRightHanded ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, getLight(entity.getWorld(), entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
+				ClientData.minecraft.getItemRenderer().renderItem(entity.getStack(), isRightHanded ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, light, overlay, matrices, vertexConsumers, entity.getWorld(), 1);
 				matrices.pop();
 			}
 			matrices.pop();

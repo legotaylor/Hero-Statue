@@ -19,8 +19,9 @@
 
 	"hero-statue.overlays": "Overlay Settings",
 	"hero-statue.overlays.eyes.enabled": "Render Eye Overlay: %s",
-	"hero-statue.overlays.eyes.rainbow_mode": "§4R§6A§eI§aN§9B§dO§5W§r MODE: %s",
-	"hero-statue.overlays.eyes.rainbow_mode.message": "Toggled §4R§6A§eI§aN§9B§dO§5W§r MODE to %s!",
+
+	"hero-statue.rainbow_mode": "§4R§6A§eI§aN§9B§dO§5W§r MODE",
+	"hero-statue.rainbow_mode.message": "Toggled %s to %s!",
 
 	"hero-statue.donate": "Donate (Ko-Fi/legotaylor)"
 }
