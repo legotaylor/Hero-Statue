@@ -19,13 +19,8 @@
 
 	"hero-statue.overlays": "Overlay Settings",
 	"hero-statue.overlays.eyes.enabled": "Render Eye Overlay: %s",
-	"hero-statue.overlays.iris_z-fighting": "Iris Z-Fighting Fix",
-	"hero-statue.overlays.iris_z-fighting.offset": "Default Z Offset: %s",
-	"hero-statue.overlays.iris_z-fighting.enabled": "Enabled: %s",
-	"hero-statue.overlays.iris_z-fighting.min_dist": "Near Distance: %s Blocks",
-	"hero-statue.overlays.iris_z-fighting.max_dist": "Far Distance: %s Blocks",
-	"hero-statue.overlays.iris_z-fighting.min_offset": "Near Offset: %s",
-	"hero-statue.overlays.iris_z-fighting.max_offset": "Far Offset: %s",
+	"hero-statue.overlays.eyes.rainbow_mode": "§4R§6A§eI§aN§9B§dO§5W§r MODE: %s",
+	"hero-statue.overlays.eyes.rainbow_mode.message": "Toggled §4R§6A§eI§aN§9B§dO§5W§r MODE to %s!",
 
 	"hero-statue.donate": "Donate (Ko-Fi/legotaylor)"
 }

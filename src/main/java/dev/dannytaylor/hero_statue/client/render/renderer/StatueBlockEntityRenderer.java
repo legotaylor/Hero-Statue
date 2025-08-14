@@ -7,6 +7,7 @@
 
 package dev.dannytaylor.hero_statue.client.render.renderer;
 
+import dev.dannytaylor.hero_statue.client.block.StatueRenderState;
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
 import dev.dannytaylor.hero_statue.client.data.ClientData;
 import dev.dannytaylor.hero_statue.client.render.model.*;
@@ -14,6 +15,7 @@ import dev.dannytaylor.hero_statue.client.render.pipeline.RenderLayerRegistry;
 import dev.dannytaylor.hero_statue.common.block.StatueBlock;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -96,7 +98,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		return LightmapTextureManager.pack(blockLight, world.getLightLevel(LightType.SKY, pos));
 	}
 
-	private static float getYawFromDirection(Direction direction) {
+	public static float getYawFromDirection(Direction direction) {
 		return switch (direction) {
 			case NORTH -> 180.0F;
 			case WEST -> 90.0F;
@@ -115,7 +117,8 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 	private RenderLayer getEyeLayer(StatueBlockEntity entity) {
 		Identifier texture = getTexture(entity, "_eyes");
-		return RenderLayerRegistry.getStatueEyes(texture);
+		BlockState state = entity.getCachedState();
+		return RenderLayerRegistry.getStatueEyes(texture, new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), entity.getWorld() != null ? entity.getWorld().getReceivedRedstonePower(entity.getPos()) : 0, state.get(StatueBlock.waterlogged), HeroStatueClientConfig.instance.rainbowMode.value()));
 	}
 
 	private Identifier getTexture(StatueBlockEntity entity, String type) {

@@ -7,6 +7,7 @@
 
 package dev.dannytaylor.hero_statue.client.compatibility;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import dev.dannytaylor.hero_statue.client.render.pipeline.RenderPipelineRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.irisshaders.iris.api.v0.IrisApi;
@@ -22,7 +23,8 @@ public class HeroStatueIris {
 	}
 	public static void registerPipelines() {
 		if (isIrisInstalled()) {
-			IrisPipelines.copyPipeline(RenderPipelines.ENTITY_EYES, RenderPipelineRegistry.statueEyes);
+			for (RenderPipeline pipeline : RenderPipelineRegistry.getStatueEyes()) IrisPipelines.copyPipeline(RenderPipelines.ENTITY_EYES, pipeline);
+			IrisPipelines.copyPipeline(RenderPipelines.ENTITY_EYES, RenderPipelineRegistry.statueEyesFallback);
 		}
 	}
 }

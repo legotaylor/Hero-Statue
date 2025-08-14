@@ -1,3 +1,10 @@
+/*
+    Hero Statue
+    Contributor(s): dannytaylor
+    Github: https://github.com/legotaylor/hero-statue
+    Licence: GNU LGPLv3
+*/
+
 package dev.dannytaylor.hero_statue.client.gui.screen;
 
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
@@ -23,6 +30,10 @@ public class OverlaysScreen extends ConfigScreen {
 		options.add(ButtonWidget.builder(Text.translatable("hero-statue.overlays.eyes.enabled", HeroStatueClientConfig.instance.renderEyes.value()), (button) -> {
 			HeroStatueClientConfig.instance.renderEyes.setValue(!HeroStatueClientConfig.instance.renderEyes.value());
 			button.setMessage(Text.translatable("hero-statue.overlays.eyes.enabled", HeroStatueClientConfig.instance.renderEyes.value()));
+		}).build());
+		options.add(ButtonWidget.builder(Text.translatable("hero-statue.overlays.eyes.rainbow_mode", HeroStatueClientConfig.instance.rainbowMode.value()), (button) -> {
+			HeroStatueClientConfig.instance.rainbowMode.setValue(!HeroStatueClientConfig.instance.rainbowMode.value());
+			button.setMessage(Text.translatable("hero-statue.overlays.eyes.rainbow_mode", HeroStatueClientConfig.instance.rainbowMode.value()));
 		}).build());
 		return options;
 	}
