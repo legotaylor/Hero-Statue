@@ -16,8 +16,6 @@ import dev.dannytaylor.hero_statue.common.block.StatueBlock;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -26,12 +24,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -82,18 +77,13 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 				(isRightHanded ? model.rightArm : model.leftArm).applyTransform(matrices);
 				(isRightHanded ? model.rightHand : model.leftHand).applyTransform(matrices);
 				matrices.translate(0.0F, 0.0F, -0.05F);
-				matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-135));
+				matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90));
+				matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
 				ClientData.minecraft.getItemRenderer().renderItem(entity.getStack(), isRightHanded ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, light, overlay, matrices, vertexConsumers, entity.getWorld(), 1);
 				matrices.pop();
 			}
 			matrices.pop();
 		}
-	}
-
-	private int getLight(World world, BlockPos pos) {
-		int blockLight = world.getLightLevel(LightType.BLOCK, pos);
-		for (Direction direction : Direction.values()) blockLight = Math.max(blockLight, world.getLightLevel(pos.offset(direction)));
-		return LightmapTextureManager.pack(blockLight, world.getLightLevel(LightType.SKY, pos));
 	}
 
 	public static float getYawFromDirection(Direction direction) {
@@ -113,7 +103,6 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 	private RenderLayer getModelLayer(StatueBlockEntity entity) {
 		Identifier texture = getTexture(entity, "");
-		BlockState state = entity.getCachedState();
 		return RenderLayerRegistry.getStatue(texture, getRenderState(entity));
 	}
 
