@@ -1,11 +1,9 @@
-/*
-    Hero Statue
-    Contributor(s): dannytaylor
-    Github: https://github.com/legotaylor/hero-statue
-    Licence: GNU LGPLv3
-*/
-
 #version 150
+
+// Hero Statue
+// Contributor(s): dannytaylor
+// Github: https://github.com/legotaylor/hero-statue
+// Licence: GNU LGPLv3
 
 #moj_import <minecraft:fog.glsl>
 #moj_import <minecraft:dynamictransforms.glsl>
