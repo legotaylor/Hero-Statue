@@ -7,8 +7,7 @@
 
 #moj_import <minecraft:fog.glsl>
 #moj_import <minecraft:dynamictransforms.glsl>
-#moj_import <minecraft:globals.glsl>
-#moj_import <hero-statue:color_conversion.glsl>
+#moj_import <hero-statue:color_cycle.glsl>
 
 uniform sampler2D Sampler0;
 
@@ -19,30 +18,21 @@ in vec2 texCoord0;
 
 out vec4 fragColor;
 
-#ifndef POSE
-#define POSE 0
-#endif
-
-#ifndef YAW
-#define YAW 0
-#endif
-
-#ifndef POWERED
-#define POWERED 0
-#endif
-
-// You can also check waterlogged by using #ifdef WATERLOGGED #endif
+// You can check if these are defined using #ifdef <UNIFORM> #endif.
+// POSE :: Returns the current pose. (0-14)
+// YAW :: Returns the current direction in degrees. (0, 90, 180, 270)
+// POWERED :: Returns the received redstone input. (0-15)
+// WATERLOGGED :: If exists, the block is waterlogged.
+// RAINBOW_MODE :: If exists, the jeb_/RAINBOW MODE easter egg is enabled for that block.
+// FLIP_MODEL :: If exists, the Dinnerbone/Grumm/legotaylor/dannnytaylor easter egg is enabled for that block.
 
 void main() {
 	vec4 color = texture(Sampler0, texCoord0) * vertexColor;
 	if (color.a < 0.1) discard;
+	#ifdef POWERED
 	#ifdef RAINBOW_MODE
-	if (POWERED > 0) {
-		vec3 hsv = RGBtoHSV(color.rgb);
-		hsv.x += (GameTime * 375.0);
-		color.rgb = HSVtoRGB(hsv);
-
-	}
+	color.rgb = cycleColor(color.rgb, POWERED);
+	#endif
 	#endif
 	color *= (float(POWERED) / 15.0);
 	color *= ColorModulator;

@@ -47,7 +47,7 @@ public class RenderPipelineRegistry {
 
 	private static Map<StatueRenderState, RenderPipeline> registerStatue() {
 		Map<StatueRenderState, RenderPipeline> pipelines = new HashMap<>();
-		for (StatueRenderState state : getKnownStatueRenderStates()) pipelines.put(state, getStatueBuilder(state.pose(), state.facing(), state.powered(), state.waterlogged(), state.rainbowMode()).build());
+		for (StatueRenderState state : getKnownStatueRenderStates()) pipelines.put(state, getStatueBuilder(state.pose(), state.facing(), state.powered(), state.waterlogged(), state.rainbowMode(), state.shouldFlipModelUpsideDown()).build());
 		return pipelines;
 	}
 
@@ -55,10 +55,11 @@ public class RenderPipelineRegistry {
 		return getStatueBuilder("");
 	}
 
-	private static RenderPipeline.Builder getStatueBuilder(int pose, Direction facing, int powered, boolean waterlogged, boolean rainbowMode) {
+	private static RenderPipeline.Builder getStatueBuilder(int pose, Direction facing, int powered, boolean waterlogged, boolean rainbowMode, boolean shouldFlipModelUpsideDown) {
 		RenderPipeline.Builder builder = getStatueBuilder(pose + "_" + facing + "_" + powered + "_" + waterlogged).withShaderDefine("POSE", Math.clamp(pose, 0, 14)).withShaderDefine("YAW", StatueBlockEntityRenderer.getYawFromDirection(facing)).withShaderDefine("POWERED", Math.clamp(powered, 0, 15));
 		if (waterlogged) builder.withShaderDefine("WATERLOGGED");
 		if (rainbowMode) builder.withShaderDefine("RAINBOW_MODE");
+		if (shouldFlipModelUpsideDown) builder.withShaderDefine("FLIP_MODEL");
 		return builder;
 	}
 
@@ -76,7 +77,7 @@ public class RenderPipelineRegistry {
 
 	private static Map<StatueRenderState, RenderPipeline> registerStatueEyes() {
 		Map<StatueRenderState, RenderPipeline> pipelines = new HashMap<>();
-		for (StatueRenderState state : getKnownStatueRenderStates()) pipelines.put(state, getStatueEyeBuilder(state.pose(), state.facing(), state.powered(), state.waterlogged(), state.rainbowMode()).build());
+		for (StatueRenderState state : getKnownStatueRenderStates()) pipelines.put(state, getStatueEyeBuilder(state.pose(), state.facing(), state.powered(), state.waterlogged(), state.rainbowMode(), state.shouldFlipModelUpsideDown()).build());
 		return pipelines;
 	}
 
@@ -84,10 +85,11 @@ public class RenderPipelineRegistry {
 		return getStatueEyeBuilder("");
 	}
 
-	private static RenderPipeline.Builder getStatueEyeBuilder(int pose, Direction facing, int powered, boolean waterlogged, boolean rainbowMode) {
+	private static RenderPipeline.Builder getStatueEyeBuilder(int pose, Direction facing, int powered, boolean waterlogged, boolean rainbowMode, boolean shouldFlipModelUpsideDown) {
 		RenderPipeline.Builder builder = getStatueEyeBuilder(pose + "_" + facing + "_" + powered + "_" + waterlogged).withShaderDefine("POSE", Math.clamp(pose, 0, 14)).withShaderDefine("YAW", StatueBlockEntityRenderer.getYawFromDirection(facing)).withShaderDefine("POWERED", Math.clamp(powered, 0, 15));
 		if (waterlogged) builder.withShaderDefine("WATERLOGGED");
 		if (rainbowMode) builder.withShaderDefine("RAINBOW_MODE");
+		if (shouldFlipModelUpsideDown) builder.withShaderDefine("FLIP_MODEL");
 		return builder;
 	}
 
@@ -101,10 +103,13 @@ public class RenderPipelineRegistry {
 			StatueBlock.facing.getValues().forEach((direction) -> {
 				for (int pose = 0; pose < 15; pose++) {
 					for (int power = 0; power < 16; power++) {
-						statueRenderStates.add(new StatueRenderState(pose, direction, power, false, false));
-						statueRenderStates.add(new StatueRenderState(pose, direction, power, false, true));
-						statueRenderStates.add(new StatueRenderState(pose, direction, power, true, false));
-						statueRenderStates.add(new StatueRenderState(pose, direction, power, true, true));
+						for (int waterlogged = 0; waterlogged < 2; waterlogged++) {
+							for (int rainbow = 0; rainbow < 2; rainbow++) {
+								for (int flip = 0; flip < 2; flip++) {
+									statueRenderStates.add(new StatueRenderState(pose, direction, power, waterlogged != 0, rainbow != 0, flip != 0));
+								}
+							}
+						}
 					}
 				}
 			});

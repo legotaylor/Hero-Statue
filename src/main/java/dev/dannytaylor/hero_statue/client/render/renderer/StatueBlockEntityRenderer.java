@@ -69,7 +69,10 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 			StatueRenderState renderState = getRenderState(entity);
 
-			dinnerboneCheck(entity, matrices);
+			if (shouldFlipModelUpsideDown(entity)) {
+				matrices.translate(0.0F, 0.749F, 0.0F);
+				matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
+			}
 
 			renderModel(entity, model, matrices, vertexConsumers, light, overlay, cameraPos, renderState);
 			renderEyes(entity, model, matrices, vertexConsumers, light, overlay, cameraPos, renderState);
@@ -128,15 +131,13 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		return CommonData.idOf("textures/block/hero_statue/hero_statue" + type + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png");
 	}
 
-	private static void dinnerboneCheck(StatueBlockEntity entity, MatrixStack matrices) {
+	private static boolean shouldFlipModelUpsideDown(StatueBlockEntity entity) {
 		Text stackName = entity.getStack().get(DataComponentTypes.CUSTOM_NAME);
 		if (stackName != null) {
 			String string = Formatting.strip(stackName.getString());
-			if (List.of("Dinnerbone", "Grumm", "legotaylor", "dannnytaylor").contains(string)) {
-				matrices.translate(0.0F, 0.749F, 0.0F);
-				matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
-			}
+			return List.of("Dinnerbone", "Grumm", "legotaylor", "dannnytaylor").contains(string);
 		}
+		return false;
 	}
 
 	public static StatueRenderState getRenderState(StatueBlockEntity entity) {
@@ -146,10 +147,10 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		if (state.get(StatueBlock.rainbow)) rainbowMode = !rainbowMode;
 		if (stackName != null) {
 			String string = Formatting.strip(stackName.getString());
-			if (List.of("jeb_", "rainbow").contains(string)) {
+			if (List.of("jeb_", "RAINBOW MODE").contains(string)) {
 				rainbowMode = !rainbowMode;
 			}
 		}
-		return new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), entity.getWorld() != null ? entity.getWorld().getReceivedRedstonePower(entity.getPos()) : 0, state.get(StatueBlock.waterlogged), rainbowMode);
+		return new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), entity.getWorld() != null ? entity.getWorld().getReceivedRedstonePower(entity.getPos()) : 0, state.get(StatueBlock.waterlogged), rainbowMode, shouldFlipModelUpsideDown(entity));
 	}
 }

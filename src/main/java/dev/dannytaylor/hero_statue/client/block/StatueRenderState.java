@@ -9,5 +9,5 @@ package dev.dannytaylor.hero_statue.client.block;
 
 import net.minecraft.util.math.Direction;
 
-public record StatueRenderState(Integer pose, Direction facing, Integer powered, Boolean waterlogged, Boolean rainbowMode) {
+public record StatueRenderState(int pose, Direction facing, int powered, boolean waterlogged, boolean rainbowMode, boolean shouldFlipModelUpsideDown) {
 }
