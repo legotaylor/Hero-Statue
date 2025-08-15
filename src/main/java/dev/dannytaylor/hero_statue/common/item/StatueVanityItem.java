@@ -7,19 +7,19 @@
 
 package dev.dannytaylor.hero_statue.common.item;
 
-import it.unimi.dsi.fastutil.ints.IntList;
-import net.minecraft.component.type.FireworkExplosionComponent;
+import dev.dannytaylor.hero_statue.common.sound.SoundRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class StatueVanityItem extends Item {
 	private final ItemConvertible itemConvertible;
@@ -30,10 +30,13 @@ public class StatueVanityItem extends Item {
 
 	public ActionResult use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
-		world.addImportantParticleClient(ParticleTypes.HEART, user.getX(), user.getY() + user.getHeight(), user.getZ(), 0.0F, 1.0F, 0.0F);
-		world.addFireworkParticle(user.getX(), user.getEyeY(), user.getZ(), 0.0F, 1.0F, 0.0F, List.of(new FireworkExplosionComponent(FireworkExplosionComponent.Type.SMALL_BALL, IntList.of(0x341216, 0x1f060c), IntList.of(), false, true)));
-		user.incrementStat(Stats.USED.getOrCreateStat(this));
-		user.setStackInHand(hand, new ItemStack(this.itemConvertible, stack.getCount()));
+		for (int i = 0; i < (world.random.nextInt(22) + 8) * stack.getCount(); ++i) {
+			world.addImportantParticleClient(ParticleTypes.HEART, user.getX() + ((world.random.nextDouble() - 0.5F) * 2.0F), user.getY() + (user.getHeight() / 2.0F) + ((world.random.nextDouble() - 0.5F) * 2.0F), user.getZ() + ((world.random.nextDouble() - 0.5F) * 2.0F), ((world.random.nextDouble() - 0.5F) * 2.0F), 0.05F, ((world.random.nextDouble() - 0.5F) * 2.0F));
+		}
+		world.playSound(user, user.getBlockPos(), SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.PLAYERS);
+		world.playSound(user, user.getBlockPos(), SoundRegistry.heroStatueUpdatePose, SoundCategory.PLAYERS);
+		user.increaseStat(Stats.USED.getOrCreateStat(this), stack.getCount());
+		user.setStackInHand(hand, stack.copyComponentsToNewStack(this.itemConvertible, stack.getCount()));
 		return ActionResult.SUCCESS;
 	}
 }

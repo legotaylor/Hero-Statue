@@ -560,8 +560,8 @@
 			"translation": [0, 11.25, -3.5]
 		},
 		"fixed": {
-			"translation": [0, 0, -0.25],
-			"scale": [0.32, 0.32, 0.32]
+			"rotation": [-90, 0, 0],
+			"translation": [0, 0, -18.125]
 		}
 	},
 	"groups": [
