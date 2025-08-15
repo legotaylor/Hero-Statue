@@ -17,9 +17,7 @@
 	"hero-statue.info.description": "",
 	"hero-statue.info.toybox": "Made for ModFest: Toybox",
 
-	"hero-statue.overlays": "Overlay Settings",
-	"hero-statue.overlays.eyes.enabled": "Render Eye Overlay: %s",
-
+	"hero-statue.eye_overlay": "Render Eye Overlay",
 	"hero-statue.rainbow_mode": "§4R§6A§eI§aN§9B§dO§5W§r MODE",
 	"hero-statue.rainbow_mode.message": "Toggled %s to %s!",
 

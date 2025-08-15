@@ -23,6 +23,9 @@ public class HeroStatueIris {
 	}
 	public static void registerPipelines() {
 		if (isIrisInstalled()) {
+			for (RenderPipeline pipeline : RenderPipelineRegistry.getStatue()) IrisPipelines.copyPipeline(RenderPipelines.ENTITY_CUTOUT, pipeline);
+			IrisPipelines.copyPipeline(RenderPipelines.ENTITY_CUTOUT, RenderPipelineRegistry.statueFallback);
+
 			for (RenderPipeline pipeline : RenderPipelineRegistry.getStatueEyes()) IrisPipelines.copyPipeline(RenderPipelines.ENTITY_EYES, pipeline);
 			IrisPipelines.copyPipeline(RenderPipelines.ENTITY_EYES, RenderPipelineRegistry.statueEyesFallback);
 		}
