@@ -45,13 +45,13 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			new StatuePoseFiveModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFive)),
 			new StatuePoseSixModel(context.getLayerModelPart(EntityModelRegistry.statuePoseSix)),
 			new StatuePoseSevenModel(context.getLayerModelPart(EntityModelRegistry.statuePoseSeven)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEight)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseNine)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTen)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEleven)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTwelve)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
-			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFourteen))
+			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEight)),
+			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseNine)),
+			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTen)),
+			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEleven)),
+			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTwelve)),
+			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
+			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFourteen))
 		);
 	}
 
@@ -69,6 +69,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 			StatueRenderState renderState = getRenderState(entity);
 
+			dinnerboneCheck(entity, matrices);
 
 			renderModel(entity, model, matrices, vertexConsumers, light, overlay, cameraPos, renderState);
 			renderEyes(entity, model, matrices, vertexConsumers, light, overlay, cameraPos, renderState);
@@ -127,12 +128,28 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		return CommonData.idOf("textures/block/hero_statue/hero_statue" + type + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png");
 	}
 
+	private static void dinnerboneCheck(StatueBlockEntity entity, MatrixStack matrices) {
+		Text stackName = entity.getStack().get(DataComponentTypes.CUSTOM_NAME);
+		if (stackName != null) {
+			String string = Formatting.strip(stackName.getString());
+			if (List.of("Dinnerbone", "Grumm", "legotaylor", "dannnytaylor").contains(string)) {
+				matrices.translate(0.0F, 0.749F, 0.0F);
+				matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
+			}
+		}
+	}
+
 	public static StatueRenderState getRenderState(StatueBlockEntity entity) {
 		BlockState state = entity.getCachedState();
 		boolean rainbowMode = HeroStatueClientConfig.instance.rainbowMode.value();
 		Text stackName = entity.getStack().get(DataComponentTypes.CUSTOM_NAME);
 		if (state.get(StatueBlock.rainbow)) rainbowMode = !rainbowMode;
-		if (stackName != null && Formatting.strip(stackName.getString()).equals("jeb_")) rainbowMode = !rainbowMode;
+		if (stackName != null) {
+			String string = Formatting.strip(stackName.getString());
+			if (List.of("jeb_", "rainbow").contains(string)) {
+				rainbowMode = !rainbowMode;
+			}
+		}
 		return new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), entity.getWorld() != null ? entity.getWorld().getReceivedRedstonePower(entity.getPos()) : 0, state.get(StatueBlock.waterlogged), rainbowMode);
 	}
 }
