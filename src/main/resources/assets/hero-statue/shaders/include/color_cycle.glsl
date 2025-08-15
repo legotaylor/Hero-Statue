@@ -8,11 +8,8 @@
 #moj_import <hero-statue:color_conversion.glsl>
 #moj_import <minecraft:globals.glsl>
 
-vec3 cycleColor(vec3 color, float powered) {
-	if (powered > 0) {
-		vec3 hsv = RGBtoHSV(color);
-		hsv.x += (GameTime * 375.0);
-		return HSVtoRGB(hsv);
-	}
-	return color;
+vec3 cycleColor(vec3 color) {
+	vec3 hsv = RGBtoHSV(color);
+	hsv.x += (GameTime * 375.0);
+	return HSVtoRGB(hsv);
 }

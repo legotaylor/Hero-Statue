@@ -33,7 +33,9 @@ void main() {
 	if (color.a < 0.1) discard;
 	#ifdef POWERED
 	#ifdef RAINBOW_MODE
-	color.rgb = cycleColor(color.rgb, POWERED);
+	if (POWERED > 0) {
+		color.rgb = cycleColor(color.rgb);
+	}
 	#endif
 	#endif
 	color *= vertexColor * ColorModulator;
