@@ -21,8 +21,11 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
@@ -63,8 +66,12 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 			int pose = entity.getCachedState().get(StatueBlock.pose);
 			StatuePoseModel model = this.models.get(pose);
-			renderModel(entity, model, matrices, vertexConsumers, light, overlay, cameraPos);
-			renderEyes(entity, model, matrices, vertexConsumers, light, overlay, cameraPos);
+
+			StatueRenderState renderState = getRenderState(entity);
+
+
+			renderModel(entity, model, matrices, vertexConsumers, light, overlay, cameraPos, renderState);
+			renderEyes(entity, model, matrices, vertexConsumers, light, overlay, cameraPos, renderState);
 			ItemStack stack = entity.getStack();
 			if (!stack.isEmpty()) {
 				matrices.push();
@@ -92,28 +99,28 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		};
 	}
 
-	private void renderModel(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
+	private void renderModel(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos, StatueRenderState renderState) {
 		matrices.push();
-		model.render(matrices, vertexConsumers.getBuffer(getModelLayer(entity)), light, overlay, -1);
+		model.render(matrices, vertexConsumers.getBuffer(getModelLayer(entity, renderState)), light, overlay, -1);
 		matrices.pop();
 	}
 
-	private RenderLayer getModelLayer(StatueBlockEntity entity) {
+	private RenderLayer getModelLayer(StatueBlockEntity entity, StatueRenderState renderState) {
 		Identifier texture = getTexture(entity, "");
-		return RenderLayerRegistry.getStatue(texture, getRenderState(entity));
+		return RenderLayerRegistry.getStatue(texture, renderState);
 	}
 
-	private void renderEyes(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
+	private void renderEyes(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos, StatueRenderState renderState) {
 		if (HeroStatueClientConfig.instance.renderEyes.value()) {
 			matrices.push();
-			model.render(matrices, vertexConsumers.getBuffer(getEyeLayer(entity)), light, overlay, -1);
+			model.render(matrices, vertexConsumers.getBuffer(getEyeLayer(entity, renderState)), light, overlay, -1);
 			matrices.pop();
 		}
 	}
 
-	private RenderLayer getEyeLayer(StatueBlockEntity entity) {
+	private RenderLayer getEyeLayer(StatueBlockEntity entity, StatueRenderState renderState) {
 		Identifier texture = getTexture(entity, "_eyes");
-		return RenderLayerRegistry.getStatueEyes(texture, getRenderState(entity));
+		return RenderLayerRegistry.getStatueEyes(texture, renderState);
 	}
 
 	private Identifier getTexture(StatueBlockEntity entity, String type) {
@@ -122,6 +129,10 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 	public static StatueRenderState getRenderState(StatueBlockEntity entity) {
 		BlockState state = entity.getCachedState();
-		return new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), entity.getWorld() != null ? entity.getWorld().getReceivedRedstonePower(entity.getPos()) : 0, state.get(StatueBlock.waterlogged), HeroStatueClientConfig.instance.rainbowMode.value());
+		boolean rainbowMode = HeroStatueClientConfig.instance.rainbowMode.value();
+		Text stackName = entity.getStack().get(DataComponentTypes.CUSTOM_NAME);
+		if (state.get(StatueBlock.rainbow)) rainbowMode = !rainbowMode;
+		if (stackName != null && Formatting.strip(stackName.getString()).equals("jeb_")) rainbowMode = !rainbowMode;
+		return new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), entity.getWorld() != null ? entity.getWorld().getReceivedRedstonePower(entity.getPos()) : 0, state.get(StatueBlock.waterlogged), rainbowMode);
 	}
 }

@@ -54,6 +54,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	public static final BooleanProperty waterlogged;
 	public static final EnumProperty<Direction> facing;
 	public static final BooleanProperty powered;
+	public static final BooleanProperty rainbow;
 
 	@Override
 	public MapCodec<? extends StatueBlock> getCodec() {
@@ -62,7 +63,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	public StatueBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(pose, 0).with(waterlogged, false).with(facing, Direction.NORTH).with(powered, false));
+		this.setDefaultState(this.stateManager.getDefaultState().with(pose, 0).with(waterlogged, false).with(facing, Direction.NORTH).with(powered, false).with(rainbow, false));
 	}
 
 	@Override
@@ -186,13 +187,13 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(pose, waterlogged, facing, powered);
+		builder.add(pose, waterlogged, facing, powered, rainbow);
 	}
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		FluidState fluidState = context.getWorld().getFluidState(context.getBlockPos());
-		return this.getDefaultState().with(pose, 0).with(waterlogged, fluidState.getFluid() == Fluids.WATER).with(facing, context.getHorizontalPlayerFacing().getOpposite()).with(powered, context.getWorld().getReceivedRedstonePower(context.getBlockPos()) > 0);
+		return this.getDefaultState().with(pose, 0).with(waterlogged, fluidState.getFluid() == Fluids.WATER).with(facing, context.getHorizontalPlayerFacing().getOpposite()).with(powered, context.getWorld().getReceivedRedstonePower(context.getBlockPos()) > 0).with(rainbow, false);
 	}
 
 	@Override
@@ -268,5 +269,6 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 		waterlogged = Properties.WATERLOGGED;
 		facing = HorizontalFacingBlock.FACING;
 		powered = Properties.POWERED;
+		rainbow = PropertyRegistry.rainbow;
 	}
 }
