@@ -16,5 +16,8 @@ public class ItemGroupRegistry {
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
 			content.add(ItemRegistry.heroStatue);
 		});
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.OPERATOR).register(content -> {
+			content.add(ItemRegistry.heroStatueVanity);
+		});
 	}
 }

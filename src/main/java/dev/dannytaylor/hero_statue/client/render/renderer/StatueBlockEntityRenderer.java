@@ -37,18 +37,18 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseZero)),
 			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseOne)),
 			new StatuePoseTwoModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTwo)),
-			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThree)),
-			new StatuePoseTwoModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFour)),
-			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFive)),
-			new StatuePoseTwoModel(context.getLayerModelPart(EntityModelRegistry.statuePoseSix)),
-			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseSeven)),
-			new StatuePoseTwoModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEight)),
-			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseNine)),
-			new StatuePoseTwoModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTen)),
-			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEleven)),
-			new StatuePoseTwoModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTwelve)),
-			new StatuePoseOneModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
-			new StatuePoseTwoModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFourteen))
+			new StatuePoseThreeModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThree)),
+			new StatuePoseFourModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFour)),
+			new StatuePoseFiveModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFive)),
+			new StatuePoseSixModel(context.getLayerModelPart(EntityModelRegistry.statuePoseSix)),
+			new StatuePoseSevenModel(context.getLayerModelPart(EntityModelRegistry.statuePoseSeven)),
+			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEight)),
+			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseNine)),
+			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTen)),
+			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEleven)),
+			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTwelve)),
+			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
+			new StatuePoseZeroModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFourteen))
 		);
 	}
 
@@ -63,11 +63,8 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 			int pose = entity.getCachedState().get(StatueBlock.pose);
 			StatuePoseModel model = this.models.get(pose);
-
 			renderModel(entity, model, matrices, vertexConsumers, light, overlay, cameraPos);
-
 			renderEyes(entity, model, matrices, vertexConsumers, light, overlay, cameraPos);
-
 			ItemStack stack = entity.getStack();
 			if (!stack.isEmpty()) {
 				matrices.push();

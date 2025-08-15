@@ -62,6 +62,6 @@ public class ItemRegistry {
 
 	static {
 		heroStatue = register(BlockRegistry.heroStatue);
-		heroStatueVanity = register("hero_statue_vanity", Item::new, new Item.Settings());
+		heroStatueVanity = register("hero_statue_vanity", (settings) -> new StatueVanityItem(settings, heroStatue), new Item.Settings().maxCount(1));
 	}
 }

@@ -9,8 +9,8 @@ package dev.dannytaylor.hero_statue.client.render.model;
 
 import net.minecraft.client.model.*;
 
-public class StatuePoseZeroModel extends StatuePoseModel {
-	public StatuePoseZeroModel(ModelPart root) {
+public class StatuePoseThreeModel extends StatuePoseModel {
+	public StatuePoseThreeModel(ModelPart root) {
 		super(root);
 	}
 	public static TexturedModelData getTexturedModelData() {
@@ -27,7 +27,7 @@ public class StatuePoseZeroModel extends StatuePoseModel {
 			.uv(50, 37).cuboid(-2.0F, -1.0F, 3.0F, 5.0F, 4.0F, 0.0F, new Dilation(0.0F))
 			.uv(64, 71).cuboid(3.0F, -1.0F, -3.0F, 0.0F, 4.0F, 6.0F, new Dilation(0.0F))
 			.uv(70, 29).cuboid(-2.0F, -1.0F, -3.0F, 5.0F, 4.0F, 0.0F, new Dilation(0.0F))
-			.uv(64, 65).cuboid(-2.0F, -1.0F, -3.0F, 5.0F, 0.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(6.0F, -12.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+			.uv(64, 65).cuboid(-2.0F, -1.0F, -3.0F, 5.0F, 0.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(6.0F, -9.0F, 0.0F, -1.5708F, 0.0F, 0.0F));
 
 		ModelPartData left_hand = left_arm.addChild("left_hand", ModelPartBuilder.create(), ModelTransform.of(0.25F, 12.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
@@ -38,7 +38,7 @@ public class StatuePoseZeroModel extends StatuePoseModel {
 			.uv(70, 33).cuboid(-3.0F, -1.0F, 3.0F, 5.0F, 4.0F, 0.0F, new Dilation(0.0F))
 			.uv(74, 13).cuboid(-3.0F, -1.0F, -3.0F, 0.0F, 4.0F, 6.0F, new Dilation(0.0F))
 			.uv(74, 23).cuboid(-3.0F, -1.0F, -3.0F, 5.0F, 4.0F, 0.0F, new Dilation(0.0F))
-			.uv(68, 37).cuboid(-3.0F, -1.0F, -3.0F, 5.0F, 0.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(-6.0F, -12.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+			.uv(68, 37).cuboid(-3.0F, -1.0F, -3.0F, 5.0F, 0.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(-6.0F, -9.0F, 0.0F, -1.5708F, 0.0F, 0.0F));
 
 		ModelPartData right_hand = right_arm.addChild("right_hand", ModelPartBuilder.create(), ModelTransform.of(-0.25F, 12.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
