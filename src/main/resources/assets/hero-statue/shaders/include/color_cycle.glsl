@@ -10,7 +10,7 @@
 
 vec3 cycleColor(vec3 color, bool forward) {
 	vec3 hsv = RGBtoHSV(color);
-	float sumend = GameTime * 375.0;
+	float sumend = GameTime * 750.0;
 	if (forward) hsv.x += sumend;
 	else hsv.x -= sumend;
 	return HSVtoRGB(hsv);

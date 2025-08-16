@@ -111,7 +111,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 	private RenderLayer getModelLayer(StatueBlockEntity entity, StatueRenderState renderState) {
 		Identifier texture = getTexture(entity, "");
-		return RenderLayerRegistry.getStatue(texture, renderState);
+		return HeroStatueClientConfig.instance.useVanillaShaders.value() ? RenderLayer.getEntityCutout(texture) : RenderLayerRegistry.getStatue(texture, renderState);
 	}
 
 	private void renderEyes(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos, StatueRenderState renderState) {
@@ -124,7 +124,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 	private RenderLayer getEyeLayer(StatueBlockEntity entity, StatueRenderState renderState) {
 		Identifier texture = getTexture(entity, "_eyes");
-		return RenderLayerRegistry.getStatueEyes(texture, renderState);
+		return HeroStatueClientConfig.instance.useVanillaShaders.value() ? RenderLayer.getEyes(texture) : RenderLayerRegistry.getStatueEyes(texture, renderState);
 	}
 
 	private Identifier getTexture(StatueBlockEntity entity, String type) {
@@ -152,5 +152,18 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			}
 		}
 		return new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), entity.getWorld() != null ? entity.getWorld().getReceivedRedstonePower(entity.getPos()) : 0, state.get(StatueBlock.waterlogged), rainbowMode, shouldFlipModelUpsideDown(entity));
+	}
+
+	public static List<Identifier> getKnownModelTextures() {
+		return List.of(
+			CommonData.idOf("textures/block/hero_statue/hero_statue.png"),
+			CommonData.idOf("textures/block/hero_statue/hero_statue_powered.png")
+		);
+	}
+	public static List<Identifier> getKnownEyeTextures() {
+		return List.of(
+			CommonData.idOf("textures/block/hero_statue/hero_statue_eyes.png"),
+			CommonData.idOf("textures/block/hero_statue/hero_statue_eyes_powered.png")
+		);
 	}
 }

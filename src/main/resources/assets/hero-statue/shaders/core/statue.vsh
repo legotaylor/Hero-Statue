@@ -27,6 +27,14 @@ out vec4 lightMapColor;
 out vec4 overlayColor;
 out vec2 texCoord0;
 
+// You can check if these are defined using #ifdef <UNIFORM> #endif.
+// POSE :: Returns the current pose. (0-14)
+// YAW :: Returns the current direction in degrees. (0, 90, 180, 270)
+// POWERED :: Returns the received redstone input. (0-15)
+// WATERLOGGED :: If exists, the block is waterlogged.
+// RAINBOW_MODE :: If exists, the jeb_/RAINBOW MODE easter egg is enabled for that block.
+// FLIP_MODEL :: If exists, the Dinnerbone/Grumm/legotaylor/dannnytaylor easter egg is enabled for that block.
+
 void main() {
 	gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
 	sphericalVertexDistance = fog_spherical_distance(Position);

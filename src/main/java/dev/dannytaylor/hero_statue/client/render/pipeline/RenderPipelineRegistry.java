@@ -97,7 +97,7 @@ public class RenderPipelineRegistry {
 		return RenderPipeline.builder(RenderPipelines.TRANSFORMS_PROJECTION_FOG_SNIPPET).withLocation(CommonData.idOf("pipeline/statue_eyes" + (location.isEmpty() ? "" : "/" + location))).withVertexShader(CommonData.idOf("core/statue_eyes")).withFragmentShader(CommonData.idOf("core/statue_eyes")).withSampler("Sampler0").withBlend(new BlendFunction(SourceFactor.ONE, DestFactor.ONE_MINUS_SRC_COLOR)).withDepthWrite(false).withVertexFormat(VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS).withDepthBias(-1.0F, -5.0F);
 	}
 
-	private static List<StatueRenderState> getKnownStatueRenderStates() {
+	public static List<StatueRenderState> getKnownStatueRenderStates() {
 		if (statueRenderStates == null) {
 			statueRenderStates = new ArrayList<>();
 			StatueBlock.facing.getValues().forEach((direction) -> {

@@ -17,6 +17,7 @@ public class HeroStatueClientConfig extends ReflectiveConfig {
 	public static final HeroStatueClientConfig instance = HeroStatueClientConfig.createToml(Paths.get("config"), CommonData.id, "client", HeroStatueClientConfig.class);
 
 	public final TrackedValue<Boolean> renderEyes = this.value(true);
+	public final TrackedValue<Boolean> useVanillaShaders = this.value(false);
 	public final TrackedValue<Boolean> rainbowMode = this.value(false);
 
 	public static void bootstrap() {

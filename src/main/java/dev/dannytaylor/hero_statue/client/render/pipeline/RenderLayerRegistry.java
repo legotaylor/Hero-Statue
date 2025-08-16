@@ -8,6 +8,7 @@
 package dev.dannytaylor.hero_statue.client.render.pipeline;
 
 import dev.dannytaylor.hero_statue.client.block.StatueRenderState;
+import dev.dannytaylor.hero_statue.client.render.renderer.StatueBlockEntityRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.util.Identifier;
@@ -19,6 +20,11 @@ public class RenderLayerRegistry {
 	private static final BiFunction<Identifier, StatueRenderState, RenderLayer> statue;
 	private static final BiFunction<Identifier, StatueRenderState, RenderLayer> statueEyes;
 	public static void bootstrap() {
+		// pre-warm shaders so it doesn't lag when first seeing the statues.
+		for (StatueRenderState renderState : RenderPipelineRegistry.getKnownStatueRenderStates()) {
+			for (Identifier texture : StatueBlockEntityRenderer.getKnownModelTextures()) getStatue(texture, renderState);
+			for (Identifier texture : StatueBlockEntityRenderer.getKnownEyeTextures()) getStatueEyes(texture, renderState);
+		}
 	}
 	public static RenderLayer getStatue(Identifier texture, StatueRenderState renderState) {
 		return statue.apply(texture, renderState);

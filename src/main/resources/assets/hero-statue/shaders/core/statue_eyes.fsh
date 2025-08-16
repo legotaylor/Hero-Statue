@@ -27,7 +27,7 @@ out vec4 fragColor;
 // FLIP_MODEL :: If exists, the Dinnerbone/Grumm/legotaylor/dannnytaylor easter egg is enabled for that block.
 
 void main() {
-	vec4 color = texture(Sampler0, texCoord0) * vertexColor;
+	vec4 color = texture(Sampler0, texCoord0);
 	if (color.a < 0.1) discard;
 	#ifdef POWERED
 	#ifdef RAINBOW_MODE
@@ -41,6 +41,6 @@ void main() {
 	#endif
 	#endif
 	color *= (float(POWERED) / 15.0);
-	color *= ColorModulator;
+	color *= vertexColor * ColorModulator;
 	fragColor = apply_fog(color, sphericalVertexDistance, cylindricalVertexDistance, FogEnvironmentalStart, FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd, FogColor);
 }

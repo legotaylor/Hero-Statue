@@ -65,6 +65,10 @@ public class ConfigScreen extends Screen {
 			HeroStatueClientConfig.instance.renderEyes.setValue(!HeroStatueClientConfig.instance.renderEyes.value());
 			button.setMessage(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.eye_overlay"), HeroStatueClientConfig.instance.renderEyes.value()));
 		}).build());
+		options.add(ButtonWidget.builder(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.use_vanilla_shaders"), HeroStatueClientConfig.instance.useVanillaShaders.value()), (button) -> {
+			HeroStatueClientConfig.instance.useVanillaShaders.setValue(!HeroStatueClientConfig.instance.useVanillaShaders.value());
+			button.setMessage(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.use_vanilla_shaders"), HeroStatueClientConfig.instance.useVanillaShaders.value()));
+		}).build());
 		options.add(ButtonWidget.builder(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.rainbow_mode"), HeroStatueClientConfig.instance.rainbowMode.value()), (button) -> {
 			HeroStatueClientConfig.instance.rainbowMode.setValue(!HeroStatueClientConfig.instance.rainbowMode.value());
 			button.setMessage(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.rainbow_mode"), HeroStatueClientConfig.instance.rainbowMode.value()));
