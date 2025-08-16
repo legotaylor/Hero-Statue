@@ -1,6 +1,6 @@
 /*
     Hero Statue
-    Contributor(s): dannytaylor
+    Contributor(s): dannytaylor, Phantazap
     Github: https://github.com/legotaylor/hero-statue
     Licence: GNU LGPLv3
 */
@@ -18,9 +18,7 @@ public class StatuePoseZeroModel extends StatuePoseModel {
 		ModelPartData modelPartData = modelData.getRoot();
 		ModelPartData base = modelPartData.addChild("base", ModelPartBuilder.create(), ModelTransform.of(0.0F, 24.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
-		ModelPartData body = base.addChild("body", ModelPartBuilder.create(), ModelTransform.of(0.0F, -12.0F, 1.0F, 0.0F, 0.0F, 0.0F));
-
-		ModelPartData cube_r1 = body.addChild("cube_r1", ModelPartBuilder.create().uv(50, 13).cuboid(-4.0F, -6.0F, -2.0F, 8.0F, 12.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -6.0F, 0.0F, 0.0F, 0.0F, -0.0436F));
+		ModelPartData body = base.addChild("body", ModelPartBuilder.create().uv(50, 13).cuboid(-4.0F, -12.0F, -2.0F, 8.0F, 12.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -12.0F, 1.0F, 0.0F, 0.0F, 0.0F));
 
 		ModelPartData left_arm = body.addChild("left_arm", ModelPartBuilder.create().uv(32, 65).cuboid(-1.75F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F))
 			.uv(68, 43).cuboid(-2.0F, -1.0F, -3.0F, 0.0F, 4.0F, 6.0F, new Dilation(0.0F))
@@ -56,27 +54,27 @@ public class StatuePoseZeroModel extends StatuePoseModel {
 
 		ModelPartData cape = body.addChild("cape", ModelPartBuilder.create(), ModelTransform.of(-1.0F, -14.0F, 2.0F, 0.0F, 0.0F, 0.0F));
 
-		ModelPartData cube_r2 = cape.addChild("cube_r2", ModelPartBuilder.create().uv(0, 42).cuboid(-7.0F, -6.0F, 0.0F, 14.0F, 21.0F, 0.0F, new Dilation(0.001F)), ModelTransform.of(1.0F, 3.0F, 1.0F, 0.3927F, 0.0F, 0.0F));
+		ModelPartData cube_r1 = cape.addChild("cube_r1", ModelPartBuilder.create().uv(0, 42).cuboid(-7.0F, -6.0F, 0.0F, 14.0F, 21.0F, 0.0F, new Dilation(0.001F)), ModelTransform.of(1.0F, 3.0F, 1.0F, 0.3927F, 0.0F, 0.0F));
 
 		ModelPartData left_leg = base.addChild("left_leg", ModelPartBuilder.create().uv(0, 63).cuboid(-2.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(2.0F, -11.0F, 1.0F, 0.0F, 0.0F, 0.0F));
 
-		ModelPartData cube_r3 = left_leg.addChild("cube_r3", ModelPartBuilder.create().uv(76, 71).cuboid(0.0F, 0.0F, -2.0F, 0.0F, 1.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(-2.0F, 3.0F, 0.0F, 0.0F, 0.0F, 0.3927F));
+		ModelPartData cube_r2 = left_leg.addChild("cube_r2", ModelPartBuilder.create().uv(76, 71).cuboid(0.0F, 0.0F, -2.0F, 0.0F, 1.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(-2.0F, 3.0F, 0.0F, 0.0F, 0.0F, 0.3927F));
 
-		ModelPartData cube_r4 = left_leg.addChild("cube_r4", ModelPartBuilder.create().uv(60, 37).cuboid(0.0F, 0.0F, -2.0F, 0.0F, 1.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(2.0F, 3.0F, 0.0F, 0.0F, 0.0F, -0.4363F));
+		ModelPartData cube_r3 = left_leg.addChild("cube_r3", ModelPartBuilder.create().uv(60, 37).cuboid(0.0F, 0.0F, -2.0F, 0.0F, 1.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(2.0F, 3.0F, 0.0F, 0.0F, 0.0F, -0.4363F));
 
-		ModelPartData cube_r5 = left_leg.addChild("cube_r5", ModelPartBuilder.create().uv(16, 63).cuboid(-2.0F, 0.0F, 0.0F, 4.0F, 1.0F, 0.0F, new Dilation(0.001F)), ModelTransform.of(0.0F, 3.0F, 2.0F, 0.3927F, 0.0F, 0.0F));
+		ModelPartData cube_r4 = left_leg.addChild("cube_r4", ModelPartBuilder.create().uv(16, 63).cuboid(-2.0F, 0.0F, 0.0F, 4.0F, 1.0F, 0.0F, new Dilation(0.001F)), ModelTransform.of(0.0F, 3.0F, 2.0F, 0.3927F, 0.0F, 0.0F));
 
-		ModelPartData cube_r6 = left_leg.addChild("cube_r6", ModelPartBuilder.create().uv(50, 41).cuboid(-2.0F, 0.0F, 0.0F, 4.0F, 1.0F, 0.0F, new Dilation(0.001F)), ModelTransform.of(0.0F, 3.0F, -2.0F, -0.3927F, 0.0F, 0.0F));
+		ModelPartData cube_r5 = left_leg.addChild("cube_r5", ModelPartBuilder.create().uv(50, 41).cuboid(-2.0F, 0.0F, 0.0F, 4.0F, 1.0F, 0.0F, new Dilation(0.001F)), ModelTransform.of(0.0F, 3.0F, -2.0F, -0.3927F, 0.0F, 0.0F));
 
 		ModelPartData right_leg = base.addChild("right_leg", ModelPartBuilder.create().uv(16, 65).cuboid(-2.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(-2.0F, -11.0F, 1.0F, 0.0F, 0.0F, 0.0F));
 
-		ModelPartData cube_r7 = right_leg.addChild("cube_r7", ModelPartBuilder.create().uv(78, 0).cuboid(0.0F, 0.0F, -2.0F, 0.0F, 1.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(-2.0F, 3.0F, 0.0F, 0.0F, 0.0F, 0.3927F));
+		ModelPartData cube_r6 = right_leg.addChild("cube_r6", ModelPartBuilder.create().uv(78, 0).cuboid(0.0F, 0.0F, -2.0F, 0.0F, 1.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(-2.0F, 3.0F, 0.0F, 0.0F, 0.0F, 0.3927F));
 
-		ModelPartData cube_r8 = right_leg.addChild("cube_r8", ModelPartBuilder.create().uv(76, 76).cuboid(0.0F, 0.0F, -2.0F, 0.0F, 1.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(2.0F, 3.0F, 0.0F, 0.0F, 0.0F, -0.4363F));
+		ModelPartData cube_r7 = right_leg.addChild("cube_r7", ModelPartBuilder.create().uv(76, 76).cuboid(0.0F, 0.0F, -2.0F, 0.0F, 1.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(2.0F, 3.0F, 0.0F, 0.0F, 0.0F, -0.4363F));
 
-		ModelPartData cube_r9 = right_leg.addChild("cube_r9", ModelPartBuilder.create().uv(68, 63).cuboid(-2.0F, 0.0F, 0.0F, 4.0F, 1.0F, 0.0F, new Dilation(0.001F)), ModelTransform.of(0.0F, 3.0F, 2.0F, 0.3927F, 0.0F, 0.0F));
+		ModelPartData cube_r8 = right_leg.addChild("cube_r8", ModelPartBuilder.create().uv(68, 63).cuboid(-2.0F, 0.0F, 0.0F, 4.0F, 1.0F, 0.0F, new Dilation(0.001F)), ModelTransform.of(0.0F, 3.0F, 2.0F, 0.3927F, 0.0F, 0.0F));
 
-		ModelPartData cube_r10 = right_leg.addChild("cube_r10", ModelPartBuilder.create().uv(16, 64).cuboid(-2.0F, 0.0F, 0.0F, 4.0F, 1.0F, 0.0F, new Dilation(0.001F)), ModelTransform.of(0.0F, 3.0F, -2.0F, -0.3927F, 0.0F, 0.0F));
+		ModelPartData cube_r9 = right_leg.addChild("cube_r9", ModelPartBuilder.create().uv(16, 64).cuboid(-2.0F, 0.0F, 0.0F, 4.0F, 1.0F, 0.0F, new Dilation(0.001F)), ModelTransform.of(0.0F, 3.0F, -2.0F, -0.3927F, 0.0F, 0.0F));
 		return TexturedModelData.of(modelData, 128, 128);
 	}
 }

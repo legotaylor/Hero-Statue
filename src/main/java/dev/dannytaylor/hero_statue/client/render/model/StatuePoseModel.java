@@ -1,6 +1,6 @@
 /*
     Hero Statue
-    Contributor(s): dannytaylor
+    Contributor(s): dannytaylor, Phantazap
     Github: https://github.com/legotaylor/hero-statue
     Licence: GNU LGPLv3
 */

@@ -19,6 +19,7 @@ public class HeroStatueClientConfig extends ReflectiveConfig {
 	public final TrackedValue<Boolean> renderEyes = this.value(true);
 	public final TrackedValue<Boolean> useVanillaShaders = this.value(false);
 	public final TrackedValue<Boolean> rainbowMode = this.value(false);
+	public final TrackedValue<StatueRenderType> renderType = this.value(StatueRenderType.FANCY);
 
 	public static void bootstrap() {
 	}

@@ -42,7 +42,7 @@ public class EntityModelRegistry {
 		EntityModelLayerRegistry.registerModelLayer(statuePoseEleven, StatuePoseZeroModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseTwelve, StatuePoseZeroModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseThirteen, StatuePoseZeroModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseFourteen, StatuePoseZeroModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseFourteen, StatuePoseFourteenModel::getTexturedModelData);
 	}
 	static {
 		statuePoseZero = new EntityModelLayer(CommonData.idOf("hero_statue"), "pose_0");

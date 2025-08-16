@@ -51,46 +51,61 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEleven)),
 			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTwelve)),
 			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
-			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFourteen))
+			new StatuePoseFourteenModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFourteen))
 		);
 	}
 
 	@Override
 	public void render(StatueBlockEntity entity, float tickProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
-		if (entity != null && entity.getWorld() != null) {
-			matrices.push();
-			matrices.translate(0.5F, 0.75F, 0.5F);
-			matrices.scale(0.5F, 0.5F, 0.5F);
-			matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
-			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(getYawFromDirection(entity.getCachedState().get(StatueBlock.facing))));
-
-			int pose = entity.getCachedState().get(StatueBlock.pose);
-			StatuePoseModel model = this.models.get(pose);
-
-			StatueRenderState renderState = getRenderState(entity);
-
-			if (shouldFlipModelUpsideDown(entity)) {
-				matrices.translate(0.0F, 0.749F, 0.0F);
+		if (entity == null || entity.getWorld() == null) return;
+		int pose = entity.getCachedState().get(StatueBlock.pose);
+		StatuePoseModel model = this.models.get(pose);
+		StatueRenderState renderState = getRenderState(entity);
+		ItemStack stack = entity.getStack();
+		boolean isRightHanded = pose % 2 == 0;
+		matrices.push();
+		matrices.translate(0.5F, 0.75F, 0.5F);
+		fixRotation(entity, matrices);
+		rotateIfUpsideDown(entity, matrices);
+		matrices.push();
+		switch (HeroStatueClientConfig.instance.renderType.value()) {
+			case FAST -> {
+				matrices.translate(0.0F, shouldFlipModelUpsideDown(entity) ? 1.31F : 1.16F, 0.0F);
 				matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
+				ClientData.minecraft.getItemRenderer().renderItem(entity.getCachedState().getBlock().asItem().getDefaultStack(), ItemDisplayContext.HEAD, light, overlay, matrices, vertexConsumers, entity.getWorld(), 1);
 			}
-
-			renderModel(entity, model, matrices, vertexConsumers, light, overlay, cameraPos, renderState);
-			renderEyes(entity, model, matrices, vertexConsumers, light, overlay, cameraPos, renderState);
-			ItemStack stack = entity.getStack();
-			if (!stack.isEmpty()) {
-				matrices.push();
-				boolean isRightHanded = pose % 2 == 0;
-				model.base.applyTransform(matrices);
-				model.body.applyTransform(matrices);
-				(isRightHanded ? model.rightArm : model.leftArm).applyTransform(matrices);
-				(isRightHanded ? model.rightHand : model.leftHand).applyTransform(matrices);
-				matrices.translate(0.0F, 0.0F, -0.05F);
-				matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90));
-				matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-				ClientData.minecraft.getItemRenderer().renderItem(entity.getStack(), isRightHanded ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, light, overlay, matrices, vertexConsumers, entity.getWorld(), 1);
-				matrices.pop();
+			case FANCY -> {
+				matrices.scale(0.5F, 0.5F, 0.5F);
+				renderModel(entity, model, matrices, vertexConsumers, light, overlay, renderState);
+				renderEyes(entity, model, matrices, vertexConsumers, light, overlay, renderState);
 			}
+			case OFF -> {}
+		}
+		matrices.pop();
+		if (!stack.isEmpty()) {
+			matrices.push();
+			matrices.scale(0.5F, 0.5F, 0.5F);
+			model.base.applyTransform(matrices);
+			model.body.applyTransform(matrices);
+			(isRightHanded ? model.rightArm : model.leftArm).applyTransform(matrices);
+			(isRightHanded ? model.rightHand : model.leftHand).applyTransform(matrices);
+			matrices.translate(0.0F, 0.0F, -0.05F);
+			matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90));
+			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+			ClientData.minecraft.getItemRenderer().renderItem(stack, isRightHanded ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, light, overlay, matrices, vertexConsumers, entity.getWorld(), 1);
 			matrices.pop();
+		}
+		matrices.pop();
+	}
+
+	private static void fixRotation(StatueBlockEntity entity, MatrixStack matrices) {
+		matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
+		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(getYawFromDirection(entity.getCachedState().get(StatueBlock.facing))));
+	}
+	private static void rotateIfUpsideDown(StatueBlockEntity entity, MatrixStack matrices) {
+		if (shouldFlipModelUpsideDown(entity)) {
+			matrices.translate(0.0F, 0.749F, 0.0F);
+			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
 		}
 	}
 
@@ -103,7 +118,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		};
 	}
 
-	private void renderModel(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos, StatueRenderState renderState) {
+	private void renderModel(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, StatueRenderState renderState) {
 		matrices.push();
 		model.render(matrices, vertexConsumers.getBuffer(getModelLayer(entity, renderState)), light, overlay, -1);
 		matrices.pop();
@@ -114,7 +129,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		return HeroStatueClientConfig.instance.useVanillaShaders.value() ? RenderLayer.getEntityCutout(texture) : RenderLayerRegistry.getStatue(texture, renderState);
 	}
 
-	private void renderEyes(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos, StatueRenderState renderState) {
+	private void renderEyes(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, StatueRenderState renderState) {
 		if (HeroStatueClientConfig.instance.renderEyes.value()) {
 			matrices.push();
 			model.render(matrices, vertexConsumers.getBuffer(getEyeLayer(entity, renderState)), light, overlay, -1);
@@ -160,6 +175,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 			CommonData.idOf("textures/block/hero_statue/hero_statue_powered.png")
 		);
 	}
+
 	public static List<Identifier> getKnownEyeTextures() {
 		return List.of(
 			CommonData.idOf("textures/block/hero_statue/hero_statue_eyes.png"),

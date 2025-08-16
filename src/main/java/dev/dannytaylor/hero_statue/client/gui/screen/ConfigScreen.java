@@ -74,6 +74,10 @@ public class ConfigScreen extends Screen {
 			HeroStatueClientConfig.instance.rainbowMode.setValue(!HeroStatueClientConfig.instance.rainbowMode.value());
 			button.setMessage(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.rainbow_mode"), HeroStatueClientConfig.instance.rainbowMode.value()));
 		}).tooltip(Tooltip.of(Text.translatable("hero-statue.rainbow_mode.hover"))).build());
+		options.add(ButtonWidget.builder(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.render_type"), Text.translatable("hero-statue.render_type." + HeroStatueClientConfig.instance.renderType.value().getId())), (button) -> {
+			HeroStatueClientConfig.instance.renderType.setValue(HeroStatueClientConfig.instance.renderType.value().next());
+			button.setMessage(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.render_type"), Text.translatable("hero-statue.render_type." + HeroStatueClientConfig.instance.renderType.value().getId())));
+		}).tooltip(Tooltip.of(Text.translatable("hero-statue.render_type.hover", Text.translatable("hero-statue.render_type." + HeroStatueClientConfig.instance.renderType.value().getId() + ".hover")))).build());
 		return options;
 	}
 
