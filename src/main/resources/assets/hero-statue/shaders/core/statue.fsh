@@ -34,7 +34,11 @@ void main() {
 	#ifdef POWERED
 	#ifdef RAINBOW_MODE
 	if (POWERED > 0) {
-		color.rgb = cycleColor(color.rgb);
+		bool forward = true;
+		#ifdef FLIP_MODEL
+		forward = false;
+		#endif
+		color.rgb = cycleColor(color.rgb, forward);
 	}
 	#endif
 	#endif

@@ -250,7 +250,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	@Override
 	protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
 		ItemStack stack = new ItemStack(this);
-		if (includeData) stack.set(DataComponentTypes.BLOCK_STATE, new BlockStateComponent(Map.of(pose.getName(), state.get(pose).toString())));
+		if (includeData) stack.set(DataComponentTypes.BLOCK_STATE, new BlockStateComponent(Map.of(pose.getName(), state.get(pose).toString(), rainbow.getName(), state.get(rainbow).toString())));
 		return stack;
 	}
 
