@@ -18,8 +18,11 @@
 	"hero-statue.info.toybox": "Made for ModFest: Toybox",
 
 	"hero-statue.eye_overlay": "Render Eye Overlay",
+	"hero-statue.eye_overlay.hover": "When disabled, prevents the eye overlay from rendering.",
 	"hero-statue.use_vanilla_shaders": "Use Fallback Shaders",
+	"hero-statue.use_vanilla_shaders.hover": "Renders statues using vanilla shaders. This will prevent §4R§6A§eI§aN§9B§dO§5W§r MODE, and any other custom effects from being rendered.",
 	"hero-statue.rainbow_mode": "§4R§6A§eI§aN§9B§dO§5W§r MODE",
+	"hero-statue.rainbow_mode.hover": "Inverts the jeb_ easter egg.",
 	"hero-statue.rainbow_mode.message": "Toggled %s to %s!",
 
 	"hero-statue.donate": "Donate (Ko-Fi/legotaylor)"

@@ -5,6 +5,7 @@ import dev.dannytaylor.hero_statue.client.data.ClientData;
 import dev.dannytaylor.hero_statue.client.gui.widget.ConfigWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.ThreePartsLayoutWidget;
@@ -64,15 +65,15 @@ public class ConfigScreen extends Screen {
 		options.add(ButtonWidget.builder(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.eye_overlay"), HeroStatueClientConfig.instance.renderEyes.value()), (button) -> {
 			HeroStatueClientConfig.instance.renderEyes.setValue(!HeroStatueClientConfig.instance.renderEyes.value());
 			button.setMessage(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.eye_overlay"), HeroStatueClientConfig.instance.renderEyes.value()));
-		}).build());
+		}).tooltip(Tooltip.of(Text.translatable("hero-statue.eye_overlay.hover"))).build());
 		options.add(ButtonWidget.builder(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.use_vanilla_shaders"), HeroStatueClientConfig.instance.useVanillaShaders.value()), (button) -> {
 			HeroStatueClientConfig.instance.useVanillaShaders.setValue(!HeroStatueClientConfig.instance.useVanillaShaders.value());
 			button.setMessage(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.use_vanilla_shaders"), HeroStatueClientConfig.instance.useVanillaShaders.value()));
-		}).build());
+		}).tooltip(Tooltip.of(Text.translatable("hero-statue.use_vanilla_shaders.hover"))).build());
 		options.add(ButtonWidget.builder(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.rainbow_mode"), HeroStatueClientConfig.instance.rainbowMode.value()), (button) -> {
 			HeroStatueClientConfig.instance.rainbowMode.setValue(!HeroStatueClientConfig.instance.rainbowMode.value());
 			button.setMessage(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.rainbow_mode"), HeroStatueClientConfig.instance.rainbowMode.value()));
-		}).build());
+		}).tooltip(Tooltip.of(Text.translatable("hero-statue.rainbow_mode.hover"))).build());
 		return options;
 	}
 
