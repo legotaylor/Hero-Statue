@@ -4,7 +4,8 @@
 	"texture_size": [128, 128],
 	"textures": {
 		"1": "hero-statue:block/hero_statue/hero_statue",
-		"2": "hero-statue:item/hero_statue_vanity"
+		"2": "hero-statue:item/hero_statue_vanity",
+		"particle": "minecraft:block/stone"
 	},
 	"elements": [
 		{
