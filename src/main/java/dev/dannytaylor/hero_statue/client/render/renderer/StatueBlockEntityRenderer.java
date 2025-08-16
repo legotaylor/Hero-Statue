@@ -9,6 +9,7 @@ package dev.dannytaylor.hero_statue.client.render.renderer;
 
 import dev.dannytaylor.hero_statue.client.block.StatueRenderState;
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
+import dev.dannytaylor.hero_statue.client.config.StatueRenderType;
 import dev.dannytaylor.hero_statue.client.data.ClientData;
 import dev.dannytaylor.hero_statue.client.render.model.*;
 import dev.dannytaylor.hero_statue.client.render.pipeline.RenderLayerRegistry;
@@ -69,17 +70,18 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		rotateIfUpsideDown(entity, matrices);
 		matrices.push();
 		switch (HeroStatueClientConfig.instance.renderType.value()) {
-			case FAST -> {
+			case FASTER -> {
 				matrices.translate(0.0F, shouldFlipModelUpsideDown(entity) ? 1.31F : 1.16F, 0.0F);
 				matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
 				ClientData.minecraft.getItemRenderer().renderItem(entity.getCachedState().getBlock().asItem().getDefaultStack(), ItemDisplayContext.HEAD, light, overlay, matrices, vertexConsumers, entity.getWorld(), 1);
 			}
-			case FANCY -> {
+			case OFF -> {}
+			// FANCY AND FAST
+			default -> {
 				matrices.scale(0.5F, 0.5F, 0.5F);
 				renderModel(entity, model, matrices, vertexConsumers, light, overlay, renderState);
 				renderEyes(entity, model, matrices, vertexConsumers, light, overlay, renderState);
 			}
-			case OFF -> {}
 		}
 		matrices.pop();
 		if (!stack.isEmpty()) {
@@ -126,7 +128,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 	private RenderLayer getModelLayer(StatueBlockEntity entity, StatueRenderState renderState) {
 		Identifier texture = getTexture(entity, "");
-		return HeroStatueClientConfig.instance.useVanillaShaders.value() ? RenderLayer.getEntityCutout(texture) : RenderLayerRegistry.getStatue(texture, renderState);
+		return HeroStatueClientConfig.instance.renderType.value().equals(StatueRenderType.FANCY) ? RenderLayerRegistry.getStatue(texture, renderState) : RenderLayer.getEntityCutout(texture);
 	}
 
 	private void renderEyes(StatueBlockEntity entity, StatuePoseModel model, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, StatueRenderState renderState) {
@@ -139,7 +141,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 
 	private RenderLayer getEyeLayer(StatueBlockEntity entity, StatueRenderState renderState) {
 		Identifier texture = getTexture(entity, "_eyes");
-		return HeroStatueClientConfig.instance.useVanillaShaders.value() ? RenderLayer.getEyes(texture) : RenderLayerRegistry.getStatueEyes(texture, renderState);
+		return HeroStatueClientConfig.instance.renderType.value().equals(StatueRenderType.FANCY) ? RenderLayerRegistry.getStatueEyes(texture, renderState) : RenderLayer.getEyes(texture);
 	}
 
 	private Identifier getTexture(StatueBlockEntity entity, String type) {

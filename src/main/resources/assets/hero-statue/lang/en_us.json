@@ -17,21 +17,23 @@
 	"hero-statue.info.description": "",
 	"hero-statue.info.toybox": "Made for ModFest: Toybox",
 
-	"hero-statue.eye_overlay": "Render Eye Overlay",
-	"hero-statue.eye_overlay.hover": "When disabled, prevents the eye overlay from rendering.",
-	"hero-statue.use_vanilla_shaders": "Use Fallback Shaders",
-	"hero-statue.use_vanilla_shaders.hover": "Renders statues using vanilla shaders. This will prevent §4R§6A§eI§aN§9B§dO§5W§r MODE, and any other custom effects from being rendered.",
-	"hero-statue.rainbow_mode": "§4R§6A§eI§aN§9B§dO§5W§r MODE",
-	"hero-statue.rainbow_mode.hover": "Inverts the jeb_ easter egg.",
-	"hero-statue.rainbow_mode.message": "Toggled %s to %s!",
 	"hero-statue.render_type": "Statue Render Type",
 	"hero-statue.render_type.fancy": "Default",
-	"hero-statue.render_type.fast": "Fast",
+	"hero-statue.render_type.fast": "Vanilla",
+	"hero-statue.render_type.faster": "Basic",
 	"hero-statue.render_type.off": "Disabled",
 	"hero-statue.render_type.hover": "Set how the statue is rendered!\n%s",
 	"hero-statue.render_type.fancy.hover": "The recommended option! Renders models using custom core shaders.",
-	"hero-statue.render_type.fast.hover": "Renders model using Item Renderer, it's faster, but you won't get poses.",
+	"hero-statue.render_type.fast.hover": "Renders model using vanilla shaders. This will prevent §4R§6A§eI§aN§9B§dO§5W§r MODE, and any other custom effects from being rendered.",
+	"hero-statue.render_type.faster.hover": "Renders model using Item Renderer, it's faster, but you won't get poses.",
 	"hero-statue.render_type.off.hover": "You may have all the frames, but won't see the statue... Held Item will still be rendered.",
+
+	"hero-statue.eye_overlay": "Render Eye Overlay",
+	"hero-statue.eye_overlay.hover": "When disabled, prevents the eye overlay from rendering.",
+
+	"hero-statue.rainbow_mode": "§4R§6A§eI§aN§9B§dO§5W§r MODE",
+	"hero-statue.rainbow_mode.hover": "Inverts the jeb_ easter egg.",
+	"hero-statue.rainbow_mode.message": "Toggled %s to %s!",
 
 	"hero-statue.donate": "Donate (Ko-Fi/legotaylor)"
 }
