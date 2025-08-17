@@ -7,7 +7,7 @@ Adds a new block 'Hero Statue', which can hold one item, and can be posed using 
 #### [Iris Shaders](https://www.irisshaders.dev/)  
 Iris overrides core shader pipelines when rendering shader packs, and doesn't provide any documentation for how to add new overrides.  
 
-As a workaround, we've copied the `ENTITY_CUTOUT` and `ENTITY_EYES` pipeline overrides. We picked these pipelines as they provide a similar effect to our custom pipelines, however it's not 1:1 and some features such as the `jeb_` easter egg won't be rendered when a shader pack is active. See [Hero-Statue#1](https://github.com/legotaylor/Hero-Statue/issues/1).  
+As a workaround, we've copied the `ENTITY_CUTOUT` and `ENTITY_EYES` pipeline overrides. We picked these pipelines as they provide a similar effect to our custom pipelines, however it's not 1:1 and some features such as the `jeb_` easter egg won't be rendered when a shader pack is active. This functionality matches the `Vanilla` render type. See [Hero-Statue#1](https://github.com/legotaylor/Hero-Statue/issues/1).  
 
 Rendering should work as intended when no shader packs are in use.  
 
