@@ -36,7 +36,7 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
-public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBlockEntity> {
+public class StatueBlockEntityRenderer<T extends StatueBlockEntity> implements BlockEntityRenderer<T> {
 	private final List<StatuePoseModel> models;
 	public StatueBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 		this.models = List.of(
@@ -152,7 +152,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 	}
 
 	private Identifier getTexture(StatueBlockEntity entity, String type) {
-		return CommonData.idOf("textures/block/hero_statue/hero_statue" + type + (entity.getCachedState().get(StatueBlock.powered) ? "_powered" : "") + ".png");
+		return CommonData.idOf("textures/block/hero_statue/hero_statue" + type + (entity.getCachedState().get(StatueBlock.power) > 0 ? "_powered" : "") + ".png");
 	}
 
 	private static boolean shouldFlipModelUpsideDown(StatueBlockEntity entity) {
@@ -175,7 +175,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 				rainbowMode = !rainbowMode;
 			}
 		}
-		return new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), entity.getWorld() != null ? entity.getWorld().getReceivedRedstonePower(entity.getPos()) : 0, state.get(StatueBlock.waterlogged), rainbowMode, shouldFlipModelUpsideDown(entity));
+		return new StatueRenderState(state.get(StatueBlock.pose), state.get(StatueBlock.facing), state.get(StatueBlock.power), state.get(StatueBlock.waterlogged), rainbowMode, shouldFlipModelUpsideDown(entity));
 	}
 
 	public static List<Identifier> getKnownModelTextures() {

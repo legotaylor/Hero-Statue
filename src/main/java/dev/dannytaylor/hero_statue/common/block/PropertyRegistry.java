@@ -14,11 +14,13 @@ import net.minecraft.state.property.IntProperty;
 public class PropertyRegistry {
 	public static final IntProperty pose;
 	public static final BooleanProperty rainbow;
+	public static final IntProperty power;
 	public static String of(String path) {
 		return CommonData.idOf(path).toUnderscoreSeparatedString().replace("-", "_");
 	}
 	static {
 		pose = IntProperty.of(of("pose"), 0, 14);
 		rainbow = BooleanProperty.of(of("rainbow"));
+		power = IntProperty.of(of("power"), 0, 15);
 	}
 }

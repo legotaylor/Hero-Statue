@@ -20,21 +20,20 @@ import net.minecraft.storage.WriteView;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-
-import java.util.Optional;
 
 public class StatueBlockEntity extends BlockEntity implements SingleStackInventory.SingleStackBlockEntityInventory {
-	private ItemStack stack;
-	private boolean needsSync;
+	private ItemStack stack = ItemStack.EMPTY;
+	protected boolean needsSync;
 
 	public StatueBlockEntity(BlockPos pos, BlockState state) {
 		super(BlockEntityRegistry.heroStatue, pos, state);
 	}
 
-	public void setStack(ItemStack stack) {
-		this.stack = stack;
-		markDirty();
+	public void setStack(ItemStack newStack) {
+		if (!ItemStack.areEqual(this.stack, newStack)) {
+			this.stack = newStack;
+			this.markDirty();
+		}
 	}
 
 	public void clearStack() {
@@ -42,43 +41,42 @@ public class StatueBlockEntity extends BlockEntity implements SingleStackInvento
 	}
 
 	public ItemStack getStack() {
-		return getStackData().orElse(ItemStack.EMPTY);
-	}
-
-	private Optional<ItemStack> getStackData() {
-		return hasStack() ? Optional.of(this.stack) : Optional.empty();
+		return stack;
 	}
 
 	public boolean hasStack() {
-		return this.stack != null && !this.stack.isEmpty();
+		return !stack.isEmpty();
 	}
 
 	@Override
 	public void writeData(WriteView nbt) {
 		super.writeData(nbt);
-		if (!getStack().isEmpty()) {
-			nbt.put("item", ItemStack.CODEC, this.stack);
-		}
+		if (hasStack()) nbt.put("item", ItemStack.CODEC, stack);
 	}
 
 	@Override
 	protected void readData(ReadView nbt) {
 		super.readData(nbt);
-		this.stack = nbt.read("item", ItemStack.CODEC).orElse(ItemStack.EMPTY);
-		this.needsSync = true;
+		ItemStack newStack = nbt.read("item", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+		if (!ItemStack.areEqual(stack, newStack)) {
+			stack = newStack;
+			needsSync = true;
+		}
 	}
 
-	public static void tick(World world, BlockPos blockPos, BlockState blockState, StatueBlockEntity entity) {
-		if (entity.needsSync) {
-			entity.updateListeners();
-			entity.needsSync = false;
+	public void tick() {
+		if (this.needsSync) {
+			this.updateListeners();
+			this.needsSync = false;
 		}
 	}
 
 	@Override
 	public void onBlockReplaced(BlockPos pos, BlockState oldState) {
 		super.onBlockReplaced(pos, oldState);
-		if (this.world != null) ItemScatterer.spawn(this.world, pos.getX(), pos.getY(), pos.getZ(), getStack());
+		if (!this.stack.isEmpty() && this.world != null) {
+			ItemScatterer.spawn(this.world, pos.getX(), pos.getY(), pos.getZ(), this.stack);
+		}
 	}
 
 	@Override
@@ -87,33 +85,28 @@ public class StatueBlockEntity extends BlockEntity implements SingleStackInvento
 		this.needsSync = true;
 	}
 
-	@Override
-	public BlockEntity asBlockEntity() {
-		return this;
-	}
-
 	public void dropStack() {
-		if (this.world != null) {
-			if (this.hasStack()) {
-				ItemStack stack = this.getStack();
-				this.clearStack();
-				ItemScatterer.spawn(this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), stack);
-			}
+		if (!this.stack.isEmpty() && this.world != null) {
+			ItemStack dropStack = this.stack;
+			clearStack();
+			ItemScatterer.spawn(this.world, this.pos.getX(), this.pos.getY(), this.pos.getZ(), dropStack);
 		}
 	}
 
 	public void updateListeners() {
-		if (this.world != null) {
-			updateStack();
-			this.world.updateListeners(pos, getCachedState(), getCachedState(), 3);
+		if (this.world instanceof ServerWorld serverWorld) {
+			BlockPos blockPos = this.pos;
+			BlockState blockState = getCachedState();
+			ChunkPos chunkPos = this.world.getChunk(blockPos).getPos();
+			for (ServerPlayerEntity player : PlayerLookup.tracking(serverWorld, chunkPos)) {
+				CommonNetwork.sendS2CStatue(player, serverWorld, blockPos);
+			}
+			this.world.updateListeners(blockPos, blockState, blockState, 3);
 		}
 	}
 
-	public void updateStack() {
-		if (this.world instanceof ServerWorld serverWorld) {
-			BlockPos blockPos = this.getPos();
-			ChunkPos chunkPos = this.world.getChunk(blockPos).getPos();
-			for (ServerPlayerEntity player : PlayerLookup.tracking(serverWorld, chunkPos)) CommonNetwork.sendS2CStatue(player, serverWorld, blockPos);
-		}
+	@Override
+	public BlockEntity asBlockEntity() {
+		return this;
 	}
 }

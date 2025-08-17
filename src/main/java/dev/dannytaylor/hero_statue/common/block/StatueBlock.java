@@ -13,8 +13,6 @@ import dev.dannytaylor.hero_statue.common.gamerule.GameruleRegistry;
 import dev.dannytaylor.hero_statue.common.sound.SoundRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.player.PlayerEntity;
@@ -53,7 +51,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	public static final IntProperty pose;
 	public static final BooleanProperty waterlogged;
 	public static final EnumProperty<Direction> facing;
-	public static final BooleanProperty powered;
+	public static final IntProperty power;
 	public static final BooleanProperty rainbow;
 
 	@Override
@@ -63,7 +61,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	public StatueBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(pose, 0).with(waterlogged, false).with(facing, Direction.NORTH).with(powered, false).with(rainbow, false));
+		this.setDefaultState(this.stateManager.getDefaultState().with(pose, 0).with(waterlogged, false).with(facing, Direction.NORTH).with(power, 0).with(rainbow, false));
 	}
 
 	@Override
@@ -142,28 +140,22 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	protected void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
 		if (!state.isOf(oldState.getBlock())) {
 			if (world instanceof ServerWorld serverWorld) {
-				if (!world.getBlockTickScheduler().isQueued(pos, this)) {
-					this.update(state, serverWorld, pos);
-				}
+				this.update(state, serverWorld, pos);
 			}
 		}
 	}
 
 	public void update(BlockState state, ServerWorld world, BlockPos pos) {
+		BlockState prevState = state;
 		int powerLevel = world.getReceivedRedstonePower(pos);
-		if (state.get(powered) && powerLevel == 0) world.setBlockState(pos, state.with(powered, false));
-		else if (!state.get(powered) && powerLevel > 0) world.setBlockState(pos, state.with(powered, true));
-		if (world.getGameRules().getBoolean(GameruleRegistry.allowRedstoneChangeStatuePose)) {
-			if (shouldSetPose(state, powerLevel)) {
-				setPose(state, world, pos, getPose(powerLevel));
-			}
-		}
-		if (!world.getBlockTickScheduler().isQueued(pos, this)) world.scheduleBlockTick(pos, this, 2);
+		if (powerLevel != state.get(power)) state = state.with(power, powerLevel);
+		if (world.getGameRules().getBoolean(GameruleRegistry.allowRedstoneChangeStatuePose) && shouldSetPose(state, powerLevel)) state = setPose(state, world, pos, getPose(powerLevel));
+		if (state != prevState) world.setBlockState(pos, state, 3);
 	}
 
-	public void setPose(BlockState state, World world, BlockPos pos, int value) {
-		world.setBlockState(pos, state.with(pose, value), 3);
+	public BlockState setPose(BlockState state, World world, BlockPos pos, int value) {
 		world.playSound(null, pos, SoundRegistry.heroStatueUpdatePose, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.25F + 0.6F);
+		return state.with(pose, value);
 	}
 
 	public boolean shouldSetPose(BlockState state, int powerLevel) {
@@ -183,22 +175,18 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	@Override
 	protected void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		this.update(state, world, pos);
+		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) statueBlockEntity.tick();
 	}
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(pose, waterlogged, facing, powered, rainbow);
+		builder.add(pose, waterlogged, facing, power, rainbow);
 	}
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		FluidState fluidState = context.getWorld().getFluidState(context.getBlockPos());
-		return this.getDefaultState().with(pose, 0).with(waterlogged, fluidState.getFluid() == Fluids.WATER).with(facing, context.getHorizontalPlayerFacing().getOpposite()).with(powered, context.getWorld().getReceivedRedstonePower(context.getBlockPos()) > 0).with(rainbow, false);
-	}
-
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return validateTicker(type, BlockEntityRegistry.heroStatue, StatueBlockEntity::tick);
+		return this.getDefaultState().with(pose, 0).with(waterlogged, fluidState.getFluid() == Fluids.WATER).with(facing, context.getHorizontalPlayerFacing().getOpposite()).with(power, context.getWorld().getReceivedRedstonePower(context.getBlockPos())).with(rainbow, false);
 	}
 
 	@Override
@@ -221,6 +209,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 			dropStack(world, pos);
 			world.removeBlock(pos, false);
 		}
+		if (!world.isClient) world.scheduleBlockTick(pos, this, 2);
 		super.neighborUpdate(state, world, pos, sourceBlock, wireOrientation, notify);
 	}
 
@@ -268,7 +257,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 		pose = PropertyRegistry.pose;
 		waterlogged = Properties.WATERLOGGED;
 		facing = HorizontalFacingBlock.FACING;
-		powered = Properties.POWERED;
+		power = PropertyRegistry.power;
 		rainbow = PropertyRegistry.rainbow;
 	}
 }
