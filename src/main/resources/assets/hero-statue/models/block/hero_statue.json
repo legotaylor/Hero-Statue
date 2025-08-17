@@ -4,7 +4,7 @@
 	"texture_size": [128, 128],
 	"textures": {
 		"1": "hero-statue:block/hero_statue/hero_statue",
-		"particle": "block/stone"
+		"particle": "minecraft:block/stone"
 	},
 	"elements": [
 		{
@@ -22,9 +22,9 @@
 		},
 		{
 			"name": "left_arm",
-			"from": [-0.25, 1, 7],
-			"to": [3.75, 13, 11],
-			"rotation": {"angle": 0, "axis": "y", "origin": [2.75, 11, 8]},
+			"from": [-0.25, 3, 7],
+			"to": [3.75, 15, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [2.75, 13, 8]},
 			"faces": {
 				"north": {"uv": [4.5, 8.625, 5, 10.125], "texture": "#1"},
 				"east": {"uv": [4, 8.625, 4.5, 10.125], "texture": "#1"},
@@ -35,9 +35,9 @@
 			}
 		},
 		{
-			"from": [4, 10, 6],
-			"to": [4, 14, 12],
-			"rotation": {"angle": 0, "axis": "y", "origin": [3, 12, 9]},
+			"from": [4, 12, 6],
+			"to": [4, 16, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 14, 9]},
 			"faces": {
 				"north": {"uv": [9.25, 6.125, 9.25, 6.625], "texture": "#1"},
 				"east": {"uv": [8.5, 6.125, 9.25, 6.625], "texture": "#1"},
@@ -48,9 +48,9 @@
 			}
 		},
 		{
-			"from": [-1, 10, 12],
-			"to": [4, 14, 12],
-			"rotation": {"angle": 0, "axis": "y", "origin": [3, 12, 9]},
+			"from": [-1, 12, 12],
+			"to": [4, 16, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 14, 9]},
 			"faces": {
 				"north": {"uv": [6.25, 4.625, 6.875, 5.125], "texture": "#1"},
 				"east": {"uv": [6.25, 4.625, 6.25, 5.125], "texture": "#1"},
@@ -61,9 +61,9 @@
 			}
 		},
 		{
-			"from": [-1, 10, 6],
-			"to": [-1, 14, 12],
-			"rotation": {"angle": 0, "axis": "y", "origin": [3, 12, 9]},
+			"from": [-1, 12, 6],
+			"to": [-1, 16, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 14, 9]},
 			"faces": {
 				"north": {"uv": [8.75, 9.625, 8.75, 10.125], "texture": "#1"},
 				"east": {"uv": [8, 9.625, 8.75, 10.125], "texture": "#1"},
@@ -74,9 +74,9 @@
 			}
 		},
 		{
-			"from": [-1, 10, 6],
-			"to": [4, 14, 6],
-			"rotation": {"angle": 0, "axis": "y", "origin": [3, 12, 9]},
+			"from": [-1, 12, 6],
+			"to": [4, 16, 6],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 14, 9]},
 			"faces": {
 				"north": {"uv": [8.75, 3.625, 9.375, 4.125], "texture": "#1"},
 				"east": {"uv": [8.75, 3.625, 8.75, 4.125], "texture": "#1"},
@@ -87,9 +87,9 @@
 			}
 		},
 		{
-			"from": [-1, 14, 6],
-			"to": [4, 14, 12],
-			"rotation": {"angle": 0, "axis": "y", "origin": [3, 12, 9]},
+			"from": [-1, 16, 6],
+			"to": [4, 16, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 14, 9]},
 			"faces": {
 				"north": {"uv": [8.75, 8.875, 9.375, 8.875], "texture": "#1"},
 				"east": {"uv": [8, 8.875, 8.75, 8.875], "texture": "#1"},
@@ -101,9 +101,9 @@
 		},
 		{
 			"name": "left_hand",
-			"from": [1.75, 1, 9],
-			"to": [1.75, 1, 9],
-			"rotation": {"angle": 45, "axis": "x", "origin": [1.75, 1, 9]},
+			"from": [1.75, 3, 9],
+			"to": [1.75, 3, 9],
+			"rotation": {"angle": 45, "axis": "x", "origin": [1.75, 3, 9]},
 			"faces": {
 				"north": {"uv": [11.25, 0.5, 11.25, 0.5], "texture": "#1"},
 				"east": {"uv": [11.25, 0.5, 11.25, 0.5], "texture": "#1"},

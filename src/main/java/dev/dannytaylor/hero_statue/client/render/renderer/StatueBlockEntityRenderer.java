@@ -62,7 +62,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 	public void render(StatueBlockEntity entity, float tickProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
 		if (entity == null || entity.getWorld() == null) return;
 		int pose = entity.getCachedState().get(StatueBlock.pose);
-		StatuePoseModel model = this.models.get(pose);
+		StatuePoseModel model = this.models.get(HeroStatueClientConfig.instance.renderType.value().equals(StatueRenderType.FASTER) ? 0 : pose);
 		StatueRenderState renderState = getRenderState(entity);
 		ItemStack stack = entity.getStack();
 		boolean isRightHanded = pose % 2 == 0;
@@ -91,6 +91,9 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		if (!stack.isEmpty()) {
 			matrices.push();
 			matrices.scale(0.5F, 0.5F, 0.5F);
+			if (HeroStatueClientConfig.instance.renderType.value().equals(StatueRenderType.FASTER)) {
+				matrices.translate(0.0F, 0.25F, 0.0F);
+			}
 			model.base.applyTransform(matrices);
 			model.body.applyTransform(matrices);
 			(isRightHanded ? model.rightArm : model.leftArm).applyTransform(matrices);
