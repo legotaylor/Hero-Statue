@@ -13,11 +13,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 import java.util.Collection;
+import java.util.Optional;
 
-public class ConfigCommand {
+public class RequestNetworkConfigUpdateCommand {
 	public static CommandRegistrationCallback register() {
 		return (dispatcher, registryAccess, environment) -> {
-			dispatcher.register((CommandManager.literal(CommonData.idOf("config").toString())
+			dispatcher.register((CommandManager.literal(CommonData.idOf("request_config_update").toString())
 				.requires(CommandManager.requirePermissionLevel(2)))
 				.then(CommandManager.argument("targets", EntityArgumentType.players())
 					.then(CommandManager.argument("option", ConfigOptionArgumentType.configOption()).then(CommandManager.argument("value", ConfigValueArgumentType.configValue()).executes(context -> {
@@ -25,45 +26,52 @@ public class ConfigCommand {
 						Either<StatueRenderType, Boolean> value = ConfigValueArgumentType.valueOf(ConfigValueArgumentType.getConfigValue(context, "value"));
 						int retVal = 1;
 						ConfigOption option = ConfigOptionArgumentType.getConfigOption(context, "option");
+						String valueStr = value != null ? value.toString() : "null";
 						if (value != null) {
 							switch (option) {
 								case statueRenderType -> {
 									if (value.left().isEmpty() || value.right().isPresent()) {
 										retVal = 0;
 									} else {
-										value.ifLeft((statueRenderType) -> {
+										Optional<StatueRenderType> left = value.left();
+										if (left.isPresent()) {
+											valueStr = left.get().asString();
 											for (Entity entity : targets) {
 												if (entity instanceof ServerPlayerEntity player) {
-													CommonNetwork.sendUpdateConfig(player, ConfigOption.statueRenderType, statueRenderType);
+													CommonNetwork.sendUpdateConfig(player, ConfigOption.statueRenderType, left.get());
 												}
 											}
-										});
+										}
 									}
 								}
 								case renderEyes -> {
 									if (value.left().isPresent() || value.right().isEmpty()) {
 										retVal = 0;
 									} else {
-										value.ifRight((bool) -> {
+										Optional<Boolean> right = value.right();
+										if (right.isPresent()) {
+											valueStr = right.get().toString();
 											for (Entity entity : targets) {
 												if (entity instanceof ServerPlayerEntity player) {
-													CommonNetwork.sendUpdateConfig(player, ConfigOption.renderEyes, bool);
+													CommonNetwork.sendUpdateConfig(player, ConfigOption.renderEyes, right.get());
 												}
 											}
-										});
+										}
 									}
 								}
 								case rainbowMode -> {
 									if (value.left().isPresent() || value.right().isEmpty()) {
 										retVal = 0;
 									} else {
-										value.ifRight((bool) -> {
+										Optional<Boolean> right = value.right();
+										if (right.isPresent()) {
+											valueStr = right.get().toString();
 											for (Entity entity : targets) {
 												if (entity instanceof ServerPlayerEntity player) {
-													CommonNetwork.sendUpdateConfig(player, ConfigOption.rainbowMode, bool);
+													CommonNetwork.sendUpdateConfig(player, ConfigOption.rainbowMode, right.get());
 												}
 											}
-										});
+										}
 									}
 								}
 								default -> retVal = 0;
@@ -71,9 +79,10 @@ public class ConfigCommand {
 						} else {
 							retVal = 0;
 						}
-						if (retVal == 0) context.getSource().sendFeedback(() -> Text.translatable("chat." + CommonData.id + ".update_config.fail" + (targets.size() > 1 ? ".multiple" : ""), Text.translatable("option." + CommonData.id + "." + option.asString()), (targets.size() > 1 ? targets.size() : targets.stream().toList().getFirst().getDisplayName()), value != null ? value.toString() : "null"), true);
+						Text valueText = Text.literal(valueStr);
+						if (retVal == 0) context.getSource().sendFeedback(() -> Text.translatable("chat." + CommonData.id + ".update_config.fail" + (targets.size() > 1 ? ".multiple" : ""), Text.translatable("option." + CommonData.id + "." + option.asString()), valueText, (targets.size() > 1 ? targets.size() : targets.stream().toList().getFirst().getDisplayName()), value != null ? value.toString() : "null"), true);
 						else {
-							context.getSource().sendFeedback(() -> Text.translatable("chat." + CommonData.id + ".update_config.success" + (targets.size() > 1 ? ".multiple" : ""), Text.translatable("option." + CommonData.id + "." + option.asString()), (targets.size() > 1 ? targets.size() : targets.stream().toList().getFirst().getDisplayName())), true);
+							context.getSource().sendFeedback(() -> Text.translatable("chat." + CommonData.id + ".update_config.success" + (targets.size() > 1 ? ".multiple" : ""), Text.translatable("option." + CommonData.id + "." + option.asString()), valueText, (targets.size() > 1 ? targets.size() : targets.stream().toList().getFirst().getDisplayName())), true);
 						}
 						return retVal;
 					})))

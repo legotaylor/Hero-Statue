@@ -23,7 +23,7 @@ public class CommandRegistry {
 	}
 
 	private static void registerCommands() {
-		register(ConfigCommand.register());
+		register(RequestNetworkConfigUpdateCommand.register());
 	}
 
 	private static void registerArguments() {

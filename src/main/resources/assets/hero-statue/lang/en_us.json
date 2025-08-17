@@ -62,10 +62,10 @@
 	"key.hero-statue.toggle_eye_overlay": "Toggle Eye Overlay",
 	"key.hero-statue.toggle_rainbow_mode": "Toggle §4R§6A§eI§aN§9B§dO§5W§r MODE",
 
-	"chat.hero-statue.update_config.success": "Requested %s config to be set for %s.",
-	"chat.hero-statue.update_config.success.multiple": "Requested %s config to be set for %s player(s).",
-	"chat.hero-statue.update_config.fail": "Failed to request %s config to be set for %s, was not expecting this data! (%s)",
-	"chat.hero-statue.update_config.fail.multiple": "Failed to request %s config to be set for %s player(s), was not expecting this data! (%s)",
+	"chat.hero-statue.update_config.success": "Requested %s config to be set to %s for %s.",
+	"chat.hero-statue.update_config.success.multiple": "Requested %s config to be set to %s for %s player(s).",
+	"chat.hero-statue.update_config.fail": "Failed to request %s config to be set to %s for %s, was not expecting this data! (%s)",
+	"chat.hero-statue.update_config.fail.multiple": "Failed to request %s config to be set to %s for %s player(s), was not expecting this data! (%s)",
 
 	"option.hero-statue.statue_render_type": "Statue Render Type",
 	"option.hero-statue.render_eyes": "Eye Overlay",
