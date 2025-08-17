@@ -12,6 +12,7 @@ import dev.dannytaylor.hero_statue.client.command.ClientCommandRegistry;
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
 import dev.dannytaylor.hero_statue.client.event.ClientEvents;
 import dev.dannytaylor.hero_statue.client.item_group.ItemGroupRegistry;
+import dev.dannytaylor.hero_statue.client.keybinding.KeybindingRegistry;
 import dev.dannytaylor.hero_statue.client.network.ClientNetwork;
 import dev.dannytaylor.hero_statue.client.render.Render;
 import net.fabricmc.api.ClientModInitializer;
@@ -25,5 +26,6 @@ public class HeroStatueClient implements ClientModInitializer {
 		BlockRegistryClient.bootstrap();
 		ItemGroupRegistry.bootstrap();
 		ClientNetwork.bootstrap();
+		KeybindingRegistry.bootstrap();
 	}
 }

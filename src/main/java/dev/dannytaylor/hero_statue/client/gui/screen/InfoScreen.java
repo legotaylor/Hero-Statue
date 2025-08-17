@@ -16,7 +16,7 @@ import net.minecraft.client.gui.widget.ThreePartsLayoutWidget;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
-public class InfoScreen extends Screen {
+public class InfoScreen extends HeroStatueScreen {
 	private final Screen parent;
 	public final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this);
 	public final double scrollY;

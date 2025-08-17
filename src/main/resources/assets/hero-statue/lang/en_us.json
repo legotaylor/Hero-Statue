@@ -33,5 +33,11 @@
 	"hero-statue.rainbow_mode.hover": "Inverts the jeb_ easter egg.",
 	"hero-statue.rainbow_mode.message": "Toggled %s to %s!",
 
-	"hero-statue.donate": "Donate (Ko-Fi/legotaylor)"
+	"hero-statue.donate": "Donate (Ko-Fi/legotaylor)",
+
+	"key.categories.hero-statue.config": "Hero Statue",
+	"key.hero-statue.cycle_render_type": "Cycle Render Type",
+	"key.hero-statue.open_config": "Open Config",
+	"key.hero-statue.toggle_eye_overlay": "Toggle Eye Overlay",
+	"key.hero-statue.toggle_rainbow_mode": "Toggle §4R§6A§eI§aN§9B§dO§5W§r MODE"
 }

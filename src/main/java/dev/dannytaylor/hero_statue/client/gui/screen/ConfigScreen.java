@@ -1,3 +1,10 @@
+/*
+    Hero Statue
+    Contributor(s): dannytaylor
+    Github: https://github.com/legotaylor/hero-statue
+    Licence: GNU LGPLv3
+*/
+
 package dev.dannytaylor.hero_statue.client.gui.screen;
 
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
@@ -16,7 +23,7 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigScreen extends Screen {
+public class ConfigScreen extends HeroStatueScreen {
 	public final Screen parent;
 	public final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this);
 	public final double scrollY;

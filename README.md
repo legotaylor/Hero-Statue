@@ -1,10 +1,19 @@
 # Hero Statue
-Adds a new block 'Hero Statue', which can hold one item, and can be posed using redstone.
+Adds a new block called the `Hero Statue`, which can hold an item, and be posed using redstone.  
 
+> **Important**  
+> If you have a slower computer, have a lot of statues placed down, or are using a resource intensive shader pack, you may want to change your statue render type config to `Basic` (Use [ModMenu](https://modrinth.com/mod/modmenu)).  
+> This renders statues using block models, which is a lot faster, however it does disable visual posing.  
+>
+> If you use Shaders, read [Known Issues: Shader Rendering Pipelines](#shader-rendering-pipelines), and check [Tested Shader Packs](#tested-shader-packs) below.  
 
-## Known Issues  
-### Shader Rendering Pipelines  
-#### [Iris Shaders](https://www.irisshaders.dev/)  
+## Config
+You can edit the config by using [ModMenu](https://modrinth.com/mod/modmenu), or our `Open Config` keybinding (defaulted to `Home`).  
+If you are using the `Open Config` keybinding, you don't need to be in a world, you just need to not be interacting with a text box.  
+
+## Known Issues
+### Shader Rendering Pipelines
+#### [Iris Shaders](https://www.irisshaders.dev/)
 Iris overrides core shader pipelines when rendering shader packs, and doesn't provide any documentation for how to add new overrides.  
 
 As a workaround, we've copied the `ENTITY_CUTOUT` and `ENTITY_EYES` pipeline overrides. We picked these pipelines as they provide a similar effect to our custom pipelines, however it's not 1:1 and some features such as the `jeb_` easter egg won't be rendered when a shader pack is active. This functionality matches the `Vanilla` render type. See [Hero-Statue#1](https://github.com/legotaylor/Hero-Statue/issues/1).  
@@ -13,9 +22,9 @@ Rendering should work as intended when no shader packs are in use.
 
 > **Developer's Note**  
 > You may encounter z-fighting with some shader packs.  
-> You can disable our eyes layer using our config if desired (Use [ModMenu](https://modrinth.com/mod/modmenu)).  
+> You can disable our eyes layer using our config if desired (Use [ModMenu](https://modrinth.com/mod/modmenu), or the `Open Config` keybinding in game to open the config screen).  
 
-##### Tested Shader Packs  
+##### Tested Shader Packs
 | Shader Pack                                                                                                                                   |                                                                                                                                                                                              |
 |-----------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Complementary [Unbound](https://modrinth.com/shader/complementary-unbound)/[Reimagined](https://modrinth.com/shader/complementary-reimagined) | No visual issues found.¹                                                                                                                                                                     |
@@ -23,11 +32,12 @@ Rendering should work as intended when no shader packs are in use.
 | [BSL Shaders](https://modrinth.com/shader/bsl-shaders)                                                                                        | No visual issues found.¹                                                                                                                                                                     |
 | [Rudimentary](https://modrinth.com/shader/rudimentary-ps1)                                                                                    | Our eyes layer is offset when Vertex Snapping is enabled², which does cause flickering when the player moves. Interestingly, this shader also renders the eyes layer over the player's hand. |
 | [VECTOR](https://modrinth.com/shader/vector)                                                                                                  | No visual issues found.¹                                                                                                                                                                     |
+| [Super Duper Vanilla](https://modrinth.com/shader/super-duper-vanilla)                                                                        | No visual issues found.¹                                                                                                                                                                     |
 
 ¹ Except for the above-mentioned render pipeline workaround.  
 ² You can disable Vertex Snapping in the shader pack settings, under Style.  
 
-##  
+##
 For technical details see [here](https://github.com/legotaylor/Hero-Statue/blob/master/DEVELOPER_README.md).  
 
 
