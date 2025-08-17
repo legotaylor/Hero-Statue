@@ -1,6 +1,19 @@
 {
-  "model": {
-    "type": "minecraft:model",
-    "model": "hero-statue:item/hero_statue_vanity"
-  }
+	"model": {
+		"type": "select",
+		"property": "custom_model_data",
+		"fallback": {
+			"type": "model",
+			"model": "hero-statue:item/hero_statue_vanity"
+		},
+		"cases": [
+			{
+				"when": "hero-statue:powered",
+				"model": {
+					"type": "model",
+					"model": "hero-statue:item/hero_statue_vanity_powered"
+				}
+			}
+		]
+	}
 }

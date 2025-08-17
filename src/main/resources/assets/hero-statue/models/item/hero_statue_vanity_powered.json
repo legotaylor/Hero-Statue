@@ -1,0 +1,6 @@
+{
+	"parent": "hero-statue:item/hero_statue_vanity",
+	"textures": {
+		"1": "hero-statue:block/hero_statue/hero_statue_powered"
+	}
+}
