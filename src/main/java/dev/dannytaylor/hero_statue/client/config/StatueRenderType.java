@@ -10,8 +10,7 @@ package dev.dannytaylor.hero_statue.client.config;
 public enum StatueRenderType {
 	FANCY("fancy"),
 	FAST("fast"),
-	FASTER("faster"),
-	OFF("off");
+	FASTER("faster");
 
 	private final String id;
 

@@ -1,6 +1,7 @@
 package dev.dannytaylor.hero_statue.client.gui.screen;
 
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
+import dev.dannytaylor.hero_statue.client.config.StatueRenderType;
 import dev.dannytaylor.hero_statue.client.data.ClientData;
 import dev.dannytaylor.hero_statue.client.gui.widget.ConfigWidget;
 import net.minecraft.client.MinecraftClient;
@@ -63,7 +64,10 @@ public class ConfigScreen extends Screen {
 		List<ClickableWidget> options = new ArrayList<>();
 		options.add(ButtonWidget.builder(Text.translatable("hero-statue.about").append(Text.translatable("hero-statue.config.more")), (button) -> ClientData.minecraft.setScreen(new InfoScreen(getRefreshScreen()))).build());
 		options.add(ButtonWidget.builder(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.render_type"), Text.translatable("hero-statue.render_type." + HeroStatueClientConfig.instance.renderType.value().getId())), (button) -> {
-			HeroStatueClientConfig.instance.renderType.setValue(HeroStatueClientConfig.instance.renderType.value().next());
+			StatueRenderType currentRenderType = HeroStatueClientConfig.instance.renderType.value();
+			StatueRenderType nextRenderType = HeroStatueClientConfig.instance.renderType.value().next();
+			HeroStatueClientConfig.instance.renderType.setValue(nextRenderType);
+			if (currentRenderType.equals(StatueRenderType.FASTER) || nextRenderType.equals(StatueRenderType.FASTER)) ClientData.minecraft.worldRenderer.reload();
 			button.setMessage(Text.translatable("hero-statue.config_title", Text.translatable("hero-statue.render_type"), Text.translatable("hero-statue.render_type." + HeroStatueClientConfig.instance.renderType.value().getId())));
 			button.setTooltip(Tooltip.of(Text.translatable("hero-statue.render_type.hover", Text.translatable("hero-statue.render_type." + HeroStatueClientConfig.instance.renderType.value().getId() + ".hover"))));
 		}).tooltip(Tooltip.of(Text.translatable("hero-statue.render_type.hover", Text.translatable("hero-statue.render_type." + HeroStatueClientConfig.instance.renderType.value().getId() + ".hover")))).build());

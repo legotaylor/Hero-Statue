@@ -8,6 +8,8 @@
 package dev.dannytaylor.hero_statue.common.block;
 
 import com.mojang.serialization.MapCodec;
+import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
+import dev.dannytaylor.hero_statue.client.config.StatueRenderType;
 import dev.dannytaylor.hero_statue.client.gamerule.GameruleCache;
 import dev.dannytaylor.hero_statue.common.gamerule.GameruleRegistry;
 import dev.dannytaylor.hero_statue.common.sound.SoundRegistry;
@@ -83,7 +85,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		if (GameruleCache.allowPlayerChangeStatuePose || (world instanceof ServerWorld serverWorld && serverWorld.getGameRules().getBoolean(GameruleRegistry.allowPlayerChangeStatuePose))) {
 			if (player.getAbilities().allowModifyWorld) {
-				setPose(state, world, pos, (state.get(pose) + 1) % 15);
+				world.setBlockState(pos, setPose(state, world, pos, (state.get(pose) + 1) % 15), 3);
 				return ActionResult.SUCCESS;
 			}
 		}
@@ -191,7 +193,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.INVISIBLE;
+		return HeroStatueClientConfig.instance.renderType.value().equals(StatueRenderType.FASTER) ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
 	}
 
 	@Override

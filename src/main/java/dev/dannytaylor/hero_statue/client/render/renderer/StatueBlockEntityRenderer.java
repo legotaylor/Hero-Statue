@@ -17,6 +17,7 @@ import dev.dannytaylor.hero_statue.client.render.pipeline.RenderLayerRegistry;
 import dev.dannytaylor.hero_statue.common.block.StatueBlock;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
+import dev.dannytaylor.hero_statue.common.item.ItemRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -37,6 +38,13 @@ import net.minecraft.util.math.Vec3d;
 import java.util.List;
 
 public class StatueBlockEntityRenderer<T extends StatueBlockEntity> implements BlockEntityRenderer<T> {
+	private final ItemStack modelStack;
+	private final ItemStack modelStackPowered;
+	private final ItemDisplayContext fasterModelDisplayContext = ItemDisplayContext.HEAD;
+	private final ItemDisplayContext itemDisplayContextLeft = ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
+	private final ItemDisplayContext itemDisplayContextRight = ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
+	private static final List<String> eeFlipUpsideDown = List.of("Dinnerbone", "Grumm", "legotaylor", "dannnytaylor");
+	private static final List<String> eeRainbowMode = List.of("jeb_", "RAINBOW MODE");
 	private final List<StatuePoseModel> models;
 	public StatueBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 		this.models = List.of(
@@ -56,55 +64,50 @@ public class StatueBlockEntityRenderer<T extends StatueBlockEntity> implements B
 			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
 			new StatuePoseFourteenModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFourteen))
 		);
+		this.modelStack = ItemRegistry.heroStatue.getDefaultStack();
+		this.modelStackPowered = ItemRegistry.heroStatue.getDefaultStack();
+		this.modelStackPowered.set(DataComponentTypes.CUSTOM_MODEL_DATA, new CustomModelDataComponent(List.of(), List.of(), List.of("hero-statue:powered"), List.of()));
 	}
 
 	@Override
 	public void render(StatueBlockEntity entity, float tickProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
 		if (entity == null || entity.getWorld() == null) return;
+		StatueRenderType renderType = HeroStatueClientConfig.instance.renderType.value();
 		int pose = entity.getCachedState().get(StatueBlock.pose);
-		StatuePoseModel model = this.models.get(HeroStatueClientConfig.instance.renderType.value().equals(StatueRenderType.FASTER) ? 0 : pose);
+		StatuePoseModel model = this.models.get(renderType.equals(StatueRenderType.FASTER) ? 0 : pose);
 		StatueRenderState renderState = getRenderState(entity);
 		ItemStack stack = entity.getStack();
 		boolean isRightHanded = pose % 2 == 0;
 		matrices.push();
 		matrices.translate(0.5F, 0.75F, 0.5F);
 		fixRotation(entity, matrices);
-		rotateIfUpsideDown(entity, matrices);
-		matrices.push();
-		switch (HeroStatueClientConfig.instance.renderType.value()) {
-			case FASTER -> {
-				matrices.translate(0.0F, shouldFlipModelUpsideDown(entity) ? 1.042F : 1.16F, 0.0F);
-				matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
-				ItemStack modelStack = entity.getCachedState().getBlock().asItem().getDefaultStack();
-				if (renderState.powered() > 0) modelStack.set(DataComponentTypes.CUSTOM_MODEL_DATA, new CustomModelDataComponent(List.of(), List.of(), List.of("hero-statue:powered"), List.of()));
-				ClientData.minecraft.getItemRenderer().renderItem(modelStack, ItemDisplayContext.HEAD, light, overlay, matrices, vertexConsumers, entity.getWorld(), 1);
-			}
-			case OFF -> {}
-			// FANCY AND FAST
-			default -> {
-				matrices.scale(0.5F, 0.5F, 0.5F);
-				renderModel(entity, model, matrices, vertexConsumers, light, overlay, renderState);
-				renderEyes(entity, model, matrices, vertexConsumers, light, overlay, renderState);
-			}
+		if (isPosableRenderType(renderType)) {
+			rotateIfUpsideDown(entity, matrices);
+			matrices.push();
+			matrices.scale(0.5F, 0.5F, 0.5F);
+			renderModel(entity, model, matrices, vertexConsumers, light, overlay, renderState);
+			renderEyes(entity, model, matrices, vertexConsumers, light, overlay, renderState);
+			matrices.pop();
 		}
-		matrices.pop();
 		if (!stack.isEmpty()) {
 			matrices.push();
 			matrices.scale(0.5F, 0.5F, 0.5F);
-			if (HeroStatueClientConfig.instance.renderType.value().equals(StatueRenderType.FASTER)) {
-				matrices.translate(0.0F, 0.25F, 0.0F);
-			}
-			model.base.applyTransform(matrices);
-			model.body.applyTransform(matrices);
-			(isRightHanded ? model.rightArm : model.leftArm).applyTransform(matrices);
-			(isRightHanded ? model.rightHand : model.leftHand).applyTransform(matrices);
-			matrices.translate(0.0F, 0.0F, -0.05F);
-			matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90));
-			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-			ClientData.minecraft.getItemRenderer().renderItem(stack, isRightHanded ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, light, overlay, matrices, vertexConsumers, entity.getWorld(), 1);
+			if (renderType.equals(StatueRenderType.FASTER)) matrices.translate(0.0F, 0.25F, 0.0F);
+			applyItemTransformations(model, matrices, isRightHanded);
+			ClientData.minecraft.getItemRenderer().renderItem(stack, isRightHanded ? itemDisplayContextRight : itemDisplayContextLeft, light, overlay, matrices, vertexConsumers, entity.getWorld(), 1);
 			matrices.pop();
 		}
 		matrices.pop();
+	}
+
+	private static void applyItemTransformations(StatuePoseModel model, MatrixStack matrices, boolean isRightHanded) {
+		model.base.applyTransform(matrices);
+		model.body.applyTransform(matrices);
+		(isRightHanded ? model.rightArm : model.leftArm).applyTransform(matrices);
+		(isRightHanded ? model.rightHand : model.leftHand).applyTransform(matrices);
+		matrices.translate(0.0F, 0.0F, -0.05F);
+		matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90));
+		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
 	}
 
 	private static void fixRotation(StatueBlockEntity entity, MatrixStack matrices) {
@@ -159,7 +162,7 @@ public class StatueBlockEntityRenderer<T extends StatueBlockEntity> implements B
 		Text stackName = entity.getStack().get(DataComponentTypes.CUSTOM_NAME);
 		if (stackName != null) {
 			String string = Formatting.strip(stackName.getString());
-			return List.of("Dinnerbone", "Grumm", "legotaylor", "dannnytaylor").contains(string);
+			return eeFlipUpsideDown.contains(string);
 		}
 		return false;
 	}
@@ -171,7 +174,7 @@ public class StatueBlockEntityRenderer<T extends StatueBlockEntity> implements B
 		if (state.get(StatueBlock.rainbow)) rainbowMode = !rainbowMode;
 		if (stackName != null) {
 			String string = Formatting.strip(stackName.getString());
-			if (List.of("jeb_", "RAINBOW MODE").contains(string)) {
+			if (eeRainbowMode.contains(string)) {
 				rainbowMode = !rainbowMode;
 			}
 		}
@@ -190,5 +193,9 @@ public class StatueBlockEntityRenderer<T extends StatueBlockEntity> implements B
 			CommonData.idOf("textures/block/hero_statue/hero_statue_eyes.png"),
 			CommonData.idOf("textures/block/hero_statue/hero_statue_eyes_powered.png")
 		);
+	}
+
+	private boolean isPosableRenderType(StatueRenderType renderType) {
+		return renderType.equals(StatueRenderType.FANCY) || renderType.equals(StatueRenderType.FAST);
 	}
 }
