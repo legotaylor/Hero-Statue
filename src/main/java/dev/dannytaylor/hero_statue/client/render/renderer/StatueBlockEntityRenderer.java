@@ -71,7 +71,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 		matrices.push();
 		switch (HeroStatueClientConfig.instance.renderType.value()) {
 			case FASTER -> {
-				matrices.translate(0.0F, shouldFlipModelUpsideDown(entity) ? 1.31F : 1.16F, 0.0F);
+				matrices.translate(0.0F, shouldFlipModelUpsideDown(entity) ? 1.042F : 1.16F, 0.0F);
 				matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
 				ClientData.minecraft.getItemRenderer().renderItem(entity.getCachedState().getBlock().asItem().getDefaultStack(), ItemDisplayContext.HEAD, light, overlay, matrices, vertexConsumers, entity.getWorld(), 1);
 			}
@@ -106,7 +106,7 @@ public class StatueBlockEntityRenderer implements BlockEntityRenderer<StatueBloc
 	}
 	private static void rotateIfUpsideDown(StatueBlockEntity entity, MatrixStack matrices) {
 		if (shouldFlipModelUpsideDown(entity)) {
-			matrices.translate(0.0F, 0.749F, 0.0F);
+			matrices.translate(0.0F, 0.37F, 0.0F);
 			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
 		}
 	}
