@@ -59,8 +59,12 @@ Rendering should work as intended when no shader packs are in use.
 ¹ Except for the above-mentioned render pipeline workaround.  
 ² You can disable Vertex Snapping in the shader pack settings, under Style.  
 
+### Basic Render Type Poses
+The basic render type doesn't render the poses, rainbow, and upside down easter eggs.  
+I would love to update this in the future to add the poses to the basic render type, however this is easier said than done due to how block model elements rotate.  
 
-##
+
+## Technical
 For technical details see [here](https://github.com/legotaylor/Hero-Statue/blob/master/DEVELOPER_README.md).  
 
 
