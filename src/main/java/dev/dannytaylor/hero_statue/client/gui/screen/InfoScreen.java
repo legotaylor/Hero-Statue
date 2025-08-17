@@ -15,11 +15,11 @@ public class InfoScreen extends HeroStatueScreen {
 	public InfoWidget info;
 
 	public InfoScreen(Screen parent) {
-		super("about", parent);
+		super("info", parent);
 	}
 
 	public InfoScreen(Screen parent, double scrollY) {
-		super("about", parent, scrollY);
+		super("info", parent, scrollY);
 	}
 
 	public void initBody() {

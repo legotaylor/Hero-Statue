@@ -17,6 +17,9 @@ You can register code to execute on the client/server when they receive these pa
 - **IdBooleanPayload** (Identifier, boolean)
 	- `ClientEvents.Network.idBoolean.register(Identifier.of("example", "bid_id_boolean"), (payload, context) -> {});`
 	- `CommonEvents.Network.idBoolean.register(Identifier.of("example", "bid_id_boolean"), (payload, context) -> {});`
+- **IdStatueRenderTypePayload** (Identifier, StatueRenderType)
+	- `ClientEvents.Network.idStatueRenderType.register(Identifier.of("example", "bid_id_statue_render_type"), (payload, context) -> {});`
+	- `CommonEvents.Network.idStatueRenderType.register(Identifier.of("example", "bid_id_statue_render_type"), (payload, context) -> {});`
 - **RequestPayload** (Identifier)
 	- `ClientEvents.Network.request.register(Identifier.of("example", "bid_request"), (payload, context) -> {});`
 	- `CommonEvents.Network.request.register(Identifier.of("example", "bid_request"), (payload, context) -> {});`

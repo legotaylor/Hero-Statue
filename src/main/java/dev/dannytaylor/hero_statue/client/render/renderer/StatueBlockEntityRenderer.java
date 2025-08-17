@@ -10,7 +10,7 @@ package dev.dannytaylor.hero_statue.client.render.renderer;
 import dev.dannytaylor.hero_statue.client.block.StatueRenderState;
 import dev.dannytaylor.hero_statue.client.compatibility.HeroStatueIris;
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
-import dev.dannytaylor.hero_statue.client.config.StatueRenderType;
+import dev.dannytaylor.hero_statue.common.config.StatueRenderType;
 import dev.dannytaylor.hero_statue.client.data.ClientData;
 import dev.dannytaylor.hero_statue.client.render.model.*;
 import dev.dannytaylor.hero_statue.client.render.pipeline.RenderLayerRegistry;

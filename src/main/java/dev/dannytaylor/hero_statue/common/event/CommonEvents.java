@@ -7,10 +7,7 @@
 
 package dev.dannytaylor.hero_statue.common.event;
 
-import dev.dannytaylor.hero_statue.common.network.payloads.C2SUpdateChunkStatuesPayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.C2SUpdateStatuePayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.IdBooleanPayload;
-import dev.dannytaylor.hero_statue.common.network.payloads.RequestPayload;
+import dev.dannytaylor.hero_statue.common.network.payloads.*;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 
@@ -34,16 +31,18 @@ public class CommonEvents {
 		}
 	}
 	public static class Event<T> extends GenericEvent<Identifier, T> {}
-	public static class Network {
-		public static final CommonEvents.Event<ServerPlayNetworking.PlayPayloadHandler<C2SUpdateChunkStatuesPayload>> updateChunkStatues;
-		public static final CommonEvents.Event<ServerPlayNetworking.PlayPayloadHandler<C2SUpdateStatuePayload>> updateStatue;
-		public static final CommonEvents.Event<ServerPlayNetworking.PlayPayloadHandler<IdBooleanPayload>> idBoolean;
-		public static final CommonEvents.Event<ServerPlayNetworking.PlayPayloadHandler<RequestPayload>> request;
+	public static class ServerNetwork {
+		public static final Event<ServerPlayNetworking.PlayPayloadHandler<C2SUpdateChunkStatuesPayload>> updateChunkStatues;
+		public static final Event<ServerPlayNetworking.PlayPayloadHandler<C2SUpdateStatuePayload>> updateStatue;
+		public static final Event<ServerPlayNetworking.PlayPayloadHandler<IdBooleanPayload>> idBoolean;
+		public static final Event<ServerPlayNetworking.PlayPayloadHandler<IdStatueRenderTypePayload>> idStatueRenderType;
+		public static final Event<ServerPlayNetworking.PlayPayloadHandler<RequestPayload>> request;
 		static {
-			updateChunkStatues = new CommonEvents.Event<>();
-			updateStatue = new CommonEvents.Event<>();
-			idBoolean = new CommonEvents.Event<>();
-			request = new CommonEvents.Event<>();
+			updateChunkStatues = new Event<>();
+			updateStatue = new Event<>();
+			idBoolean = new Event<>();
+			idStatueRenderType = new Event<>();
+			request = new Event<>();
 		}
 	}
 	public static void bootstrap() {}

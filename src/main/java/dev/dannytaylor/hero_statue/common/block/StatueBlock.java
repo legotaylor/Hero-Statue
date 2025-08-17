@@ -9,7 +9,7 @@ package dev.dannytaylor.hero_statue.common.block;
 
 import com.mojang.serialization.MapCodec;
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
-import dev.dannytaylor.hero_statue.client.config.StatueRenderType;
+import dev.dannytaylor.hero_statue.common.config.StatueRenderType;
 import dev.dannytaylor.hero_statue.client.gamerule.GameruleCache;
 import dev.dannytaylor.hero_statue.common.gamerule.GameruleRegistry;
 import dev.dannytaylor.hero_statue.common.sound.SoundRegistry;

@@ -12,8 +12,7 @@
 	"hero-statue.config_title": "%s: %s",
 	"hero-statue.config.more": "...",
 
-	"hero-statue.about": "About",
-
+	"hero-statue.info": "About",
 	"hero-statue.info.description": "Adds a new block called the §nHero Statue§r, which can hold an item, and be posed using redstone.",
 	"hero-statue.info.important": "§f§lImportant§r\nIf you have a slower computer, have a lot of statues placed down, or are using a resource intensive shader pack, you may want to change your statue render type config to §nBasic§r.\nThis renders statues using block models, which is a lot faster, however it does disable visual posing.",
 	"hero-statue.info.features": "§f§lFeatures§r",
@@ -52,11 +51,23 @@
 	"hero-statue.rainbow_mode.hover": "Inverts the jeb_ easter egg.",
 	"hero-statue.rainbow_mode.message": "Toggled %s to %s!",
 
+	"hero-statue.allow_network_config_updates": "Allow Network Config Updates",
+	"hero-statue.allow_network_config_updates.hover": "Allows server operators to remotely change your config options, except for this one.",
+
 	"hero-statue.donate": "Donate (Ko-Fi/legotaylor)",
 
 	"key.categories.hero-statue.config": "Hero Statue",
-	"key.hero-statue.cycle_render_type": "Cycle Render Type",
+	"key.hero-statue.cycle_render_type": "Cycle Statue Render Type",
 	"key.hero-statue.open_config": "Open Config",
 	"key.hero-statue.toggle_eye_overlay": "Toggle Eye Overlay",
-	"key.hero-statue.toggle_rainbow_mode": "Toggle §4R§6A§eI§aN§9B§dO§5W§r MODE"
+	"key.hero-statue.toggle_rainbow_mode": "Toggle §4R§6A§eI§aN§9B§dO§5W§r MODE",
+
+	"chat.hero-statue.update_config.success": "Requested %s config to be set for %s.",
+	"chat.hero-statue.update_config.success.multiple": "Requested %s config to be set for %s player(s).",
+	"chat.hero-statue.update_config.fail": "Failed to request %s config to be set for %s, was not expecting this data! (%s)",
+	"chat.hero-statue.update_config.fail.multiple": "Failed to request %s config to be set for %s player(s), was not expecting this data! (%s)",
+
+	"option.hero-statue.statue_render_type": "Statue Render Type",
+	"option.hero-statue.render_eyes": "Eye Overlay",
+	"option.hero-statue.rainbow_mode": "§4R§6A§eI§aN§9B§dO§5W§r MODE"
 }

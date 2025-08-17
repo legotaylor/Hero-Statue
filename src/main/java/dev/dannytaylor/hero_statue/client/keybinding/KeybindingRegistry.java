@@ -94,7 +94,7 @@ public class KeybindingRegistry {
 	}
 
 	public static KeyBinding register(String namespace, String category, String key, int keyCode) {
-		return KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + namespace + "." + key, InputUtil.Type.KEYSYM, keyCode, "key.categories." + namespace + "." + category));
+		return KeyBindingHelper.registerKeyBinding(new KeyBinding("identifier." + namespace + "." + key, InputUtil.Type.KEYSYM, keyCode, "identifier.categories." + namespace + "." + category));
 	}
 
 	static {

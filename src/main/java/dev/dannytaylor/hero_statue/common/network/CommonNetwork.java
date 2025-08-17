@@ -9,6 +9,8 @@ package dev.dannytaylor.hero_statue.common.network;
 
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.block.StatueData;
+import dev.dannytaylor.hero_statue.common.config.StatueRenderType;
+import dev.dannytaylor.hero_statue.common.config.ConfigOption;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
 import dev.dannytaylor.hero_statue.common.event.CommonEvents;
 import dev.dannytaylor.hero_statue.common.gamerule.GameruleCache;
@@ -33,10 +35,14 @@ public class CommonNetwork {
 	public static final Identifier s2cStatue;
 	public static final Identifier s2cStatueChunk;
 	public static final Identifier bidIdBoolean;
+	public static final Identifier bidIdStatueRenderType;
 	public static final Identifier bidRequest;
 
 	public static final Identifier request_gameRules;
 	public static final Identifier gamerule_allowPlayerChangeStatuePose;
+	public static final Identifier config_updateStatueRenderType;
+	public static final Identifier config_updateRenderEyes;
+	public static final Identifier config_updateRainbowMode;
 
 	private static void registerChannels() {
 		try {
@@ -45,12 +51,14 @@ public class CommonNetwork {
 			PayloadTypeRegistry.playC2S().register(C2SUpdateStatuePayload.id, C2SUpdateStatuePayload.packetCodec);
 
 			// Server to Client
-			PayloadTypeRegistry.playS2C().register(S2CUpdateStatuePayload.id, S2CUpdateStatuePayload.packetCodec);
 			PayloadTypeRegistry.playS2C().register(S2CUpdateChunkStatuesPayload.id, S2CUpdateChunkStatuesPayload.packetCodec);
+			PayloadTypeRegistry.playS2C().register(S2CUpdateStatuePayload.id, S2CUpdateStatuePayload.packetCodec);
 
 			// Bi-directional
 			PayloadTypeRegistry.playC2S().register(IdBooleanPayload.id, IdBooleanPayload.packetCodec);
 			PayloadTypeRegistry.playS2C().register(IdBooleanPayload.id, IdBooleanPayload.packetCodec);
+			PayloadTypeRegistry.playC2S().register(IdStatueRenderTypePayload.id, IdStatueRenderTypePayload.packetCodec);
+			PayloadTypeRegistry.playS2C().register(IdStatueRenderTypePayload.id, IdStatueRenderTypePayload.packetCodec);
 			PayloadTypeRegistry.playC2S().register(RequestPayload.id, RequestPayload.packetCodec);
 			PayloadTypeRegistry.playS2C().register(RequestPayload.id, RequestPayload.packetCodec);
 		} catch (Exception error) {
@@ -60,7 +68,7 @@ public class CommonNetwork {
 
 	private static void registerEvents() {
 		try {
-			CommonEvents.Network.updateStatue.register(s2cStatue, (payload, context) -> {
+			CommonEvents.ServerNetwork.updateStatue.register(s2cStatue, (payload, context) -> {
 				ServerWorld world = context.player().getWorld();
 				BlockPos blockPos = payload.blockPos();
 				if (payload.updateAll()) {
@@ -69,7 +77,7 @@ public class CommonNetwork {
 					}
 				} else sendS2CStatue(context.player(), world, blockPos);
 			});
-			CommonEvents.Network.updateChunkStatues.register(s2cStatue, (payload, context) -> {
+			CommonEvents.ServerNetwork.updateChunkStatues.register(s2cStatue, (payload, context) -> {
 				ServerWorld world = context.player().getWorld();
 				ChunkPos chunkPos = payload.chunkPos();
 				if (payload.updateAll()) {
@@ -78,7 +86,7 @@ public class CommonNetwork {
 					}
 				} else sendS2CStatueChunk(context.player(), world, chunkPos);
 			});
-			CommonEvents.Network.request.register(bidRequest, (payload, context) -> {
+			CommonEvents.ServerNetwork.request.register(bidRequest, (payload, context) -> {
 				if (payload.identifier().equals(request_gameRules)) sendGameRules(context.player(), context.server());
 			});
 		} catch (Exception error) {
@@ -106,16 +114,19 @@ public class CommonNetwork {
 	private static void registerReceivers() {
 		try {
 			ServerPlayNetworking.registerGlobalReceiver(C2SUpdateStatuePayload.id, (payload, context) -> context.server().execute(() -> {
-				CommonEvents.Network.updateStatue.registry.forEach((identifier, handler) -> handler.receive(payload, context));
+				CommonEvents.ServerNetwork.updateStatue.registry.forEach((identifier, handler) -> handler.receive(payload, context));
 			}));
 			ServerPlayNetworking.registerGlobalReceiver(C2SUpdateChunkStatuesPayload.id, (payload, context) -> context.server().execute(() -> {
-				CommonEvents.Network.updateChunkStatues.registry.forEach((identifier, handler) -> handler.receive(payload, context));
+				CommonEvents.ServerNetwork.updateChunkStatues.registry.forEach((identifier, handler) -> handler.receive(payload, context));
 			}));
 			ServerPlayNetworking.registerGlobalReceiver(IdBooleanPayload.id, (payload, context) -> context.server().execute(() -> {
-				CommonEvents.Network.idBoolean.registry.forEach((identifier, handler) -> handler.receive(payload, context));
+				CommonEvents.ServerNetwork.idBoolean.registry.forEach((identifier, handler) -> handler.receive(payload, context));
+			}));
+			ServerPlayNetworking.registerGlobalReceiver(IdStatueRenderTypePayload.id, (payload, context) -> context.server().execute(() -> {
+				CommonEvents.ServerNetwork.idStatueRenderType.registry.forEach((identifier, handler) -> handler.receive(payload, context));
 			}));
 			ServerPlayNetworking.registerGlobalReceiver(RequestPayload.id, (payload, context) -> context.server().execute(() -> {
-				CommonEvents.Network.request.registry.forEach((identifier, handler) -> handler.receive(payload, context));
+				CommonEvents.ServerNetwork.request.registry.forEach((identifier, handler) -> handler.receive(payload, context));
 			}));
 		} catch (Exception error) {
 			CommonData.logger.warn("Failed to register common network receivers: {}", error.getLocalizedMessage());
@@ -159,8 +170,32 @@ public class CommonNetwork {
 		ServerPlayNetworking.send(player, new IdBooleanPayload(identifier, value));
 	}
 
+	public static void sendIdStatueRenderType(ServerPlayerEntity player, Identifier identifier, StatueRenderType value) {
+		ServerPlayNetworking.send(player, new IdStatueRenderTypePayload(identifier, value));
+	}
+
 	public static void sendGameRules(ServerPlayerEntity player, MinecraftServer server) {
 		sendIdBoolean(player, gamerule_allowPlayerChangeStatuePose, server.getGameRules().getBoolean(GameruleRegistry.allowPlayerChangeStatuePose));
+	}
+
+	public static void sendUpdateConfig(ServerPlayerEntity player, ConfigOption configOption, Object value) {
+		switch (configOption) {
+			case statueRenderType -> {
+				if (value instanceof StatueRenderType statueRenderType) {
+					sendIdStatueRenderType(player, config_updateStatueRenderType, statueRenderType);
+				}
+			}
+			case renderEyes -> {
+				if (value instanceof Boolean renderEyes) {
+					sendIdBoolean(player, config_updateRenderEyes, renderEyes);
+				}
+			}
+			case rainbowMode -> {
+				if (value instanceof Boolean rainbowMode) {
+					sendIdBoolean(player, config_updateRainbowMode, rainbowMode);
+				}
+			}
+		}
 	}
 
 	static {
@@ -168,10 +203,14 @@ public class CommonNetwork {
 		c2sStatueChunk = CommonData.idOf("c2s_update_chunk_statues");
 		s2cStatue = CommonData.idOf("s2c_update_statue");
 		s2cStatueChunk = CommonData.idOf("s2c_update_chunk_statues");
+		bidIdStatueRenderType = CommonData.idOf("bid_id_statue_render_type");
 		bidIdBoolean = CommonData.idOf("bid_id_boolean");
 		bidRequest = CommonData.idOf("bid_request");
 
 		request_gameRules = CommonData.idOf("request/gamerules");
 		gamerule_allowPlayerChangeStatuePose = CommonData.idOf("gamerule/allow_player_change_statue_pose");
+		config_updateStatueRenderType = CommonData.idOf("config/update_statue_render_type");
+		config_updateRenderEyes = CommonData.idOf("config/update_render_eyes");
+		config_updateRainbowMode = CommonData.idOf("config/update_rainbow_mode");
 	}
 }
