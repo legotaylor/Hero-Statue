@@ -1,7 +1,4 @@
-# Hero Statue  
-Adds a new block 'Hero Statue', which can hold one item, and can be posed using redstone.  
-
-## Technical  
+## Hero Statue: Technical Details
 
 ### Networking
 #### Packets
@@ -25,11 +22,20 @@ You can register code to execute on the client/server when they receive these pa
 	- `CommonEvents.Network.request.register(Identifier.of("example", "bid_request"), (payload, context) -> {});`
 
 ### Rendering
-We render the block using a block entity renderer as that gives us more control on how we can render the block.
+We have three different render types.  
+- Default  
+  - Our recommendation and the default value!  
+  - Renders using the block entity renderer with custom core shaders.  
+  - You can find these core shaders at `hero-statue:shaders/core/statue_eyes.vsh` and `hero-statue:shaders/core/statue_eyes.fsh`.  
+- Vanilla  
+  - Renders using the block entity renderer with vanilla core shaders, this may help with fps slightly, but if you're really lagging it's not going help a ton.  
+- Basic  
+  - Renders using block models.  
+  - Doesn't show poses, and easter eggs, but you'll get all the fps.  
 
-The `_eyes` texture is rendered using a custom pipeline. You can find the corrosponding core shaders at `hero-statue:shaders/core/statue_eyes.vsh` and `hero-statue:shaders/core/statue_eyes.fsh`.
+No matter the render type, the shown item is rendered using the block entity renderer.
 
-When rendering with Iris Shaders, we copy the `ENTITY_EYES` pipeline.  
-Iris Compatibility isn't a priority, but we do want it to be at least functional for those who choose to use it.
+When rendering with Iris Shaders, we copy the `ENTITY_CUTOUT` and `ENTITY_EYES` pipelines.  
+Iris Compatibility isn't a priority, but we do want it to be at least functional for those who choose to use it.  
 
 ## [![Made for ModFest: Toybox](https://raw.githubusercontent.com/ModFest/art/refs/heads/v2/badge/svg/toybox/cozy.svg)](https://modfest.net/toybox)  

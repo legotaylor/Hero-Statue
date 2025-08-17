@@ -17,7 +17,6 @@ import dev.dannytaylor.hero_statue.client.render.pipeline.RenderLayerRegistry;
 import dev.dannytaylor.hero_statue.common.block.StatueBlock;
 import dev.dannytaylor.hero_statue.common.block.StatueBlockEntity;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
-import dev.dannytaylor.hero_statue.common.item.ItemRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -25,7 +24,6 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -38,9 +36,6 @@ import net.minecraft.util.math.Vec3d;
 import java.util.List;
 
 public class StatueBlockEntityRenderer<T extends StatueBlockEntity> implements BlockEntityRenderer<T> {
-	private final ItemStack modelStack;
-	private final ItemStack modelStackPowered;
-	private final ItemDisplayContext fasterModelDisplayContext = ItemDisplayContext.HEAD;
 	private final ItemDisplayContext itemDisplayContextLeft = ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
 	private final ItemDisplayContext itemDisplayContextRight = ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
 	private static final List<String> eeFlipUpsideDown = List.of("Dinnerbone", "Grumm", "legotaylor", "dannnytaylor");
@@ -64,9 +59,6 @@ public class StatueBlockEntityRenderer<T extends StatueBlockEntity> implements B
 			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
 			new StatuePoseFourteenModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFourteen))
 		);
-		this.modelStack = ItemRegistry.heroStatue.getDefaultStack();
-		this.modelStackPowered = ItemRegistry.heroStatue.getDefaultStack();
-		this.modelStackPowered.set(DataComponentTypes.CUSTOM_MODEL_DATA, new CustomModelDataComponent(List.of(), List.of(), List.of("hero-statue:powered"), List.of()));
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ClientCommandRegistry {
 			dispatcher.register(literal(CommonData.idOf("rainbow_mode").toString())
 				.executes(context -> {
 					HeroStatueClientConfig.instance.rainbowMode.setValue(!HeroStatueClientConfig.instance.rainbowMode.value(), true);
-					if (ClientData.minecraft.player != null) ClientData.minecraft.player.sendMessage(Text.translatable("hero-statue.rainbow_mode.message", Text.translatable("hero-statue.rainbow_mode"), HeroStatueClientConfig.instance.rainbowMode.value()), false);
+					if (ClientData.minecraft.player != null) ClientData.minecraft.player.sendMessage(Text.translatable(CommonData.id + ".rainbow_mode.message", Text.translatable(CommonData.id + ".rainbow_mode"), HeroStatueClientConfig.instance.rainbowMode.value()), false);
 					return 1;
 				}));
 		});
