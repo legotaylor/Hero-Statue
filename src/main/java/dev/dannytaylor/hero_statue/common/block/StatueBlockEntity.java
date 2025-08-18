@@ -11,6 +11,7 @@ import dev.dannytaylor.hero_statue.common.network.CommonNetwork;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.SingleStackInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,6 +21,7 @@ import net.minecraft.storage.WriteView;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Vec3d;
 
 public class StatueBlockEntity extends BlockEntity implements SingleStackInventory.SingleStackBlockEntityInventory {
 	private ItemStack stack = ItemStack.EMPTY;
@@ -86,10 +88,16 @@ public class StatueBlockEntity extends BlockEntity implements SingleStackInvento
 	}
 
 	public void dropStack() {
-		if (!this.stack.isEmpty() && this.world != null) {
-			ItemStack dropStack = this.stack;
+		if (this.world != null && !this.world.isClient) {
+			ItemStack dropStack = this.getStack();
 			clearStack();
-			ItemScatterer.spawn(this.world, this.pos.getX(), this.pos.getY(), this.pos.getZ(), dropStack);
+			if (!dropStack.isEmpty()) {
+				this.emptyStack();
+				Vec3d vec3d = Vec3d.add(this.getPos(), 0.5F, 1.01, 0.5F).addRandom(this.world.random, 0.7F);
+				ItemEntity itemEntity = new ItemEntity(this.world, vec3d.getX(), vec3d.getY(), vec3d.getZ(), dropStack);
+				itemEntity.setToDefaultPickupDelay();
+				this.world.spawnEntity(itemEntity);
+			}
 		}
 	}
 

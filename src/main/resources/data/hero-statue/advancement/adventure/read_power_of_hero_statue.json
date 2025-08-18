@@ -1,0 +1,184 @@
+{
+	"parent": "minecraft:adventure/root",
+	"criteria": {
+		"hero_statue": {
+			"conditions": {
+				"location": [
+					{
+						"block": "hero-statue:hero_statue",
+						"condition": "minecraft:block_state_property"
+					},
+					{
+						"condition": "minecraft:any_of",
+						"terms": [
+							{
+								"condition": "minecraft:location_check",
+								"offsetZ": 1,
+								"predicate": {
+									"block": {
+										"blocks": "minecraft:comparator",
+										"state": {
+											"facing": "north"
+										}
+									}
+								}
+							},
+							{
+								"condition": "minecraft:location_check",
+								"offsetZ": -1,
+								"predicate": {
+									"block": {
+										"blocks": "minecraft:comparator",
+										"state": {
+											"facing": "south"
+										}
+									}
+								}
+							},
+							{
+								"condition": "minecraft:location_check",
+								"offsetX": 1,
+								"predicate": {
+									"block": {
+										"blocks": "minecraft:comparator",
+										"state": {
+											"facing": "west"
+										}
+									}
+								}
+							},
+							{
+								"condition": "minecraft:location_check",
+								"offsetX": -1,
+								"predicate": {
+									"block": {
+										"blocks": "minecraft:comparator",
+										"state": {
+											"facing": "east"
+										}
+									}
+								}
+							}
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:placed_block"
+		},
+		"comparator": {
+			"conditions": {
+				"location": [
+					{
+						"condition": "minecraft:any_of",
+						"terms": [
+							{
+								"condition": "minecraft:all_of",
+								"terms": [
+									{
+										"block": "minecraft:comparator",
+										"condition": "minecraft:block_state_property",
+										"properties": {
+											"facing": "north"
+										}
+									},
+									{
+										"condition": "minecraft:location_check",
+										"offsetZ": -1,
+										"predicate": {
+											"block": {
+												"blocks": "hero-statue:hero_statue"
+											}
+										}
+									}
+								]
+							},
+							{
+								"condition": "minecraft:all_of",
+								"terms": [
+									{
+										"block": "minecraft:comparator",
+										"condition": "minecraft:block_state_property",
+										"properties": {
+											"facing": "south"
+										}
+									},
+									{
+										"condition": "minecraft:location_check",
+										"offsetZ": 1,
+										"predicate": {
+											"block": {
+												"blocks": "hero-statue:hero_statue"
+											}
+										}
+									}
+								]
+							},
+							{
+								"condition": "minecraft:all_of",
+								"terms": [
+									{
+										"block": "minecraft:comparator",
+										"condition": "minecraft:block_state_property",
+										"properties": {
+											"facing": "west"
+										}
+									},
+									{
+										"condition": "minecraft:location_check",
+										"offsetX": -1,
+										"predicate": {
+											"block": {
+												"blocks": "hero-statue:hero_statue"
+											}
+										}
+									}
+								]
+							},
+							{
+								"condition": "minecraft:all_of",
+								"terms": [
+									{
+										"block": "minecraft:comparator",
+										"condition": "minecraft:block_state_property",
+										"properties": {
+											"facing": "east"
+										}
+									},
+									{
+										"condition": "minecraft:location_check",
+										"offsetX": 1,
+										"predicate": {
+											"block": {
+												"blocks": "hero-statue:hero_statue"
+											}
+										}
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:placed_block"
+		}
+	},
+	"display": {
+		"description": {
+			"translate": "advancements.hero-statue.adventure.read_power_from_hero_statue.description"
+		},
+		"icon": {
+			"count": 1,
+			"id": "hero-statue:hero_statue"
+		},
+		"title": {
+			"translate": "advancements.hero-statue.adventure.read_power_from_hero_statue.title"
+		}
+	},
+	"requirements": [
+		[
+			"hero_statue",
+			"comparator"
+		]
+	],
+	"sends_telemetry_event": false
+}

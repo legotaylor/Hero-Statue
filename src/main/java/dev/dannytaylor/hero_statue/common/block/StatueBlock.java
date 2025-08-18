@@ -13,8 +13,11 @@ import dev.dannytaylor.hero_statue.common.config.StatueRenderType;
 import dev.dannytaylor.hero_statue.client.gamerule.GameruleCache;
 import dev.dannytaylor.hero_statue.common.gamerule.GameruleRegistry;
 import dev.dannytaylor.hero_statue.common.sound.SoundRegistry;
+import dev.dannytaylor.hero_statue.common.tag.TagRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,10 +32,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -135,7 +135,10 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	@Override
 	protected int getComparatorOutput(BlockState state, World world, BlockPos pos) {
 		// Comparator output should equal the redstone power required to set the current pose, regardless of input power level.
-		return state.get(pose) + 1;
+		int power = state.get(pose) + 1;
+		// If the statue is holding an item, only output when unpowered.
+		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity && statueBlockEntity.hasStack() && world.isReceivingRedstonePower(pos)) power = 0;
+		return power;
 	}
 
 	@Override
@@ -177,7 +180,13 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 	@Override
 	protected void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		this.update(state, world, pos);
-		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) statueBlockEntity.tick();
+	}
+
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return (world1, pos, state1, blockEntity) -> {
+			if (blockEntity instanceof StatueBlockEntity statueBlockEntity) statueBlockEntity.tick();
+		};
 	}
 
 	@Override
@@ -252,7 +261,7 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 
 	@Override
 	protected boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		return super.canPlaceAt(state, world, pos) && world.getBlockState(pos.down()).isSideSolid(world, pos, Direction.UP, SideShapeType.CENTER);
+		return super.canPlaceAt(state, world, pos) && (world.getBlockState(pos.down()).isSideSolid(world, pos, Direction.UP, SideShapeType.CENTER) || world.getBlockState(pos.down()).isIn(TagRegistry.statueNonSolidPlaceable));
 	}
 
 	static {

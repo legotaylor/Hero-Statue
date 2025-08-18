@@ -69,5 +69,8 @@
 
 	"option.hero-statue.statue_render_type": "Statue Render Type",
 	"option.hero-statue.render_eyes": "Eye Overlay",
-	"option.hero-statue.rainbow_mode": "§4R§6A§eI§aN§9B§dO§5W§r MODE"
+	"option.hero-statue.rainbow_mode": "§4R§6A§eI§aN§9B§dO§5W§r MODE",
+
+	"advancements.hero-statue.adventure.read_power_from_hero_statue.description": "Read the power signal of a Hero Statue using a Comparator",
+	"advancements.hero-statue.adventure.read_power_from_hero_statue.title": "Statue Power"
 }
