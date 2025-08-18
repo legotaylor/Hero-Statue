@@ -36,9 +36,9 @@ public class EntityModelRegistry {
 		EntityModelLayerRegistry.registerModelLayer(statuePoseFive, StatuePoseFiveModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseSix, StatuePoseSixModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseSeven, StatuePoseSevenModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseEight, StatuePoseZeroModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseNine, StatuePoseZeroModel::getTexturedModelData);
-		EntityModelLayerRegistry.registerModelLayer(statuePoseTen, StatuePoseZeroModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseEight, StatuePoseEightModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseNine, StatuePoseNineModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(statuePoseTen, StatuePoseTenModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseEleven, StatuePoseZeroModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseTwelve, StatuePoseZeroModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(statuePoseThirteen, StatuePoseZeroModel::getTexturedModelData);
