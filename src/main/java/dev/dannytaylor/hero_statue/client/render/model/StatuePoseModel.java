@@ -21,6 +21,7 @@ public class StatuePoseModel extends Model {
 	public ModelPart cape;
 	public ModelPart leftLeg;
 	public ModelPart rightLeg;
+
 	public StatuePoseModel(ModelPart root) {
 		super(root, RenderLayer::getEntityTranslucent);
 		this.base = root.getChild("base");
@@ -33,5 +34,13 @@ public class StatuePoseModel extends Model {
 		this.cape = this.body.getChild("cape");
 		this.leftLeg = this.base.getChild("left_leg");
 		this.rightLeg = this.base.getChild("right_leg");
+	}
+
+	public static ModelTransform pivot(float originX, float originY, float originZ) {
+		return pivot(originX, originY, originZ, 0.0F, 0.0F, 0.0F);
+	}
+	
+	public static ModelTransform pivot(float originX, float originY, float originZ, float pitch, float yaw, float roll) {
+		return ModelTransform.of(originX, originY, originZ, pitch, yaw, roll);
 	}
 }

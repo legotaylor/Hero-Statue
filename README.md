@@ -8,6 +8,8 @@ Adds a new block called the `Hero Statue`, which can hold an item, and be posed 
 > If you use Shaders, read [Known Issues: Shader Rendering Pipelines](#shader-rendering-pipelines), and check [Tested Shader Packs](#tested-shader-packs) below.  
 
 
+![](https://cdn.modrinth.com/data/ufuoq5Xq/images/e67684c4ca4915ab75b5c912cf46d27825a78dda.png)
+
 ## Features
 ### Hero Statue
 - Holds an item

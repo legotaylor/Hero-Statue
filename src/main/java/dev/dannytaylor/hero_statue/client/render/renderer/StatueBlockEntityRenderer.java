@@ -54,9 +54,9 @@ public class StatueBlockEntityRenderer<T extends StatueBlockEntity> implements B
 			new StatuePoseEightModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEight)),
 			new StatuePoseNineModel(context.getLayerModelPart(EntityModelRegistry.statuePoseNine)),
 			new StatuePoseTenModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTen)),
-			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEleven)),
-			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTwelve)),
-			new StatuePoseModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
+			new StatuePoseElevenModel(context.getLayerModelPart(EntityModelRegistry.statuePoseEleven)),
+			new StatuePoseTwelveModel(context.getLayerModelPart(EntityModelRegistry.statuePoseTwelve)),
+			new StatuePoseThirteenModel(context.getLayerModelPart(EntityModelRegistry.statuePoseThirteen)),
 			new StatuePoseFourteenModel(context.getLayerModelPart(EntityModelRegistry.statuePoseFourteen))
 		);
 	}
