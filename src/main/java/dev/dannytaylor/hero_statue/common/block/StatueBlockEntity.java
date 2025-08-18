@@ -8,6 +8,7 @@
 package dev.dannytaylor.hero_statue.common.block;
 
 import dev.dannytaylor.hero_statue.common.network.CommonNetwork;
+import dev.dannytaylor.hero_statue.common.sound.SoundRegistry;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -16,6 +17,7 @@ import net.minecraft.inventory.SingleStackInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.util.ItemScatterer;
@@ -36,6 +38,11 @@ public class StatueBlockEntity extends BlockEntity implements SingleStackInvento
 			this.stack = newStack;
 			this.markDirty();
 		}
+	}
+
+	@Override
+	public boolean isValid(int slot, ItemStack stack) {
+		return slot == 0 && !this.hasStack();
 	}
 
 	public void clearStack() {
@@ -84,6 +91,7 @@ public class StatueBlockEntity extends BlockEntity implements SingleStackInvento
 	@Override
 	public void markDirty() {
 		super.markDirty();
+		if (this.world != null && hasStack()) this.world.playSound(null, pos, SoundRegistry.heroStatueGiveItem, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.25F + 0.6F);
 		this.needsSync = true;
 	}
 
@@ -116,5 +124,10 @@ public class StatueBlockEntity extends BlockEntity implements SingleStackInvento
 	@Override
 	public BlockEntity asBlockEntity() {
 		return this;
+	}
+
+	@Override
+	public int getMaxCountPerStack() {
+		return 1;
 	}
 }

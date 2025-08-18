@@ -1,4 +1,10 @@
 {
+	"block.hero_statue.give_item": {
+		"subtitle": "sound.hero-statue.hero_statue_give_item",
+		"sounds": [
+			"hero-statue:hero_statue_give_item"
+		]
+	},
 	"block.hero_statue.update_pose": {
 		"subtitle": "sound.hero-statue.hero_statue_update_pose",
 		"sounds": [

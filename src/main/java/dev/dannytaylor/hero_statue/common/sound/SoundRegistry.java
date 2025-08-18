@@ -14,6 +14,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
 public class SoundRegistry {
+	public static final SoundEvent heroStatueGiveItem;
 	public static final SoundEvent heroStatueUpdatePose;
 	public static void bootstrap() {
 	}
@@ -27,6 +28,7 @@ public class SoundRegistry {
 		return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(soundId));
 	}
 	static {
+		heroStatueGiveItem = register("block.hero_statue.give_item");
 		heroStatueUpdatePose = register("block.hero_statue.update_pose");
 	}
 }
