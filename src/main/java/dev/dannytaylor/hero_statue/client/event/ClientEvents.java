@@ -7,9 +7,11 @@
 
 package dev.dannytaylor.hero_statue.client.event;
 
+import dev.dannytaylor.hero_statue.common.util.InputCallable;
 import dev.dannytaylor.hero_statue.common.event.CommonEvents;
 import dev.dannytaylor.hero_statue.common.network.payloads.*;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 
 public class ClientEvents extends CommonEvents {
 	public static class ClientNetwork {
@@ -26,5 +28,15 @@ public class ClientEvents extends CommonEvents {
 			request = new Event<>();
 		}
 	}
+
+	public static class Keybinding {
+		public static final Event<InputCallable<Boolean, MinecraftClient>> isTyping;
+		public static final Event<InputCallable<Boolean, MinecraftClient>> preventConfigKeybinding;
+		static {
+			isTyping = new Event<>();
+			preventConfigKeybinding = new Event<>();
+		}
+	}
+
 	public static void bootstrap() {}
 }

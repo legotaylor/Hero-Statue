@@ -8,6 +8,7 @@
 package dev.dannytaylor.hero_statue.client.keybinding;
 
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
+import dev.dannytaylor.hero_statue.client.event.ClientEvents;
 import dev.dannytaylor.hero_statue.client.gui.screen.ConfigScreen;
 import dev.dannytaylor.hero_statue.client.gui.screen.HeroStatueScreen;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
@@ -20,6 +21,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -33,12 +35,27 @@ public class KeybindingRegistry {
 	private static final List<KeyBinding> isPressed = new ArrayList<>();
 
 	public static void bootstrap() {
+		registerEvents();
 		ClientTickEvents.START_CLIENT_TICK.register(KeybindingRegistry::tick);
+	}
+
+	private static void registerEvents() {
+		ClientEvents.Keybinding.isTyping.register(CommonData.idOf("is_typing"), (client) -> {
+			Screen screen = client.currentScreen;
+			boolean isTyping = false;
+			if (screen != null) {
+				for (Element element : screen.children().stream().filter(element -> element instanceof EditBox || element instanceof TextFieldWidget).toList()) {
+					if (element.isFocused()) isTyping = true;
+				}
+			}
+			return isTyping;
+		});
+		ClientEvents.Keybinding.preventConfigKeybinding.register(CommonData.idOf("prevent_config_keybinding"), (client) -> (client.currentScreen instanceof HeroStatueScreen) || isTyping(client));
 	}
 
 	public static void tick(MinecraftClient client) {
 		if (wasPressed(client, cycleRenderType, true)) HeroStatueClientConfig.instance.renderType.setValue(HeroStatueClientConfig.instance.renderType.value().next());
-		if (wasPressed(client, openConfig) && !(client.currentScreen instanceof HeroStatueScreen) && !isTyping(client)) client.setScreen(new ConfigScreen(client.currentScreen));
+		if (wasPressed(client, openConfig) && !shouldPreventConfigKeybinding(client)) client.setScreen(new ConfigScreen(client.currentScreen));
 		if (wasPressed(client, toggleEyeOverlay, true)) HeroStatueClientConfig.instance.renderEyes.setValue(!HeroStatueClientConfig.instance.renderEyes.value());
 		if (wasPressed(client, toggleRainbowMode, true)) HeroStatueClientConfig.instance.rainbowMode.setValue(!HeroStatueClientConfig.instance.rainbowMode.value());
 		checkIfStillPressed(client);
@@ -82,19 +99,38 @@ public class KeybindingRegistry {
 		return keyPressed;
 	}
 
-	public static boolean isTyping(MinecraftClient client) {
-		Screen screen = client.currentScreen;
-		boolean isTyping = false;
-		if (screen != null) {
-			for (Element element : screen.children().stream().filter(element -> element instanceof EditBox || element instanceof TextFieldWidget).toList()) {
-				if (element.isFocused()) isTyping = true;
+	public static boolean shouldPreventConfigKeybinding(MinecraftClient client) {
+		List<Identifier> toRemove = new ArrayList<>();
+		for (Identifier identifier : ClientEvents.Keybinding.preventConfigKeybinding.registry.keySet()) {
+			try {
+				if (ClientEvents.Keybinding.preventConfigKeybinding.registry.get(identifier).call(client)) return true;
+			} catch (Exception error) {
+				CommonData.logger.error("Error checking preventConfigKeybinding with id '{}': {}", identifier, error.getLocalizedMessage());
+				toRemove.add(identifier);
 			}
 		}
-		return isTyping;
+		// If there's an issue, we remove the registry to avoid log spam.
+		for (Identifier identifier : toRemove) ClientEvents.Keybinding.preventConfigKeybinding.remove(identifier);
+		return false;
+	}
+
+	public static boolean isTyping(MinecraftClient client) {
+		List<Identifier> toRemove = new ArrayList<>();
+		for (Identifier identifier : ClientEvents.Keybinding.isTyping.registry.keySet()) {
+			try {
+				if (ClientEvents.Keybinding.isTyping.registry.get(identifier).call(client)) return true;
+			} catch (Exception error) {
+				CommonData.logger.error("Error checking isTyping with id '{}': {}", identifier, error.getLocalizedMessage());
+				toRemove.add(identifier);
+			}
+		}
+		// If there's an issue, we remove the registry to avoid log spam.
+		for (Identifier identifier : toRemove) ClientEvents.Keybinding.isTyping.remove(identifier);
+		return false;
 	}
 
 	public static KeyBinding register(String namespace, String category, String key, int keyCode) {
-		return KeyBindingHelper.registerKeyBinding(new KeyBinding("identifier." + namespace + "." + key, InputUtil.Type.KEYSYM, keyCode, "identifier.categories." + namespace + "." + category));
+		return KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + namespace + "." + key, InputUtil.Type.KEYSYM, keyCode, "key.categories." + namespace + "." + category));
 	}
 
 	static {
