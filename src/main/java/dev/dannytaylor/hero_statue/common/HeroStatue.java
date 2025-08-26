@@ -9,6 +9,7 @@ package dev.dannytaylor.hero_statue.common;
 
 import dev.dannytaylor.hero_statue.common.block.BlockRegistry;
 import dev.dannytaylor.hero_statue.common.command.CommandRegistry;
+import dev.dannytaylor.hero_statue.common.config.HeroStatueServerConfig;
 import dev.dannytaylor.hero_statue.common.event.CommonEvents;
 import dev.dannytaylor.hero_statue.common.gamerule.GameruleRegistry;
 import dev.dannytaylor.hero_statue.common.item.ItemRegistry;
@@ -18,6 +19,7 @@ import net.fabricmc.api.ModInitializer;
 
 public class HeroStatue implements ModInitializer {
 	public void onInitialize() {
+		HeroStatueServerConfig.bootstrap();
 		CommandRegistry.bootstrap();
 		CommonEvents.bootstrap();
 		GameruleRegistry.bootstrap();

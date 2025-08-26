@@ -7,6 +7,7 @@
 
 package dev.dannytaylor.hero_statue.common.block;
 
+import dev.dannytaylor.hero_statue.common.config.HeroStatueServerConfig;
 import dev.dannytaylor.hero_statue.common.network.CommonNetwork;
 import dev.dannytaylor.hero_statue.common.sound.SoundRegistry;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -110,14 +111,17 @@ public class StatueBlockEntity extends BlockEntity implements SingleStackInvento
 	}
 
 	public void updateListeners() {
-		if (this.world instanceof ServerWorld serverWorld) {
-			BlockPos blockPos = this.pos;
-			BlockState blockState = getCachedState();
-			ChunkPos chunkPos = this.world.getChunk(blockPos).getPos();
-			for (ServerPlayerEntity player : PlayerLookup.tracking(serverWorld, chunkPos)) {
-				CommonNetwork.sendS2CStatue(player, serverWorld, blockPos);
+		if (this.world != null) {
+			BlockPos pos = this.pos;
+			ChunkPos chunkPos = this.world.getChunk(pos).getPos();
+			BlockState state = getCachedState();
+			if (this.world instanceof ServerWorld serverWorld) {
+				for (ServerPlayerEntity player : PlayerLookup.tracking(serverWorld, chunkPos)) {
+					if (HeroStatueServerConfig.instance.updateChunkStatuesOnStatueUpdate.value()) CommonNetwork.sendS2CStatueChunk(player, serverWorld, chunkPos);
+					else CommonNetwork.sendS2CStatue(player, serverWorld, pos);
+				}
 			}
-			this.world.updateListeners(blockPos, blockState, blockState, 3);
+			this.world.updateListeners(pos, state, state, 3);
 		}
 	}
 
