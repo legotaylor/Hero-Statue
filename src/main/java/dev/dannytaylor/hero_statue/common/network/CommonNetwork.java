@@ -196,7 +196,7 @@ public class CommonNetwork {
 					sendIdBoolean(player, config_updateRainbowMode, rainbowMode);
 				}
 			}
-			case configKeybindingAnywhere -> {
+			case useConfigKeybindingAnywhere -> {
 				if (value instanceof Boolean configKeybindingAnywhere) {
 					sendIdBoolean(player, config_updateUseConfigKeybindingAnywhere, configKeybindingAnywhere);
 				}

@@ -20,7 +20,7 @@ public enum ConfigOption implements StringIdentifiable {
 	statueRenderType("statue_render_type"),
 	renderEyes("render_eyes"),
 	rainbowMode("rainbow_mode"),
-	configKeybindingAnywhere("config_keybinding_anywhere");
+	useConfigKeybindingAnywhere("use_config_keybinding_anywhere");
 
 	public static final Codec<ConfigOption> codec;
 	public static final PacketCodec<ByteBuf, ConfigOption> packetCodec;
