@@ -33,7 +33,7 @@ Adds a new block called the `Hero Statue`, which can hold an item, and be posed 
 
 ## Config
 You can edit the config by using [ModMenu](https://modrinth.com/mod/modmenu), or our `Open Config` keybinding (defaulted to `Home`).  
-If you are using the `Open Config` keybinding, you don't need to be in a world, you just need to not be interacting with a text box.
+If you are using the `Open Config` keybinding, you will need to be in a world.
 
 
 ## Known Issues
