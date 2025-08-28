@@ -11,6 +11,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.dannytaylor.hero_statue.client.data.ClientData;
 import dev.dannytaylor.hero_statue.common.data.CommonData;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -25,7 +27,10 @@ import net.minecraft.util.StringIdentifiable;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class InfoWidget extends EntryListWidget<InfoWidget.InfoEntry> {
 	private final TextRenderer textRenderer;
@@ -37,7 +42,7 @@ public class InfoWidget extends EntryListWidget<InfoWidget.InfoEntry> {
 	public InfoWidget(MinecraftClient client, int width, int height, int y, int lineHeight, double scrollY) {
 		super(client, width, height, y, lineHeight);
 		this.textRenderer = client.textRenderer;
-		for (OrderedText row : this.textRenderer.wrapLines(load(Identifier.of(CommonData.id, "texts/info.json"), InfoWidget::read), this.getRowWidth())) addEntry(new InfoEntry(row));
+		for (OrderedText row : this.textRenderer.wrapLines(load(CommonData.idOf("texts/info.json"), InfoWidget::read), this.getRowWidth())) addEntry(new InfoEntry(row));
 		setScrollY(scrollY);
 	}
 
@@ -47,7 +52,7 @@ public class InfoWidget extends EntryListWidget<InfoWidget.InfoEntry> {
 	}
 
 	public int getRowWidth() {
-		return this.width - 24;
+		return this.width - 32;
 	}
 
 	protected void appendClickableNarrations(NarrationMessageBuilder builder) {
@@ -67,23 +72,49 @@ public class InfoWidget extends EntryListWidget<InfoWidget.InfoEntry> {
 		try (Reader reader = ClientData.minecraft.getResourceManager().openAsReader(id)) {
 			return infoReader.read(reader);
 		} catch (Exception exception) {
-			CommonData.logger.error("Couldn't load info from file {}: {}", id, exception);
+			CommonData.logger.error("Couldn't load info from file {}: {}", id, exception.getLocalizedMessage());
 		}
 		return Text.empty();
 	}
 
 	private static Text read(Reader reader) {
+		JsonObject root = JsonHelper.deserialize(reader).getAsJsonObject();
 		MutableText text = Text.empty();
-		for (JsonElement jsonElement : JsonHelper.deserializeArray(reader)) {
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
-			TextType type = jsonObject.has("type") ? TextType.valueOf(jsonObject.get("type").getAsString()) : TextType.literal;
-			if (jsonObject.has("value")) {
-				text.append(switch (type) {
-					case literal -> Text.literal(jsonObject.get("value").getAsString());
-					case translatable -> Text.translatable(jsonObject.get("value").getAsString());
-				});
+		if (root.has("values")) {
+			for (JsonElement element : root.getAsJsonArray("values")) {
+				text.append(read(Text.empty(), element));
+				if (root.has("line_breaks") && root.get("line_breaks").getAsBoolean()) text.append("\n");
 			}
-			text.append(Text.literal("\n"));
+		}
+		return text;
+	}
+
+	private static Text read(MutableText text, JsonElement element) {
+		JsonObject jsonObject = element.getAsJsonObject();
+		if (jsonObject.has("indent")) {
+			int indents = jsonObject.get("indent").getAsInt();
+			if (indents > 0) text.append(Text.literal(" ".repeat(indents)));
+		}
+		List<Text> args = new ArrayList<>();
+		if (jsonObject.has("args")) {
+			for (JsonElement argElement : jsonObject.getAsJsonArray("args")) {
+				args.add(read(Text.empty(), argElement));
+			}
+		}
+		if (jsonObject.has("value")) {
+			text.append(switch (jsonObject.has("type") ? TextType.valueOf(jsonObject.get("type").getAsString()) : TextType.literal) {
+				case literal -> Text.literal(jsonObject.get("value").getAsString());
+				case translatable -> Text.translatable(jsonObject.get("value").getAsString(), args.toArray(new Object[0]));
+				case variable -> switch (jsonObject.get("value").getAsString()) {
+					case "id" -> Text.literal(CommonData.id);
+					case "name" -> Text.translatable(CommonData.id + ".title");
+					case "version" -> {
+						Optional<ModContainer> mod = FabricLoader.getInstance().getModContainer(CommonData.id);
+						yield Text.literal(mod.isPresent() ? mod.get().getMetadata().getVersion().getFriendlyString() : "UNKNOWN");
+					}
+					case null, default -> Text.empty();
+				};
+			});
 		}
 		return text;
 	}
@@ -94,10 +125,11 @@ public class InfoWidget extends EntryListWidget<InfoWidget.InfoEntry> {
 
 	private enum TextType implements StringIdentifiable {
 		literal("literal"),
-		translatable("translatable");
+		translatable("translatable"),
+		variable("variable");
 
 		final String id;
-		
+
 		TextType(String id) {
 			this.id = id;
 		}

@@ -8,6 +8,7 @@
 package dev.dannytaylor.hero_statue.client.keybinding;
 
 import dev.dannytaylor.hero_statue.client.config.HeroStatueClientConfig;
+import dev.dannytaylor.hero_statue.client.data.ClientData;
 import dev.dannytaylor.hero_statue.client.event.ClientEvents;
 import dev.dannytaylor.hero_statue.client.gui.screen.ConfigScreen;
 import dev.dannytaylor.hero_statue.client.gui.screen.HeroStatueScreen;
@@ -18,7 +19,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.EditBox;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.*;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
@@ -42,15 +43,22 @@ public class KeybindingRegistry {
 	private static void registerEvents() {
 		ClientEvents.Keybinding.isTyping.register(CommonData.idOf("is_typing"), (client) -> {
 			Screen screen = client.currentScreen;
-			boolean isTyping = false;
 			if (screen != null) {
-				for (Element element : screen.children().stream().filter(element -> element instanceof EditBox || element instanceof TextFieldWidget).toList()) {
-					if (element.isFocused()) isTyping = true;
+				for (Element child : screen.children()) {
+					// elements inside elements is an issue, so we're going to add a config option to enable this.
+					if (isTypingInElement(child)) {
+						return true;
+					}
 				}
 			}
-			return isTyping;
+			return false;
 		});
-		ClientEvents.Keybinding.preventConfigKeybinding.register(CommonData.idOf("prevent_config_keybinding"), (client) -> (client.currentScreen instanceof HeroStatueScreen) || isTyping(client));
+		ClientEvents.Keybinding.preventConfigKeybinding.register(CommonData.idOf("prevent_config_keybinding"), (client) -> (!HeroStatueClientConfig.instance.useConfigKeybindingAnywhere.value() && ClientData.minecraft.currentScreen != null) || client.currentScreen instanceof HeroStatueScreen || isTyping(client));
+	}
+
+	private static boolean isTypingInElement(Element element) {
+		if (element != null) return (element instanceof TextFieldWidget || element instanceof ScrollableTextFieldWidget || element instanceof EditBoxWidget || element instanceof EditBox) && element.isFocused();
+		return false;
 	}
 
 	public static void tick(MinecraftClient client) {

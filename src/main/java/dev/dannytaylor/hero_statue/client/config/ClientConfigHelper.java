@@ -31,6 +31,12 @@ public class ClientConfigHelper {
 	public static void setRainbowMode(boolean rainbowMode) {
 		HeroStatueClientConfig.instance.rainbowMode.setValue(rainbowMode);
 	}
+	public static void toggleUseConfigKeybindingAnywhere() {
+		setUseConfigKeybindingAnywhere(!HeroStatueClientConfig.instance.useConfigKeybindingAnywhere.value());
+	}
+	public static void setUseConfigKeybindingAnywhere(boolean configAnywhere) {
+		HeroStatueClientConfig.instance.useConfigKeybindingAnywhere.setValue(configAnywhere);
+	}
 	public static void toggleAllowNetworkConfigUpdates() {
 		setAllowNetworkConfigUpdates(!HeroStatueClientConfig.instance.allowNetworkConfigUpdates.value());
 	}

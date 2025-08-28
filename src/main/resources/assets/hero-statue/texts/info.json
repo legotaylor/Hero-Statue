@@ -1,89 +1,92 @@
-[
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.description"
-	},
-	{},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.important"
-	},
-	{},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.holds_an_item"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.holds_an_item.description"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.posable"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.posable.change_pose_redstone"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.posable.change_pose_redstone.gamerule"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.posable.remembers"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.posable.change_pose_player"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.posable.change_pose_player.gamerule"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.comparator"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.rainbow_mode"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.rainbow_mode.description"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.rainbow_mode.blockstate"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.rainbow_mode.render_type"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.upside_down"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.upside_down.description"
-	},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.features.hero_statue.upside_down.render_type"
-	},
-	{},
-	{
-		"type": "translatable",
-		"value": "hero-statue.info.toybox"
-	}
-]
+{
+	"line_breaks": true,
+	"values": [
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.description"
+		},
+		{},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.important"
+		},
+		{},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.holds_an_item"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.holds_an_item.description"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.posable"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.posable.change_pose_redstone"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.posable.change_pose_redstone.gamerule"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.posable.remembers"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.posable.change_pose_player"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.posable.change_pose_player.gamerule"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.comparator"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.rainbow_mode"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.rainbow_mode.description"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.rainbow_mode.blockstate"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.rainbow_mode.render_type"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.upside_down"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.upside_down.description"
+		},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.features.hero_statue.upside_down.render_type"
+		},
+		{},
+		{
+			"type": "translatable",
+			"value": "hero-statue.info.toybox"
+		}
+	]
+}

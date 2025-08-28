@@ -49,6 +49,8 @@ public class ClientNetwork {
 							ClientConfigHelper.setRenderEyes(payload.value());
 						} else if (payload.identifier().equals(CommonNetwork.config_updateRainbowMode)) {
 							ClientConfigHelper.setRainbowMode(payload.value());
+						} else if (payload.identifier().equals(CommonNetwork.config_updateUseConfigKeybindingAnywhere)) {
+							ClientConfigHelper.setUseConfigKeybindingAnywhere(payload.value());
 						}
 					}
 				}

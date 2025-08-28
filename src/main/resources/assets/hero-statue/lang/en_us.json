@@ -52,6 +52,9 @@
 	"hero-statue.rainbow_mode.hover": "Inverts the jeb_ easter egg.",
 	"hero-statue.rainbow_mode.message": "Toggled %s to %s!",
 
+	"hero-statue.use_config_keybinding_anywhere": "Allow Config Keybinding use in menus",
+	"hero-statue.use_config_keybinding_anywhere.hover": "Allows you to open the config screen using the keybinding when you are in menus.",
+
 	"hero-statue.allow_network_config_updates": "Allow Network Config Updates",
 	"hero-statue.allow_network_config_updates.hover": "Allows server operators to remotely change your config options, except for this one.",
 

@@ -43,6 +43,7 @@ public class CommonNetwork {
 	public static final Identifier config_updateStatueRenderType;
 	public static final Identifier config_updateRenderEyes;
 	public static final Identifier config_updateRainbowMode;
+	public static final Identifier config_updateUseConfigKeybindingAnywhere;
 
 	private static void registerChannels() {
 		try {
@@ -195,6 +196,11 @@ public class CommonNetwork {
 					sendIdBoolean(player, config_updateRainbowMode, rainbowMode);
 				}
 			}
+			case configKeybindingAnywhere -> {
+				if (value instanceof Boolean configKeybindingAnywhere) {
+					sendIdBoolean(player, config_updateUseConfigKeybindingAnywhere, configKeybindingAnywhere);
+				}
+			}
 		}
 	}
 
@@ -212,5 +218,6 @@ public class CommonNetwork {
 		config_updateStatueRenderType = CommonData.idOf("config/update_statue_render_type");
 		config_updateRenderEyes = CommonData.idOf("config/update_render_eyes");
 		config_updateRainbowMode = CommonData.idOf("config/update_rainbow_mode");
+		config_updateUseConfigKeybindingAnywhere = CommonData.idOf("config/update_use_config_keybinding_anywhere");
 	}
 }

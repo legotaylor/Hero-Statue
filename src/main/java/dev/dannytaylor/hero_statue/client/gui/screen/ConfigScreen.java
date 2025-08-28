@@ -53,6 +53,12 @@ public class ConfigScreen extends HeroStatueScreen {
 			ClientConfigHelper.toggleRainbowMode();
 			button.setMessage(Text.translatable(CommonData.id + ".config_title", Text.translatable(CommonData.id + ".rainbow_mode"), HeroStatueClientConfig.instance.rainbowMode.value()));
 		}).tooltip(Tooltip.of(Text.translatable(CommonData.id + ".rainbow_mode.hover"))).build());
+
+		options.add(ButtonWidget.builder(Text.translatable(CommonData.id + ".config_title", Text.translatable(CommonData.id + ".use_config_keybinding_anywhere"), HeroStatueClientConfig.instance.useConfigKeybindingAnywhere.value()), (button) -> {
+			ClientConfigHelper.toggleUseConfigKeybindingAnywhere();
+			button.setMessage(Text.translatable(CommonData.id + ".config_title", Text.translatable(CommonData.id + ".use_config_keybinding_anywhere"), HeroStatueClientConfig.instance.useConfigKeybindingAnywhere.value()));
+		}).tooltip(Tooltip.of(Text.translatable(CommonData.id + ".use_config_keybinding_anywhere.hover"))).build());
+
 		options.add(ButtonWidget.builder(Text.translatable(CommonData.id + ".config_title", Text.translatable(CommonData.id + ".allow_network_config_updates"), HeroStatueClientConfig.instance.allowNetworkConfigUpdates.value()), (button) -> {
 			ClientConfigHelper.toggleAllowNetworkConfigUpdates();
 			button.setMessage(Text.translatable(CommonData.id + ".config_title", Text.translatable(CommonData.id + ".allow_network_config_updates"), HeroStatueClientConfig.instance.allowNetworkConfigUpdates.value()));
