@@ -1,0 +1,83 @@
+{
+	"item.hero-statue.hero_statue_vanity": "Hero Statue @ ModFest: Toybox",
+
+	"block.hero-statue.hero_statue": "Статуя героя",
+
+	"sound.hero-statue.hero_statue_update_pose": "Статуя рухається",
+	"sound.hero-statue.hero_statue_give_item": "Статуя бере предмет",
+
+	"gamerule.hero-statue$allowPlayerChangeStatuePose": "Дозволити гравцям змінювати позу статуї героя взаємодією",
+	"gamerule.hero-statue$allowRedstoneChangeStatuePose": "Дозволити зміну пози за допомогою сигналу редстоуну",
+
+	"hero-statue.title": "Hero Statue",
+	"hero-statue.config_title": "%s: %s",
+	"hero-statue.config.more": "…",
+
+	"hero-statue.info": "Інформація",
+	"hero-statue.info.description": "Додає новий блок під назвою §nстатуя героя§r, який може містити предмет і створюватися за допомогою редстоуну, кругляку та залізного злитка.",
+	"hero-statue.info.important": "§f§lВажливо§r\nЯкщо у вас повільний комп’ютер та у вас багато статуй або ви використовуєте ресурсомісткий пакет шейдерів, ви можете змінити параметр типу промальовування статуй на §n«Звичайний»§r.\nЦе промальовує статуї за допомогою моделей блока, що набагато швидше, але вимикає пози.",
+	"hero-statue.info.features": "§f§lФункції§r",
+	"hero-statue.info.features.hero_statue": "— §lСтатуя героя§r",
+	"hero-statue.info.features.hero_statue.holds_an_item": " — Містить предмет",
+	"hero-statue.info.features.hero_statue.holds_an_item.description": " — Ви можете надати статуї предмет для показу, взаємодіючи з нею, тримаючи предмет.",
+	"hero-statue.info.features.hero_statue.posable": " — Пози",
+	"hero-statue.info.features.hero_statue.posable.change_pose_redstone": " — Ви можете змінити позу статуї за допомогою рудстоуну.",
+	"hero-statue.info.features.hero_statue.posable.change_pose_redstone.gamerule": "      — Це можна налаштувати за допомогою ігрового правила §nhero-statue$allowRedstoneChangeStatuePose§r, яке усталено ввімкнено.",
+	"hero-statue.info.features.hero_statue.posable.remembers": " — Статуя запам'ятовує останню встановлену позу, коли її вимкнено.",
+	"hero-statue.info.features.hero_statue.posable.change_pose_player": " — Ви можете змінити позу статуї, взаємодіючи з порожніми руками або коли в статуї вже є предмет, якщо увімкнено ігрове правило §nhero-statue$allowPlayerChangeStatuePose§r.",
+	"hero-statue.info.features.hero_statue.posable.change_pose_player.gamerule": " — Статуя запам'ятовує останню встановлену позу, коли її вимкнено.",
+	"hero-statue.info.features.hero_statue.comparator": " — Компаратори виводять рівень рудстоуну, необхідний для встановлення поточної пози.",
+	"hero-statue.info.features.hero_statue.rainbow_mode": " — §4в§6е§eс§aе§9л§dк§5и§r та §mєдинороги§r",
+	"hero-statue.info.features.hero_statue.rainbow_mode.description": "    — Ви можете змусити статуї обертатися очима веселкою, надавши статуї предмет з назвою §njeb_§r або ввімкнувши параметр §nРЕЖИМ ВЕСЕЛКИ§r.",
+	"hero-statue.info.features.hero_statue.rainbow_mode.blockstate": " — Ви також можете ввімкнути це у творчості, встановивши стан блока §nhero_statue_rainbow§r за допомогою палиці налагодження або за допомогою команд.",
+	"hero-statue.info.features.hero_statue.rainbow_mode.render_type": " — Це працює лише з типом промальовування §n«Усталений»§r і якщо ви не використовуєте шейдери.",
+	"hero-statue.info.features.hero_statue.upside_down": " — §k¿sᴉɥʇ pɐǝɹ noʎ uɐɔ§r",
+	"hero-statue.info.features.hero_statue.upside_down.description": " — Ви можете зробити статую перевернутою, надавши статуї предмет з назвою §nDinnerbone§r, §nGrumm§r, §nlegotaylor§r або §ndannnytaylor§r.",
+	"hero-statue.info.features.hero_statue.upside_down.render_type": " — Це працює лише з типами промальовування §n«Усталений»§r і §n«Стандартний»§r.",
+	"hero-statue.info.toybox": "§fЗроблено для ModFest: Toybox§r",
+
+	"hero-statue.render_type": "Тип промальовування статуї",
+	"hero-statue.render_type.fancy": "Усталений",
+	"hero-statue.render_type.fast": "Стандартний",
+	"hero-statue.render_type.faster": "Звичайний",
+	"hero-statue.render_type.hover": "%s",
+	"hero-statue.render_type.fancy.hover": "Рекомендований варіант! Промальовування моделей за допомогою спеціальних основних шейдерів.",
+	"hero-statue.render_type.fast.hover": "Промальовує модель за допомогою ванільних шейдерів. Це запобігатиме показу режиму §4В§6Е§eС§aЕ§9Л§dК§5И§r та будь-яких інших спеціальних ефектів.",
+	"hero-statue.render_type.faster.hover": "Промальовує як модель блока. Це буде набагато швидше, але ви не отримаєте пози, накладення очей або пасхалок.",
+
+	"hero-statue.eye_overlay": "Промальовування накладення очей",
+	"hero-statue.eye_overlay.hover": "Якщо вимкнено, запобігає промальовуванню накладення очей.",
+
+	"hero-statue.rainbow_mode": "Режим §4В§6Е§eС§aЕ§9Л§dК§5И§r",
+	"hero-statue.rainbow_mode.hover": "Перевертає пасхалку jeb_",
+	"hero-statue.rainbow_mode.message": "Змінено «%s» на %s!",
+
+	"hero-statue.use_config_keybinding_anywhere": "Дозволити використання клавіш налаштування в меню",
+	"hero-statue.use_config_keybinding_anywhere.hover": "Дозволяє відкривати екран налаштувань за допомогою сполучення клавіш, коли ви перебуваєте в меню.",
+
+	"hero-statue.allow_network_config_updates": "Дозволити оновлення налаштувань у  мережі",
+	"hero-statue.allow_network_config_updates.hover": "Дозволяє операторам сервера віддалено змінювати параметри налаштувань, окрім цього.",
+
+	"hero-statue.donate": "Підтримати (Ko-Fi/legotaylor)",
+
+	"key.categories.hero-statue.config": "Hero Statue",
+	"key.hero-statue.cycle_render_type": "Циклічний тип промальовування статуї",
+	"key.hero-statue.open_config": "Відкрити налаштування",
+	"key.hero-statue.toggle_eye_overlay": "Перемкнути накладення очей",
+	"key.hero-statue.toggle_rainbow_mode": "Перемкнути режим §4В§6Е§eС§aЕ§9Л§dК§5И§r",
+
+	"chat.hero-statue.update_config.success": "Установлено параметр «%s» було встановлено ​​на «%s» для %s.",
+	"chat.hero-statue.update_config.success.multiple": "Установлено параметр «%s» на «%s» для %s гравців.",
+	"chat.hero-statue.update_config.fail": "Не вдалося встановити параметр «%s» на «%s» для %s, не очікував цих даних! (%s)",
+	"chat.hero-statue.update_config.fail.multiple": "Не вдалося встановити параметр «%s» на «%s» для гравців %s, не очікував цих даних! (%s)",
+
+	"option.hero-statue.statue_render_type": "Тип промальовування статуї",
+	"option.hero-statue.render_eyes": "Накладання очей",
+	"option.hero-statue.rainbow_mode": "РЕЖИМ §4В§6Е§eС§aЕ§9Л§dК§5И§r",
+	"option.hero-statue.use_config_keybinding_anywhere": "Дозволити використання прив'язки клавіш налаштувань в меню",
+
+	"advancements.hero-statue.adventure.read_power_from_hero_statue.description": "Зчитайте сигнал живлення зі статуї героя за допомогою компаратора",
+	"advancements.hero-statue.adventure.read_power_from_hero_statue.title": "Сила статуї",
+  
+  "modmenu.descriptionTranslation.hero-statue": "Додає статую героя, яка може містити предмет і змювати позу за допомогою редстоуну"
+}
