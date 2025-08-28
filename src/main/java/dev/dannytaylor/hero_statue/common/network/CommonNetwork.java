@@ -197,8 +197,8 @@ public class CommonNetwork {
 				}
 			}
 			case useConfigKeybindingAnywhere -> {
-				if (value instanceof Boolean configKeybindingAnywhere) {
-					sendIdBoolean(player, config_updateUseConfigKeybindingAnywhere, configKeybindingAnywhere);
+				if (value instanceof Boolean useConfigKeybindingAnywhere) {
+					sendIdBoolean(player, config_updateUseConfigKeybindingAnywhere, useConfigKeybindingAnywhere);
 				}
 			}
 		}

@@ -81,6 +81,21 @@ public class RequestNetworkConfigUpdateCommand {
 										}
 									}
 								}
+								case useConfigKeybindingAnywhere -> {
+									if (value.left().isPresent() || value.right().isEmpty()) {
+										retVal = 0;
+									} else {
+										Optional<Boolean> right = value.right();
+										if (right.isPresent()) {
+											valueStr = right.get().toString();
+											for (Entity entity : targets) {
+												if (entity instanceof ServerPlayerEntity player) {
+													CommonNetwork.sendUpdateConfig(player, ConfigOption.useConfigKeybindingAnywhere, right.get());
+												}
+											}
+										}
+									}
+								}
 								default -> retVal = 0;
 							}
 						} else {
