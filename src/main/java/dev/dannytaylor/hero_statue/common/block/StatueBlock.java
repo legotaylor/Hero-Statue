@@ -158,6 +158,12 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 		if (state != prevState) world.setBlockState(pos, state, 3);
 	}
 
+	public void updateClient(ServerWorld world, BlockPos pos) {
+		if (world.getBlockEntity(pos) instanceof StatueBlockEntity statueBlockEntity) {
+			statueBlockEntity.needsSync = true;
+		}
+	}
+
 	public BlockState setPose(BlockState state, World world, BlockPos pos, int value) {
 		world.playSound(null, pos, SoundRegistry.heroStatueUpdatePose, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.25F + 0.6F);
 		return state.with(pose, value);
@@ -220,7 +226,10 @@ public class StatueBlock extends BlockWithEntity implements Waterloggable {
 			dropStack(world, pos);
 			world.removeBlock(pos, false);
 		}
-		if (!world.isClient) world.scheduleBlockTick(pos, this, 2);
+		if (!world.isClient) {
+			world.scheduleBlockTick(pos, this, 2);
+			updateClient((ServerWorld) world, pos);
+		}
 		super.neighborUpdate(state, world, pos, sourceBlock, wireOrientation, notify);
 	}
 
