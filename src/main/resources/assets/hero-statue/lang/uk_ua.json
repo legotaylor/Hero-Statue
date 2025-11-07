@@ -55,7 +55,7 @@
 	"hero-statue.use_config_keybinding_anywhere": "Дозволити використання клавіш налаштування в меню",
 	"hero-statue.use_config_keybinding_anywhere.hover": "Дозволяє відкривати екран налаштувань за допомогою сполучення клавіш, коли ви перебуваєте в меню.",
 
-	"hero-statue.allow_network_config_updates": "Дозволити оновлення налаштувань у  мережі",
+	"hero-statue.allow_network_config_updates": "Дозволити оновлення налаштувань у мережі",
 	"hero-statue.allow_network_config_updates.hover": "Дозволяє операторам сервера віддалено змінювати параметри налаштувань, окрім цього.",
 
 	"hero-statue.donate": "Підтримати (Ko-Fi/legotaylor)",
