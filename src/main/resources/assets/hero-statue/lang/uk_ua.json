@@ -78,6 +78,6 @@
 
 	"advancements.hero-statue.adventure.read_power_from_hero_statue.description": "Зчитайте сигнал живлення зі статуї героя за допомогою компаратора",
 	"advancements.hero-statue.adventure.read_power_from_hero_statue.title": "Сила статуї",
-  
-  "modmenu.descriptionTranslation.hero-statue": "Додає статую героя, яка може містити предмет і змювати позу за допомогою редстоуну"
+
+	"modmenu.descriptionTranslation.hero-statue": "Додає статую героя, яка може містити предмет і змювати позу за допомогою редстоуну."
 }
